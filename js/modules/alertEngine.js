@@ -1995,6 +1995,10 @@ function generateIrrigationAlert(
         .toUpperCase();
 
 
+    /*
+        URGENT IRRIGATION
+    */
+
     if (
         priority ===
         "URGENT"
@@ -2009,9 +2013,7 @@ function generateIrrigationAlert(
                 ALERT_CATEGORIES.WATER,
 
             level:
-                "URGENT" in ALERT_LEVELS
-                    ? "URGENT"
-                    : "CRITICAL",
+                "CRITICAL",
 
             title:
                 "Urgent Irrigation Requirement",
@@ -2053,6 +2055,10 @@ function generateIrrigationAlert(
 
     }
 
+
+    /*
+        HIGH IRRIGATION REQUIREMENT
+    */
 
     if (
         priority ===
@@ -2109,6 +2115,10 @@ function generateIrrigationAlert(
 
     }
 
+
+    /*
+        DEFER / AVOID IRRIGATION
+    */
 
     if (
         priority ===
