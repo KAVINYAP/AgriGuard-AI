@@ -1,0 +1,42 @@
+{
+  "location": "Farm Location",
+  "current": {
+    "temperature": 30,
+    "humidity": 68,
+    "rainfall": 5,
+    "windSpeed": 12,
+    "condition": "Partly Cloudy"
+  },
+  "forecast": [
+    {
+      "day": "Today",
+      "temperature": 30,
+      "humidity": 68,
+      "rainfall": 5
+    },
+    {
+      "day": "Tomorrow",
+      "temperature": 31,
+      "humidity": 71,
+      "rainfall": 8
+    },
+    {
+      "day": "Day 3",
+      "temperature": 29,
+      "humidity": 74,
+      "rainfall": 12
+    },
+    {
+      "day": "Day 4",
+      "temperature": 28,
+      "humidity": 78,
+      "rainfall": 18
+    },
+    {
+      "day": "Day 5",
+      "temperature": 30,
+      "humidity": 70,
+      "rainfall": 7
+    }
+  ]
+}
