@@ -1,34 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <meta
         name="description"
         content="AgriGuard AI - Intelligent crop disease detection, risk prediction and disease management system."
     >
 
-    <meta name="theme-color" content="#173f2a">
+    <meta
+        name="theme-color"
+        content="#173f2a"
+    >
 
-    <title>AgriGuard AI | Smart Crop Disease Management</title>
+    <title>
+        AgriGuard AI | Smart Crop Disease Management
+    </title>
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- =========================================================
+         GOOGLE FONTS
+    ========================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
         rel="stylesheet"
     >
 
-    <!-- Main stylesheet -->
-    <link rel="stylesheet" href="styles.css">
 
-    <!-- Chart.js -->
+    <!-- =========================================================
+         MAIN STYLESHEET
+    ========================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
+
+    <!-- =========================================================
+         CHART.JS
+    ========================================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
+
 <body>
+
 
 <!-- ============================================================
      APP SHELL
@@ -36,26 +74,37 @@
 
 <div id="app">
 
+
     <!-- ========================================================
          SIDEBAR
     ========================================================= -->
 
-    <aside class="sidebar" id="sidebar">
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
         <div class="brand">
+
             <div class="brand-mark">
                 <span>🌱</span>
             </div>
 
             <div class="brand-text">
+
                 <h1>AgriGuard</h1>
+
                 <span>AI</span>
+
             </div>
+
         </div>
+
 
         <div class="brand-tagline">
             Intelligent Crop Protection
         </div>
+
 
         <nav class="main-navigation">
 
@@ -68,6 +117,7 @@
                 <span>Dashboard</span>
             </button>
 
+
             <button
                 class="nav-item"
                 data-section="diagnosis"
@@ -76,6 +126,7 @@
                 <span class="nav-icon">◉</span>
                 <span>AI Diagnosis</span>
             </button>
+
 
             <button
                 class="nav-item"
@@ -86,6 +137,7 @@
                 <span>My Fields</span>
             </button>
 
+
             <button
                 class="nav-item"
                 data-section="analytics"
@@ -95,31 +147,49 @@
                 <span>Analytics</span>
             </button>
 
+
             <button
                 class="nav-item"
                 data-section="alerts"
                 type="button"
             >
+
                 <span class="nav-icon">◈</span>
+
                 <span>Early Warnings</span>
 
-                <span class="nav-badge" id="sidebarAlertCount">
+                <span
+                    class="nav-badge"
+                    id="sidebarAlertCount"
+                >
                     3
                 </span>
+
             </button>
 
         </nav>
 
+
         <div class="sidebar-bottom">
 
             <div class="system-status">
+
                 <span class="status-dot"></span>
 
                 <div>
-                    <strong>System Online</strong>
-                    <small>AI services operational</small>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        AI services operational
+                    </small>
+
                 </div>
+
             </div>
+
 
             <button
                 class="sidebar-help"
@@ -141,6 +211,7 @@
 
     <main class="main-content">
 
+
         <!-- ====================================================
              TOP HEADER
         ==================================================== -->
@@ -158,14 +229,21 @@
                     ☰
                 </button>
 
+
                 <div>
-                    <p class="eyebrow" id="currentDate">
+
+                    <p
+                        class="eyebrow"
+                        id="currentDate"
+                    >
                         THURSDAY, AUGUST 27, 2026
                     </p>
+
 
                     <h2 id="pageTitle">
                         Farm Overview
                     </h2>
+
                 </div>
 
             </div>
@@ -178,11 +256,21 @@
                     id="locationButton"
                     type="button"
                 >
+
                     <span>⌖</span>
+
                     <span>
-                        <small>LOCATION</small>
-                        <strong id="locationName">Andhra Pradesh</strong>
+
+                        <small>
+                            LOCATION
+                        </small>
+
+                        <strong id="locationName">
+                            Andhra Pradesh
+                        </strong>
+
                     </span>
+
                 </button>
 
 
@@ -192,8 +280,13 @@
                     type="button"
                     aria-label="Notifications"
                 >
+
                     <span>🔔</span>
-                    <b id="notificationCount">3</b>
+
+                    <b id="notificationCount">
+                        3
+                    </b>
+
                 </button>
 
 
@@ -204,8 +297,15 @@
                     </div>
 
                     <div class="user-details">
-                        <strong>Farmer</strong>
-                        <small>Field Manager</small>
+
+                        <strong>
+                            Farmer
+                        </strong>
+
+                        <small>
+                            Field Manager
+                        </small>
+
                     </div>
 
                 </div>
@@ -223,7 +323,7 @@
 
 
             <!-- =================================================
-                 DASHBOARD SECTION
+                 DASHBOARD
             ================================================= -->
 
             <section
@@ -231,8 +331,6 @@
                 id="dashboardSection"
                 data-page="dashboard"
             >
-
-                <!-- Welcome banner -->
 
                 <div class="welcome-banner">
 
@@ -264,20 +362,22 @@
 
                     </div>
 
+
                     <div class="welcome-visual">
+
                         <div class="plant-orbit">
                             <span>🌾</span>
                         </div>
+
                     </div>
 
                 </div>
 
 
-                <!-- KPI cards -->
-
                 <div class="section-heading">
 
                     <div>
+
                         <span class="section-kicker">
                             FARM INTELLIGENCE
                         </span>
@@ -285,11 +385,16 @@
                         <h3>
                             Today's Crop Health
                         </h3>
+
                     </div>
 
+
                     <span class="live-indicator">
+
                         <i></i>
+
                         LIVE MONITORING
+
                     </span>
 
                 </div>
@@ -297,31 +402,46 @@
 
                 <div class="kpi-grid">
 
+
                     <article class="kpi-card health-card">
 
                         <div class="kpi-card-top">
-                            <div class="kpi-icon">🌱</div>
+
+                            <div class="kpi-icon">
+                                🌱
+                            </div>
 
                             <span class="trend positive">
                                 ↑ 4.2%
                             </span>
+
                         </div>
 
+
                         <div class="kpi-value">
-                            <span id="cropHealthValue">86</span>%
+
+                            <span id="cropHealthValue">
+                                86
+                            </span>%
+
                         </div>
+
 
                         <div class="kpi-label">
                             Overall Crop Health
                         </div>
 
+
                         <div class="progress-track">
+
                             <div
                                 class="progress-fill"
                                 id="cropHealthProgress"
                                 style="width: 86%"
                             ></div>
+
                         </div>
+
 
                         <small>
                             Across 4 monitored fields
@@ -333,27 +453,41 @@
                     <article class="kpi-card risk-card">
 
                         <div class="kpi-card-top">
-                            <div class="kpi-icon">⚠️</div>
+
+                            <div class="kpi-icon">
+                                ⚠️
+                            </div>
 
                             <span class="trend negative">
                                 ↑ 8.1%
                             </span>
+
                         </div>
 
+
                         <div class="kpi-value">
-                            <span id="diseaseRiskValue">23</span>%
+
+                            <span id="diseaseRiskValue">
+                                23
+                            </span>%
+
                         </div>
+
 
                         <div class="kpi-label">
                             Disease Risk
                         </div>
 
+
                         <div class="risk-meter">
+
                             <div
                                 id="diseaseRiskMeter"
                                 style="width: 23%"
                             ></div>
+
                         </div>
+
 
                         <small>
                             Current field risk level: Low
@@ -365,35 +499,52 @@
                     <article class="kpi-card weather-card">
 
                         <div class="kpi-card-top">
-                            <div class="kpi-icon">🌦️</div>
+
+                            <div class="kpi-icon">
+                                🌦️
+                            </div>
 
                             <span class="weather-status">
                                 Stable
                             </span>
+
                         </div>
 
+
                         <div class="kpi-value">
-                            <span id="temperatureValue">29</span>°
+
+                            <span id="temperatureValue">
+                                29
+                            </span>°
+
                             <small>C</small>
+
                         </div>
+
 
                         <div class="kpi-label">
                             Current Temperature
                         </div>
 
+
                         <div class="weather-mini">
 
                             <span>
                                 💧
-                                <strong id="humidityValue">78</strong>%
+                                <strong id="humidityValue">
+                                    78
+                                </strong>%
                             </span>
 
                             <span>
                                 🌧
-                                <strong id="rainProbabilityValue">42</strong>%
+                                <strong id="rainProbabilityValue">
+                                    42
+                                </strong>%
                             </span>
 
                         </div>
+
 
                         <small>
                             Conditions monitored continuously
@@ -405,27 +556,42 @@
                     <article class="kpi-card soil-card">
 
                         <div class="kpi-card-top">
-                            <div class="kpi-icon">💧</div>
+
+                            <div class="kpi-icon">
+                                💧
+                            </div>
 
                             <span class="soil-status">
                                 Good
                             </span>
+
                         </div>
 
+
                         <div class="kpi-value">
-                            <span id="soilMoistureValue">61</span>%
+
+                            <span id="soilMoistureValue">
+                                61
+                            </span>%
+
                         </div>
+
 
                         <div class="kpi-label">
                             Soil Moisture
                         </div>
 
+
                         <div class="progress-track">
+
                             <div
                                 class="progress-fill"
+                                id="soilMoistureProgress"
                                 style="width: 61%"
                             ></div>
+
                         </div>
+
 
                         <small>
                             Within recommended range
@@ -436,18 +602,15 @@
                 </div>
 
 
-                <!-- Main dashboard grid -->
-
                 <div class="dashboard-grid">
 
-
-                    <!-- Risk chart -->
 
                     <article class="panel risk-chart-panel">
 
                         <div class="panel-header">
 
                             <div>
+
                                 <span class="section-kicker">
                                     RISK MONITORING
                                 </span>
@@ -455,33 +618,49 @@
                                 <h3>
                                     Disease Risk Trend
                                 </h3>
+
                             </div>
+
 
                             <select
                                 id="riskChartRange"
                                 class="select-control"
                             >
-                                <option value="7">Last 7 days</option>
-                                <option value="14">Last 14 days</option>
-                                <option value="30">Last 30 days</option>
+
+                                <option value="7">
+                                    Last 7 days
+                                </option>
+
+                                <option value="14">
+                                    Last 14 days
+                                </option>
+
+                                <option value="30">
+                                    Last 30 days
+                                </option>
+
                             </select>
 
                         </div>
 
+
                         <div class="chart-container">
-                            <canvas id="riskTrendChart"></canvas>
+
+                            <canvas
+                                id="riskTrendChart"
+                            ></canvas>
+
                         </div>
 
                     </article>
 
-
-                    <!-- Early warning -->
 
                     <article class="panel warning-panel">
 
                         <div class="panel-header">
 
                             <div>
+
                                 <span class="section-kicker">
                                     ATTENTION REQUIRED
                                 </span>
@@ -489,6 +668,7 @@
                                 <h3>
                                     Early Warning
                                 </h3>
+
                             </div>
 
                             <span class="warning-count">
@@ -558,18 +738,15 @@
                 </div>
 
 
-                <!-- Lower dashboard -->
-
                 <div class="dashboard-grid lower-grid">
 
-
-                    <!-- Field health -->
 
                     <article class="panel">
 
                         <div class="panel-header">
 
                             <div>
+
                                 <span class="section-kicker">
                                     FIELD STATUS
                                 </span>
@@ -577,7 +754,9 @@
                                 <h3>
                                     Your Fields
                                 </h3>
+
                             </div>
+
 
                             <button
                                 class="text-button"
@@ -602,13 +781,12 @@
                     </article>
 
 
-                    <!-- Weather -->
-
                     <article class="panel">
 
                         <div class="panel-header">
 
                             <div>
+
                                 <span class="section-kicker">
                                     WEATHER INTELLIGENCE
                                 </span>
@@ -616,6 +794,7 @@
                                 <h3>
                                     Next 5 Days
                                 </h3>
+
                             </div>
 
                             <span class="weather-location">
@@ -642,7 +821,7 @@
 
 
             <!-- =================================================
-                 AI DIAGNOSIS SECTION
+                 AI DIAGNOSIS
             ================================================= -->
 
             <section
@@ -671,9 +850,13 @@
 
                     </div>
 
+
                     <div class="ai-status-badge">
+
                         <span></span>
+
                         AI ENGINE READY
+
                     </div>
 
                 </div>
@@ -682,13 +865,12 @@
                 <div class="diagnosis-layout">
 
 
-                    <!-- Upload panel -->
-
                     <article class="panel upload-panel">
 
                         <div class="panel-header">
 
                             <div>
+
                                 <span class="section-kicker">
                                     STEP 01
                                 </span>
@@ -696,6 +878,7 @@
                                 <h3>
                                     Upload Crop Image
                                 </h3>
+
                             </div>
 
                         </div>
@@ -713,6 +896,7 @@
                                 accept="image/*"
                                 hidden
                             >
+
 
                             <div
                                 class="upload-placeholder"
@@ -776,13 +960,12 @@
                     </article>
 
 
-                    <!-- Crop context -->
-
                     <article class="panel context-panel">
 
                         <div class="panel-header">
 
                             <div>
+
                                 <span class="section-kicker">
                                     STEP 02
                                 </span>
@@ -790,12 +973,14 @@
                                 <h3>
                                     Field Context
                                 </h3>
+
                             </div>
 
                         </div>
 
 
                         <div class="form-grid">
+
 
                             <div class="form-group">
 
@@ -807,6 +992,7 @@
                                     id="cropSelect"
                                     class="input-control"
                                 >
+
                                     <option value="rice">
                                         Rice
                                     </option>
@@ -822,6 +1008,7 @@
                                     <option value="tomato">
                                         Tomato
                                     </option>
+
                                 </select>
 
                             </div>
@@ -837,6 +1024,7 @@
                                     id="fieldSelect"
                                     class="input-control"
                                 >
+
                                     <option value="field-a">
                                         Field A — Rice
                                     </option>
@@ -852,6 +1040,7 @@
                                     <option value="field-d">
                                         Field D — Tomato
                                     </option>
+
                                 </select>
 
                             </div>
@@ -867,6 +1056,7 @@
                                     id="growthStage"
                                     class="input-control"
                                 >
+
                                     <option>
                                         Seedling
                                     </option>
@@ -886,6 +1076,7 @@
                                     <option>
                                         Maturity
                                     </option>
+
                                 </select>
 
                             </div>
@@ -901,6 +1092,7 @@
                                     id="soilCondition"
                                     class="input-control"
                                 >
+
                                     <option>
                                         Healthy
                                     </option>
@@ -920,6 +1112,7 @@
                                     <option>
                                         Poor drainage
                                     </option>
+
                                 </select>
 
                             </div>
@@ -932,16 +1125,17 @@
                             id="diagnoseButton"
                             type="button"
                         >
+
                             <span>✦</span>
+
                             Analyze Crop with AI
+
                         </button>
 
                     </article>
 
                 </div>
 
-
-                <!-- Diagnosis result -->
 
                 <article
                     class="panel diagnosis-result"
@@ -1004,9 +1198,11 @@
                                 class="circular-score"
                                 id="confidenceScore"
                             >
+
                                 <span>
                                     94.7%
                                 </span>
+
                             </div>
 
                             <small>
@@ -1090,6 +1286,7 @@
                             ⚠ View Risk Assessment
                         </button>
 
+
                         <button
                             class="primary-button"
                             data-action="open-diagnosis-recommendation"
@@ -1103,8 +1300,6 @@
                 </article>
 
 
-                <!-- Recommendation -->
-
                 <article
                     class="panel recommendation-panel"
                     id="recommendationPanel"
@@ -1114,6 +1309,7 @@
                     <div class="panel-header">
 
                         <div>
+
                             <span class="section-kicker">
                                 INTEGRATED DISEASE MANAGEMENT
                             </span>
@@ -1121,7 +1317,9 @@
                             <h3>
                                 Recommended Action Plan
                             </h3>
+
                         </div>
+
 
                         <span class="priority-badge">
                             HIGH PRIORITY
@@ -1132,6 +1330,7 @@
 
                     <div class="recommendation-grid">
 
+
                         <div class="recommendation-column">
 
                             <h4>
@@ -1139,6 +1338,7 @@
                             </h4>
 
                             <ul id="immediateActions">
+
                                 <li>
                                     Inspect affected plants
                                 </li>
@@ -1150,6 +1350,7 @@
                                 <li>
                                     Avoid overhead irrigation
                                 </li>
+
                             </ul>
 
                         </div>
@@ -1162,6 +1363,7 @@
                             </h4>
 
                             <ul id="preventiveActions">
+
                                 <li>
                                     Improve field ventilation
                                 </li>
@@ -1173,6 +1375,7 @@
                                 <li>
                                     Monitor field conditions regularly
                                 </li>
+
                             </ul>
 
                         </div>
@@ -1185,6 +1388,7 @@
                             </h4>
 
                             <ul id="treatmentActions">
+
                                 <li>
                                     Follow locally approved treatment
                                     recommendations
@@ -1197,13 +1401,16 @@
                                 <li>
                                     Reassess crop condition after treatment
                                 </li>
+
                             </ul>
 
                         </div>
 
                     </div>
 
+
                     <div class="recommendation-note">
+
                         <span>💡</span>
 
                         <p>
@@ -1212,6 +1419,7 @@
                             authority and product-label instructions
                             before applying treatments.
                         </p>
+
                     </div>
 
                 </article>
@@ -1220,7 +1428,7 @@
 
 
             <!-- =================================================
-                 FIELDS SECTION
+                 FIELDS
             ================================================= -->
 
             <section
@@ -1247,6 +1455,7 @@
                         </p>
 
                     </div>
+
 
                     <button
                         class="primary-button"
@@ -1285,6 +1494,7 @@
 
                         </div>
 
+
                         <span
                             class="field-health-badge"
                             id="selectedFieldStatus"
@@ -1298,62 +1508,50 @@
                     <div class="field-detail-grid">
 
                         <div class="field-detail-stat">
-
                             <span>Crop</span>
                             <strong id="selectedFieldCrop">
                                 Rice
                             </strong>
-
                         </div>
 
 
                         <div class="field-detail-stat">
-
                             <span>Area</span>
                             <strong id="selectedFieldArea">
                                 2.4 acres
                             </strong>
-
                         </div>
 
 
                         <div class="field-detail-stat">
-
                             <span>Crop Stage</span>
                             <strong id="selectedFieldStage">
                                 Flowering
                             </strong>
-
                         </div>
 
 
                         <div class="field-detail-stat">
-
                             <span>Health</span>
                             <strong id="selectedFieldHealth">
                                 86%
                             </strong>
-
                         </div>
 
 
                         <div class="field-detail-stat">
-
                             <span>Disease Risk</span>
                             <strong id="selectedFieldRisk">
                                 23%
                             </strong>
-
                         </div>
 
 
                         <div class="field-detail-stat">
-
                             <span>Soil Moisture</span>
                             <strong id="selectedFieldMoisture">
                                 61%
                             </strong>
-
                         </div>
 
                     </div>
@@ -1362,18 +1560,26 @@
                     <div class="field-health-bar">
 
                         <div class="field-health-label">
-                            <span>Field Health</span>
+
+                            <span>
+                                Field Health
+                            </span>
+
                             <strong id="fieldHealthPercent">
                                 86%
                             </strong>
+
                         </div>
 
+
                         <div class="progress-track large">
+
                             <div
                                 class="progress-fill"
                                 id="fieldHealthBar"
                                 style="width: 86%"
                             ></div>
+
                         </div>
 
                     </div>
@@ -1384,7 +1590,7 @@
 
 
             <!-- =================================================
-                 ANALYTICS SECTION
+                 ANALYTICS
             ================================================= -->
 
             <section
@@ -1416,6 +1622,7 @@
 
 
                 <div class="analytics-kpi-grid">
+
 
                     <div class="analytics-stat">
 
@@ -1489,6 +1696,11 @@
 
                 <div class="analytics-grid">
 
+
+                    <!-- IMPORTANT:
+                         ID matches charts.js
+                    -->
+
                     <article class="panel">
 
                         <div class="panel-header">
@@ -1507,12 +1719,21 @@
 
                         </div>
 
+
                         <div class="chart-container pie-chart">
-                            <canvas id="cropHealthChart"></canvas>
+
+                            <canvas
+                                id="diseaseDistributionChart"
+                            ></canvas>
+
                         </div>
 
                     </article>
 
+
+                    <!-- IMPORTANT:
+                         ID matches charts.js
+                    -->
 
                     <article class="panel">
 
@@ -1532,8 +1753,13 @@
 
                         </div>
 
+
                         <div class="chart-container">
-                            <canvas id="environmentRiskChart"></canvas>
+
+                            <canvas
+                                id="weatherChart"
+                            ></canvas>
+
                         </div>
 
                     </article>
@@ -1567,15 +1793,35 @@
                             <thead>
 
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Field</th>
-                                    <th>Crop</th>
-                                    <th>Detected Disease</th>
-                                    <th>Confidence</th>
-                                    <th>Risk</th>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Field
+                                    </th>
+
+                                    <th>
+                                        Crop
+                                    </th>
+
+                                    <th>
+                                        Detected Disease
+                                    </th>
+
+                                    <th>
+                                        Confidence
+                                    </th>
+
+                                    <th>
+                                        Risk
+                                    </th>
+
                                 </tr>
 
                             </thead>
+
 
                             <tbody id="diagnosisHistoryTable">
 
@@ -1593,7 +1839,7 @@
 
 
             <!-- =================================================
-                 ALERTS SECTION
+                 ALERTS
             ================================================= -->
 
             <section
@@ -1621,11 +1867,15 @@
 
                     </div>
 
+
                     <div class="alert-summary">
+
                         <strong id="activeAlertCount">
                             3
                         </strong>
+
                         active alerts
+
                     </div>
 
                 </div>
@@ -1661,6 +1911,7 @@
 
 
                     <div class="prevention-grid">
+
 
                         <div class="prevention-card">
 
@@ -1753,7 +2004,9 @@
         ✓
     </span>
 
+
     <div>
+
         <strong id="toastTitle">
             Success
         </strong>
@@ -1761,7 +2014,9 @@
         <p id="toastMessage">
             Operation completed.
         </p>
+
     </div>
+
 
     <button
         id="toastClose"
@@ -1801,6 +2056,7 @@
             ×
         </button>
 
+
         <div id="modalContent">
 
             <h3 id="modalTitle">
@@ -1822,18 +2078,56 @@
 
 <!-- ============================================================
      APPLICATION SCRIPTS
+     
+     IMPORTANT:
+     Scripts are loaded in dependency order.
+     
+     Chart.js
+       ↓
+     data.js
+       ↓
+     charts.js
+       ↓
+     engines/modules
+       ↓
+     app.js
 ============================================================ -->
 
+
+<!-- Chart.js is already loaded in <head> -->
+
+
+<!-- Core data -->
+
 <script src="js/data.js"></script>
+
+
+<!-- Dashboard charts -->
+
 <script src="js/charts.js"></script>
+
+
+<!-- AgriGuard AI engines -->
+
 <script src="js/modules/diseaseDetection.js"></script>
+
 <script src="js/modules/riskEngine.js"></script>
+
 <script src="js/modules/weatherEngine.js"></script>
+
 <script src="js/modules/soilEngine.js"></script>
+
 <script src="js/modules/recommendationEngine.js"></script>
+
 <script src="js/modules/alertEngine.js"></script>
+
 <script src="js/modules/fieldEngine.js"></script>
+
+
+<!-- Main application controller -->
+
 <script src="js/app.js"></script>
+
 
 </body>
 </html>
