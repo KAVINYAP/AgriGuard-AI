@@ -1,0 +1,3168 @@
+/* ============================================================
+   AGRIGUARD AI
+   SIH 2026 PROTOTYPE
+   DATA LAYER
+============================================================ */
+
+/*
+    IMPORTANT
+    ----------
+    This file contains DEMO / PROTOTYPE data.
+
+    It is intentionally structured so that the frontend can later
+    be connected to:
+        - ML disease detection API
+        - Weather API
+        - Soil sensors / IoT
+        - Government agriculture datasets
+        - Satellite / remote sensing data
+        - Real farmer / field databases
+
+    No external API is required for the current demo.
+*/
+
+
+/* ============================================================
+   01. APPLICATION CONFIGURATION
+============================================================ */
+
+const AGRIGUARD_CONFIG = {
+
+    appName: "AgriGuard AI",
+
+    version: "1.0.0",
+
+    prototype: true,
+
+    demoMode: true,
+
+    language: "en",
+
+    location: {
+        country: "India",
+        state: "Andhra Pradesh",
+        district: "Krishna",
+        village: "Demo Village",
+        latitude: 16.5062,
+        longitude: 80.6480
+    },
+
+    farmer: {
+        name: "Ravi Kumar",
+        farmerId: "AGR-2026-0148",
+        farmSize: 6.8,
+        farmSizeUnit: "acres"
+    },
+
+    thresholds: {
+        diseaseConfidenceMinimum: 70,
+        highDiseaseRisk: 70,
+        mediumDiseaseRisk: 40,
+        healthyCropScore: 75,
+        soilMoistureLow: 30,
+        soilMoistureHigh: 80,
+        humidityHigh: 75,
+        temperatureHigh: 32,
+        rainfallHigh: 50
+    },
+
+    supportedImageTypes: [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ],
+
+    maxImageSizeMB: 10
+};
+
+
+/* ============================================================
+   02. SUPPORTED CROPS
+============================================================ */
+
+const CROPS = [
+
+    {
+        id: "rice",
+        name: "Rice",
+        localName: "Paddy",
+        scientificName: "Oryza sativa",
+        icon: "🌾",
+        category: "Cereal",
+        season: "Kharif",
+        commonDiseases: [
+            "rice_blast",
+            "brown_spot",
+            "bacterial_leaf_blight",
+            "sheath_blight"
+        ],
+
+        optimalConditions: {
+            temperature: {
+                min: 20,
+                max: 30,
+                unit: "°C"
+            },
+
+            humidity: {
+                min: 60,
+                max: 80,
+                unit: "%"
+            },
+
+            soilMoisture: {
+                min: 45,
+                max: 75,
+                unit: "%"
+            }
+        }
+    },
+
+
+    {
+        id: "cotton",
+        name: "Cotton",
+        localName: "Cotton",
+        scientificName: "Gossypium hirsutum",
+        icon: "🌱",
+        category: "Cash Crop",
+        season: "Kharif",
+        commonDiseases: [
+            "bacterial_blight",
+            "alternaria_leaf_spot",
+            "fusarium_wilt"
+        ],
+
+        optimalConditions: {
+            temperature: {
+                min: 21,
+                max: 32,
+                unit: "°C"
+            },
+
+            humidity: {
+                min: 50,
+                max: 75,
+                unit: "%"
+            },
+
+            soilMoisture: {
+                min: 35,
+                max: 65,
+                unit: "%"
+            }
+        }
+    },
+
+
+    {
+        id: "chilli",
+        name: "Chilli",
+        localName: "Mirchi",
+        scientificName: "Capsicum annuum",
+        icon: "🌶️",
+        category: "Vegetable",
+        season: "Kharif / Rabi",
+        commonDiseases: [
+            "leaf_curl",
+            "anthracnose",
+            "powdery_mildew"
+        ],
+
+        optimalConditions: {
+            temperature: {
+                min: 20,
+                max: 30,
+                unit: "°C"
+            },
+
+            humidity: {
+                min: 50,
+                max: 70,
+                unit: "%"
+            },
+
+            soilMoisture: {
+                min: 35,
+                max: 65,
+                unit: "%"
+            }
+        }
+    },
+
+
+    {
+        id: "tomato",
+        name: "Tomato",
+        localName: "Tomato",
+        scientificName: "Solanum lycopersicum",
+        icon: "🍅",
+        category: "Vegetable",
+        season: "Rabi",
+        commonDiseases: [
+            "early_blight",
+            "late_blight",
+            "septoria_leaf_spot"
+        ],
+
+        optimalConditions: {
+            temperature: {
+                min: 18,
+                max: 28,
+                unit: "°C"
+            },
+
+            humidity: {
+                min: 50,
+                max: 70,
+                unit: "%"
+            },
+
+            soilMoisture: {
+                min: 40,
+                max: 70,
+                unit: "%"
+            }
+        }
+    },
+
+
+    {
+        id: "groundnut",
+        name: "Groundnut",
+        localName: "Peanut",
+        scientificName: "Arachis hypogaea",
+        icon: "🥜",
+        category: "Oilseed",
+        season: "Kharif",
+        commonDiseases: [
+            "early_leaf_spot",
+            "late_leaf_spot",
+            "rust"
+        ],
+
+        optimalConditions: {
+            temperature: {
+                min: 22,
+                max: 30,
+                unit: "°C"
+            },
+
+            humidity: {
+                min: 50,
+                max: 70,
+                unit: "%"
+            },
+
+            soilMoisture: {
+                min: 35,
+                max: 65,
+                unit: "%"
+            }
+        }
+    }
+];
+
+
+/* ============================================================
+   03. DISEASE DATABASE
+============================================================ */
+
+const DISEASES = [
+
+    {
+        id: "rice_blast",
+
+        cropId: "rice",
+
+        name: "Rice Blast",
+
+        scientificName: "Magnaporthe oryzae",
+
+        category: "Fungal Disease",
+
+        severity: "High",
+
+        description:
+            "A major fungal disease affecting rice leaves, nodes and panicles. Under favorable environmental conditions it can spread rapidly.",
+
+        symptoms: [
+            "Spindle-shaped lesions on leaves",
+            "Gray or white centers with dark margins",
+            "Lesions may enlarge and merge",
+            "Neck infection can cause panicle breakage"
+        ],
+
+        favorableConditions: {
+            temperature: "20–30°C",
+            humidity: ">85%",
+            rainfall: "Frequent rainfall / leaf wetness",
+            nitrogen: "Excess nitrogen can increase susceptibility"
+        },
+
+        riskFactors: [
+            "High humidity",
+            "Extended leaf wetness",
+            "Excess nitrogen",
+            "Dense crop canopy",
+            "Frequent rainfall"
+        ],
+
+        prevention: [
+            "Maintain balanced nitrogen application",
+            "Avoid excessive plant density",
+            "Improve field drainage",
+            "Use resistant varieties where available"
+        ],
+
+        management: [
+            "Remove severely affected plant material where practical",
+            "Maintain proper field drainage",
+            "Avoid unnecessary nitrogen application",
+            "Consult local agricultural experts for registered fungicide options"
+        ],
+
+        confidenceBaseline: 94.7
+    },
+
+
+    {
+        id: "brown_spot",
+
+        cropId: "rice",
+
+        name: "Rice Brown Spot",
+
+        scientificName: "Bipolaris oryzae",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A fungal disease characterized by brown lesions on leaves and other plant parts, often associated with stressed crops.",
+
+        symptoms: [
+            "Small circular brown spots",
+            "Dark margins around lesions",
+            "Yellowing of surrounding tissue",
+            "Reduced plant vigor"
+        ],
+
+        favorableConditions: {
+            temperature: "25–30°C",
+            humidity: "High humidity",
+            rainfall: "Moderate rainfall",
+            nitrogen: "Nutrient imbalance"
+        },
+
+        riskFactors: [
+            "Nutrient deficiency",
+            "Poor soil fertility",
+            "High humidity",
+            "Water stress"
+        ],
+
+        prevention: [
+            "Maintain balanced crop nutrition",
+            "Use healthy seed",
+            "Improve soil fertility",
+            "Maintain suitable irrigation"
+        ],
+
+        management: [
+            "Correct nutrient deficiencies",
+            "Maintain appropriate irrigation",
+            "Remove heavily affected plant material where practical",
+            "Use locally approved disease-management measures"
+        ],
+
+        confidenceBaseline: 91.2
+    },
+
+
+    {
+        id: "bacterial_leaf_blight",
+
+        cropId: "rice",
+
+        name: "Bacterial Leaf Blight",
+
+        scientificName: "Xanthomonas oryzae pv. oryzae",
+
+        category: "Bacterial Disease",
+
+        severity: "High",
+
+        description:
+            "A bacterial disease that causes water-soaked lesions and progressive drying of rice leaves.",
+
+        symptoms: [
+            "Water-soaked leaf margins",
+            "Yellowing of leaf tissue",
+            "Progressive drying from leaf tips",
+            "Severe cases may cause wilting"
+        ],
+
+        favorableConditions: {
+            temperature: "25–34°C",
+            humidity: "High",
+            rainfall: "Heavy rain and storms",
+            nitrogen: "Excess nitrogen"
+        },
+
+        riskFactors: [
+            "Heavy rainfall",
+            "Strong winds",
+            "High nitrogen",
+            "Standing water",
+            "Dense planting"
+        ],
+
+        prevention: [
+            "Use healthy planting material",
+            "Avoid excessive nitrogen",
+            "Maintain suitable water management",
+            "Use resistant varieties where available"
+        ],
+
+        management: [
+            "Improve field drainage",
+            "Avoid unnecessary irrigation",
+            "Follow locally recommended disease-management practices",
+            "Monitor neighboring fields"
+        ],
+
+        confidenceBaseline: 92.8
+    },
+
+
+    {
+        id: "sheath_blight",
+
+        cropId: "rice",
+
+        name: "Sheath Blight",
+
+        scientificName: "Rhizoctonia solani",
+
+        category: "Fungal Disease",
+
+        severity: "High",
+
+        description:
+            "A fungal disease that commonly develops in dense, humid rice fields and can spread rapidly through the crop canopy.",
+
+        symptoms: [
+            "Oval green-gray lesions",
+            "Lesions on leaf sheaths",
+            "Progressive spread toward upper leaves",
+            "Premature drying of leaves"
+        ],
+
+        favorableConditions: {
+            temperature: "28–32°C",
+            humidity: ">80%",
+            rainfall: "Frequent rainfall",
+            nitrogen: "High nitrogen"
+        },
+
+        riskFactors: [
+            "Dense crop canopy",
+            "High humidity",
+            "Excess nitrogen",
+            "Standing water",
+            "Warm temperatures"
+        ],
+
+        prevention: [
+            "Avoid excessive nitrogen",
+            "Maintain suitable plant spacing",
+            "Improve field drainage",
+            "Monitor lower canopy regularly"
+        ],
+
+        management: [
+            "Reduce excessive canopy humidity where possible",
+            "Maintain suitable irrigation",
+            "Follow registered fungicide recommendations where necessary",
+            "Monitor disease progression"
+        ],
+
+        confidenceBaseline: 89.6
+    },
+
+
+    {
+        id: "bacterial_blight",
+
+        cropId: "cotton",
+
+        name: "Cotton Bacterial Blight",
+
+        scientificName: "Xanthomonas citri pv. malvacearum",
+
+        category: "Bacterial Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A bacterial disease that can affect leaves, stems, bracts and bolls of cotton.",
+
+        symptoms: [
+            "Angular leaf spots",
+            "Dark lesions",
+            "Water-soaked tissue",
+            "Boll infection in severe cases"
+        ],
+
+        favorableConditions: {
+            temperature: "25–32°C",
+            humidity: "High",
+            rainfall: "Rain splash",
+            nitrogen: "Excessive vegetative growth"
+        },
+
+        riskFactors: [
+            "Rain splash",
+            "High humidity",
+            "Infected seed",
+            "Dense crop"
+        ],
+
+        prevention: [
+            "Use quality seed",
+            "Maintain field sanitation",
+            "Avoid unnecessary canopy wetness",
+            "Monitor after rainfall"
+        ],
+
+        management: [
+            "Remove severely infected material where feasible",
+            "Improve field ventilation",
+            "Follow local recommendations for bacterial disease management"
+        ],
+
+        confidenceBaseline: 88.5
+    },
+
+
+    {
+        id: "alternaria_leaf_spot",
+
+        cropId: "cotton",
+
+        name: "Alternaria Leaf Spot",
+
+        scientificName: "Alternaria spp.",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A fungal leaf disease producing dark spots and progressive leaf damage under favorable conditions.",
+
+        symptoms: [
+            "Circular dark lesions",
+            "Concentric rings",
+            "Yellowing around lesions",
+            "Premature leaf shedding"
+        ],
+
+        favorableConditions: {
+            temperature: "25–30°C",
+            humidity: "High",
+            rainfall: "Frequent rainfall",
+            nitrogen: "Plant stress"
+        },
+
+        riskFactors: [
+            "High humidity",
+            "Leaf wetness",
+            "Poor airflow",
+            "Plant stress"
+        ],
+
+        prevention: [
+            "Maintain good crop spacing",
+            "Reduce prolonged leaf wetness",
+            "Maintain balanced nutrition"
+        ],
+
+        management: [
+            "Monitor disease progression",
+            "Remove heavily infected leaves where practical",
+            "Use locally approved disease-management measures"
+        ],
+
+        confidenceBaseline: 90.4
+    },
+
+
+    {
+        id: "fusarium_wilt",
+
+        cropId: "cotton",
+
+        name: "Fusarium Wilt",
+
+        scientificName: "Fusarium oxysporum f. sp. vasinfectum",
+
+        category: "Fungal Disease",
+
+        severity: "High",
+
+        description:
+            "A soil-borne fungal disease that interferes with water transport and causes progressive wilting.",
+
+        symptoms: [
+            "Yellowing of leaves",
+            "Wilting",
+            "Stunted growth",
+            "Vascular discoloration"
+        ],
+
+        favorableConditions: {
+            temperature: "25–30°C",
+            humidity: "Variable",
+            rainfall: "Soil moisture influences development",
+            nitrogen: "Plant stress"
+        },
+
+        riskFactors: [
+            "Infested soil",
+            "Poor crop rotation",
+            "Root damage",
+            "Plant stress"
+        ],
+
+        prevention: [
+            "Use resistant varieties where available",
+            "Practice crop rotation",
+            "Maintain soil health",
+            "Avoid unnecessary root damage"
+        ],
+
+        management: [
+            "Remove severely affected plants where appropriate",
+            "Improve soil and crop management",
+            "Avoid moving contaminated soil between fields"
+        ],
+
+        confidenceBaseline: 93.1
+    },
+
+
+    {
+        id: "leaf_curl",
+
+        cropId: "chilli",
+
+        name: "Chilli Leaf Curl",
+
+        scientificName: "Viral complex",
+
+        category: "Viral Disease",
+
+        severity: "High",
+
+        description:
+            "A viral disease complex commonly associated with vector activity and characterized by leaf curling and plant stunting.",
+
+        symptoms: [
+            "Upward or downward leaf curling",
+            "Leaf distortion",
+            "Reduced leaf size",
+            "Stunted plant growth"
+        ],
+
+        favorableConditions: {
+            temperature: "Warm conditions",
+            humidity: "Moderate",
+            rainfall: "Variable",
+            vector: "Whitefly / vector pressure"
+        },
+
+        riskFactors: [
+            "High vector population",
+            "Nearby infected plants",
+            "Weed hosts",
+            "Warm weather"
+        ],
+
+        prevention: [
+            "Monitor vector populations",
+            "Remove heavily affected plants where appropriate",
+            "Control weeds around fields",
+            "Use healthy planting material"
+        ],
+
+        management: [
+            "Monitor vector pressure",
+            "Use integrated pest management",
+            "Remove alternate hosts",
+            "Follow locally approved vector-management practices"
+        ],
+
+        confidenceBaseline: 95.1
+    },
+
+
+    {
+        id: "anthracnose",
+
+        cropId: "chilli",
+
+        name: "Chilli Anthracnose",
+
+        scientificName: "Colletotrichum spp.",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A fungal disease that can affect leaves, stems and fruits of chilli.",
+
+        symptoms: [
+            "Dark sunken lesions",
+            "Fruit spots",
+            "Necrotic leaf areas",
+            "Fruit rot"
+        ],
+
+        favorableConditions: {
+            temperature: "25–30°C",
+            humidity: "High",
+            rainfall: "Frequent rainfall",
+            leafWetness: "Extended"
+        },
+
+        riskFactors: [
+            "High humidity",
+            "Rain splash",
+            "Dense canopy",
+            "Infected plant material"
+        ],
+
+        prevention: [
+            "Use clean planting material",
+            "Improve canopy airflow",
+            "Avoid prolonged leaf wetness",
+            "Remove infected fruits"
+        ],
+
+        management: [
+            "Remove severely affected plant material",
+            "Improve field sanitation",
+            "Follow registered fungicide recommendations when required"
+        ],
+
+        confidenceBaseline: 92.3
+    },
+
+
+    {
+        id: "powdery_mildew",
+
+        cropId: "chilli",
+
+        name: "Powdery Mildew",
+
+        scientificName: "Leveillula taurica",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A fungal disease that produces powdery growth and causes progressive leaf damage.",
+
+        symptoms: [
+            "White powdery growth",
+            "Yellow patches",
+            "Leaf curling",
+            "Premature leaf drop"
+        ],
+
+        favorableConditions: {
+            temperature: "20–30°C",
+            humidity: "Moderate to high",
+            rainfall: "Dry periods with humid nights",
+            airflow: "Poor airflow"
+        },
+
+        riskFactors: [
+            "High humidity",
+            "Poor airflow",
+            "Dense canopy",
+            "Plant stress"
+        ],
+
+        prevention: [
+            "Improve airflow",
+            "Avoid excessive nitrogen",
+            "Monitor lower leaves",
+            "Maintain balanced irrigation"
+        ],
+
+        management: [
+            "Remove heavily affected leaves",
+            "Improve crop ventilation",
+            "Follow locally registered disease-management measures"
+        ],
+
+        confidenceBaseline: 89.8
+    },
+
+
+    {
+        id: "early_blight",
+
+        cropId: "tomato",
+
+        name: "Tomato Early Blight",
+
+        scientificName: "Alternaria solani",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A common fungal disease producing characteristic concentric lesions on tomato leaves.",
+
+        symptoms: [
+            "Brown circular spots",
+            "Concentric rings",
+            "Yellowing leaves",
+            "Lower leaves affected first"
+        ],
+
+        favorableConditions: {
+            temperature: "24–29°C",
+            humidity: "High",
+            rainfall: "Frequent rainfall",
+            leafWetness: "Extended"
+        },
+
+        riskFactors: [
+            "Leaf wetness",
+            "Poor airflow",
+            "Plant stress",
+            "Infected debris"
+        ],
+
+        prevention: [
+            "Remove infected debris",
+            "Use suitable spacing",
+            "Avoid overhead irrigation where possible",
+            "Maintain plant vigor"
+        ],
+
+        management: [
+            "Remove affected leaves where appropriate",
+            "Improve airflow",
+            "Follow registered fungicide guidance if necessary"
+        ],
+
+        confidenceBaseline: 94.2
+    },
+
+
+    {
+        id: "late_blight",
+
+        cropId: "tomato",
+
+        name: "Tomato Late Blight",
+
+        scientificName: "Phytophthora infestans",
+
+        category: "Oomycete Disease",
+
+        severity: "Critical",
+
+        description:
+            "A destructive disease that can spread rapidly under cool, wet and humid conditions.",
+
+        symptoms: [
+            "Large irregular dark lesions",
+            "Rapid leaf collapse",
+            "Dark lesions on stems",
+            "Fruit infection"
+        ],
+
+        favorableConditions: {
+            temperature: "15–22°C",
+            humidity: ">90%",
+            rainfall: "Frequent rain",
+            leafWetness: "Long duration"
+        },
+
+        riskFactors: [
+            "Cool wet weather",
+            "High humidity",
+            "Extended leaf wetness",
+            "Infected neighboring crops"
+        ],
+
+        prevention: [
+            "Monitor weather conditions",
+            "Improve crop ventilation",
+            "Remove infected plant material",
+            "Use resistant varieties where available"
+        ],
+
+        management: [
+            "Act rapidly after early symptoms",
+            "Remove severely affected material",
+            "Improve canopy airflow",
+            "Consult local agriculture authorities for registered control options"
+        ],
+
+        confidenceBaseline: 96.2
+    },
+
+
+    {
+        id: "septoria_leaf_spot",
+
+        cropId: "tomato",
+
+        name: "Septoria Leaf Spot",
+
+        scientificName: "Septoria lycopersici",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A fungal disease producing numerous small circular leaf lesions.",
+
+        symptoms: [
+            "Small circular spots",
+            "Dark borders",
+            "Tiny dark fruiting bodies",
+            "Progressive lower-leaf damage"
+        ],
+
+        favorableConditions: {
+            temperature: "20–25°C",
+            humidity: "High",
+            rainfall: "Rain splash",
+            leafWetness: "Extended"
+        },
+
+        riskFactors: [
+            "Rain splash",
+            "Infected debris",
+            "High humidity",
+            "Poor sanitation"
+        ],
+
+        prevention: [
+            "Remove infected debris",
+            "Avoid overhead irrigation",
+            "Maintain spacing",
+            "Use crop rotation"
+        ],
+
+        management: [
+            "Remove affected leaves",
+            "Maintain sanitation",
+            "Follow locally approved disease-management recommendations"
+        ],
+
+        confidenceBaseline: 91.7
+    },
+
+
+    {
+        id: "early_leaf_spot",
+
+        cropId: "groundnut",
+
+        name: "Groundnut Early Leaf Spot",
+
+        scientificName: "Cercospora arachidicola",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A foliar disease causing brown lesions and premature defoliation in groundnut.",
+
+        symptoms: [
+            "Brown circular leaf spots",
+            "Yellow halo",
+            "Premature leaf drop",
+            "Reduced canopy"
+        ],
+
+        favorableConditions: {
+            temperature: "25–30°C",
+            humidity: "High",
+            rainfall: "Frequent rainfall",
+            leafWetness: "Extended"
+        },
+
+        riskFactors: [
+            "High humidity",
+            "Frequent rainfall",
+            "Dense crop canopy",
+            "Infected residues"
+        ],
+
+        prevention: [
+            "Use crop rotation",
+            "Remove infected residues",
+            "Maintain balanced nutrition",
+            "Monitor after rainfall"
+        ],
+
+        management: [
+            "Remove severely affected material where practical",
+            "Improve field sanitation",
+            "Use registered disease-management measures when required"
+        ],
+
+        confidenceBaseline: 90.6
+    },
+
+
+    {
+        id: "late_leaf_spot",
+
+        cropId: "groundnut",
+
+        name: "Groundnut Late Leaf Spot",
+
+        scientificName: "Nothopassalora personata",
+
+        category: "Fungal Disease",
+
+        severity: "High",
+
+        description:
+            "A fungal foliar disease that can cause substantial defoliation and yield reduction.",
+
+        symptoms: [
+            "Dark circular leaf spots",
+            "Rapid defoliation",
+            "Lesions on lower leaves",
+            "Reduced plant vigor"
+        ],
+
+        favorableConditions: {
+            temperature: "25–30°C",
+            humidity: "High",
+            rainfall: "Frequent rainfall",
+            leafWetness: "Extended"
+        },
+
+        riskFactors: [
+            "Frequent rain",
+            "High humidity",
+            "Dense canopy",
+            "Poor crop sanitation"
+        ],
+
+        prevention: [
+            "Use suitable crop rotation",
+            "Maintain field sanitation",
+            "Monitor weather-driven disease risk",
+            "Use resistant varieties where available"
+        ],
+
+        management: [
+            "Monitor disease progression",
+            "Maintain crop sanitation",
+            "Follow local recommendations for disease management"
+        ],
+
+        confidenceBaseline: 93.5
+    },
+
+
+    {
+        id: "rust",
+
+        cropId: "groundnut",
+
+        name: "Groundnut Rust",
+
+        scientificName: "Puccinia arachidis",
+
+        category: "Fungal Disease",
+
+        severity: "Moderate",
+
+        description:
+            "A fungal disease that produces characteristic rust-colored pustules on leaves.",
+
+        symptoms: [
+            "Orange-brown pustules",
+            "Leaf yellowing",
+            "Premature leaf drop",
+            "Reduced photosynthetic area"
+        ],
+
+        favorableConditions: {
+            temperature: "20–30°C",
+            humidity: "High",
+            rainfall: "Frequent rainfall",
+            leafWetness: "Extended"
+        },
+
+        riskFactors: [
+            "High humidity",
+            "Frequent rainfall",
+            "Dense canopy",
+            "Infected residues"
+        ],
+
+        prevention: [
+            "Maintain field sanitation",
+            "Use suitable crop rotation",
+            "Monitor during humid periods"
+        ],
+
+        management: [
+            "Monitor infected areas",
+            "Remove severe plant material where practical",
+            "Use locally approved management practices"
+        ],
+
+        confidenceBaseline: 88.9
+    }
+
+];
+
+
+/* ============================================================
+   04. FARM FIELD DATABASE
+============================================================ */
+
+const FIELDS = [
+
+    {
+        id: "field-01",
+
+        name: "North Paddy Field",
+
+        cropId: "rice",
+
+        cropName: "Rice",
+
+        area: 2.4,
+
+        areaUnit: "acres",
+
+        village: "Demo Village",
+
+        status: "warning",
+
+        healthScore: 78,
+
+        riskScore: 64,
+
+        diseaseRisk: "Medium",
+
+        lastScan: "Today, 09:42 AM",
+
+        growthStage: "Tillering",
+
+        plantingDate: "2026-07-18",
+
+        expectedHarvest: "2026-11-05",
+
+        soil: {
+            ph: 6.4,
+            moisture: 61,
+            nitrogen: 72,
+            phosphorus: 48,
+            potassium: 64,
+            organicCarbon: 0.72
+        },
+
+        weather: {
+            temperature: 30,
+            humidity: 78,
+            rainfall24h: 18,
+            windSpeed: 11
+        },
+
+        diseaseHistory: [
+            {
+                diseaseId: "rice_blast",
+                risk: 64,
+                date: "2026-08-27"
+            }
+        ]
+    },
+
+
+    {
+        id: "field-02",
+
+        name: "East Cotton Plot",
+
+        cropId: "cotton",
+
+        cropName: "Cotton",
+
+        area: 1.8,
+
+        areaUnit: "acres",
+
+        village: "Demo Village",
+
+        status: "healthy",
+
+        healthScore: 91,
+
+        riskScore: 28,
+
+        diseaseRisk: "Low",
+
+        lastScan: "Today, 08:15 AM",
+
+        growthStage: "Vegetative",
+
+        plantingDate: "2026-06-28",
+
+        expectedHarvest: "2026-12-15",
+
+        soil: {
+            ph: 6.8,
+            moisture: 48,
+            nitrogen: 61,
+            phosphorus: 57,
+            potassium: 70,
+            organicCarbon: 0.81
+        },
+
+        weather: {
+            temperature: 29,
+            humidity: 67,
+            rainfall24h: 8,
+            windSpeed: 13
+        },
+
+        diseaseHistory: []
+    },
+
+
+    {
+        id: "field-03",
+
+        name: "South Chilli Field",
+
+        cropId: "chilli",
+
+        cropName: "Chilli",
+
+        area: 1.1,
+
+        areaUnit: "acres",
+
+        village: "Demo Village",
+
+        status: "critical",
+
+        healthScore: 59,
+
+        riskScore: 82,
+
+        diseaseRisk: "High",
+
+        lastScan: "Today, 10:21 AM",
+
+        growthStage: "Flowering",
+
+        plantingDate: "2026-07-02",
+
+        expectedHarvest: "2026-10-20",
+
+        soil: {
+            ph: 6.1,
+            moisture: 43,
+            nitrogen: 78,
+            phosphorus: 42,
+            potassium: 58,
+            organicCarbon: 0.59
+        },
+
+        weather: {
+            temperature: 31,
+            humidity: 82,
+            rainfall24h: 26,
+            windSpeed: 8
+        },
+
+        diseaseHistory: [
+            {
+                diseaseId: "leaf_curl",
+                risk: 82,
+                date: "2026-08-27"
+            }
+        ]
+    },
+
+
+    {
+        id: "field-04",
+
+        name: "West Tomato Plot",
+
+        cropId: "tomato",
+
+        cropName: "Tomato",
+
+        area: 0.9,
+
+        areaUnit: "acres",
+
+        village: "Demo Village",
+
+        status: "healthy",
+
+        healthScore: 94,
+
+        riskScore: 19,
+
+        diseaseRisk: "Low",
+
+        lastScan: "Yesterday, 05:32 PM",
+
+        growthStage: "Fruiting",
+
+        plantingDate: "2026-07-12",
+
+        expectedHarvest: "2026-10-08",
+
+        soil: {
+            ph: 6.5,
+            moisture: 56,
+            nitrogen: 65,
+            phosphorus: 63,
+            potassium: 74,
+            organicCarbon: 0.91
+        },
+
+        weather: {
+            temperature: 28,
+            humidity: 69,
+            rainfall24h: 4,
+            windSpeed: 14
+        },
+
+        diseaseHistory: []
+    },
+
+
+    {
+        id: "field-05",
+
+        name: "Central Groundnut Field",
+
+        cropId: "groundnut",
+
+        cropName: "Groundnut",
+
+        area: 0.6,
+
+        areaUnit: "acres",
+
+        village: "Demo Village",
+
+        status: "warning",
+
+        healthScore: 81,
+
+        riskScore: 47,
+
+        diseaseRisk: "Medium",
+
+        lastScan: "Yesterday, 03:18 PM",
+
+        growthStage: "Pegging",
+
+        plantingDate: "2026-07-10",
+
+        expectedHarvest: "2026-10-25",
+
+        soil: {
+            ph: 6.7,
+            moisture: 52,
+            nitrogen: 55,
+            phosphorus: 59,
+            potassium: 68,
+            organicCarbon: 0.76
+        },
+
+        weather: {
+            temperature: 29,
+            humidity: 74,
+            rainfall24h: 13,
+            windSpeed: 10
+        },
+
+        diseaseHistory: [
+            {
+                diseaseId: "early_leaf_spot",
+                risk: 47,
+                date: "2026-08-26"
+            }
+        ]
+    }
+];
+
+
+/* ============================================================
+   05. WEATHER DATA
+============================================================ */
+
+const WEATHER_DATA = {
+
+    location: {
+        city: "Vijayawada",
+        district: "Krishna",
+        state: "Andhra Pradesh"
+    },
+
+    current: {
+        temperature: 30,
+        feelsLike: 32,
+        humidity: 78,
+        rainfall: 18,
+        windSpeed: 11,
+        windDirection: "SW",
+        pressure: 1008,
+        condition: "Partly Cloudy",
+        icon: "⛅",
+        uvIndex: 6,
+        visibility: 8
+    },
+
+    forecast: [
+
+        {
+            day: "Today",
+            date: "27 Aug",
+            temperatureHigh: 31,
+            temperatureLow: 25,
+            humidity: 78,
+            rainfallProbability: 65,
+            rainfallAmount: 18,
+            condition: "Partly Cloudy",
+            icon: "⛅"
+        },
+
+        {
+            day: "Fri",
+            date: "28 Aug",
+            temperatureHigh: 30,
+            temperatureLow: 25,
+            humidity: 82,
+            rainfallProbability: 72,
+            rainfallAmount: 24,
+            condition: "Light Rain",
+            icon: "🌦️"
+        },
+
+        {
+            day: "Sat",
+            date: "29 Aug",
+            temperatureHigh: 29,
+            temperatureLow: 24,
+            humidity: 86,
+            rainfallProbability: 81,
+            rainfallAmount: 36,
+            condition: "Rain",
+            icon: "🌧️"
+        },
+
+        {
+            day: "Sun",
+            date: "30 Aug",
+            temperatureHigh: 30,
+            temperatureLow: 24,
+            humidity: 79,
+            rainfallProbability: 63,
+            rainfallAmount: 17,
+            condition: "Cloudy",
+            icon: "☁️"
+        },
+
+        {
+            day: "Mon",
+            date: "31 Aug",
+            temperatureHigh: 32,
+            temperatureLow: 25,
+            humidity: 71,
+            rainfallProbability: 42,
+            rainfallAmount: 8,
+            condition: "Partly Cloudy",
+            icon: "⛅"
+        }
+    ]
+};
+
+
+/* ============================================================
+   06. SOIL DATA
+============================================================ */
+
+const SOIL_DATA = {
+
+    fieldId: "field-01",
+
+    lastUpdated: "Today, 09:35 AM",
+
+    parameters: {
+
+        ph: {
+            value: 6.4,
+            unit: "",
+            status: "Optimal",
+            min: 5.5,
+            max: 7.5
+        },
+
+        moisture: {
+            value: 61,
+            unit: "%",
+            status: "Optimal",
+            min: 45,
+            max: 75
+        },
+
+        nitrogen: {
+            value: 72,
+            unit: "kg/ha",
+            status: "High",
+            min: 40,
+            max: 70
+        },
+
+        phosphorus: {
+            value: 48,
+            unit: "kg/ha",
+            status: "Optimal",
+            min: 30,
+            max: 60
+        },
+
+        potassium: {
+            value: 64,
+            unit: "kg/ha",
+            status: "Optimal",
+            min: 40,
+            max: 80
+        },
+
+        organicCarbon: {
+            value: 0.72,
+            unit: "%",
+            status: "Good",
+            min: 0.5,
+            max: 1.2
+        }
+    },
+
+    historical: [
+
+        {
+            date: "2026-08-01",
+            ph: 6.3,
+            moisture: 55,
+            nitrogen: 68,
+            phosphorus: 47,
+            potassium: 63
+        },
+
+        {
+            date: "2026-08-08",
+            ph: 6.4,
+            moisture: 59,
+            nitrogen: 70,
+            phosphorus: 48,
+            potassium: 63
+        },
+
+        {
+            date: "2026-08-15",
+            ph: 6.4,
+            moisture: 64,
+            nitrogen: 71,
+            phosphorus: 48,
+            potassium: 64
+        },
+
+        {
+            date: "2026-08-22",
+            ph: 6.4,
+            moisture: 62,
+            nitrogen: 72,
+            phosphorus: 48,
+            potassium: 64
+        },
+
+        {
+            date: "2026-08-27",
+            ph: 6.4,
+            moisture: 61,
+            nitrogen: 72,
+            phosphorus: 48,
+            potassium: 64
+        }
+    ]
+};
+
+
+/* ============================================================
+   07. DISEASE RISK HISTORY
+============================================================ */
+
+const DISEASE_RISK_HISTORY = [
+
+    {
+        date: "2026-08-01",
+        overallRisk: 32,
+        riceBlast: 29,
+        bacterialBlight: 24,
+        sheathBlight: 31
+    },
+
+    {
+        date: "2026-08-08",
+        overallRisk: 39,
+        riceBlast: 37,
+        bacterialBlight: 31,
+        sheathBlight: 40
+    },
+
+    {
+        date: "2026-08-15",
+        overallRisk: 47,
+        riceBlast: 45,
+        bacterialBlight: 39,
+        sheathBlight: 48
+    },
+
+    {
+        date: "2026-08-22",
+        overallRisk: 55,
+        riceBlast: 58,
+        bacterialBlight: 47,
+        sheathBlight: 57
+    },
+
+    {
+        date: "2026-08-27",
+        overallRisk: 64,
+        riceBlast: 68,
+        bacterialBlight: 55,
+        sheathBlight: 64
+    }
+];
+
+
+/* ============================================================
+   08. DASHBOARD KPI DATA
+============================================================ */
+
+const DASHBOARD_KPIS = {
+
+    monitoredArea: {
+        value: 6.8,
+        unit: "ac",
+        label: "Monitored Area",
+        trend: "+0.8%",
+        trendType: "positive"
+    },
+
+    cropHealth: {
+        value: 81,
+        unit: "%",
+        label: "Average Crop Health",
+        trend: "+4.2%",
+        trendType: "positive"
+    },
+
+    diseaseRisk: {
+        value: 64,
+        unit: "%",
+        label: "Current Disease Risk",
+        trend: "+9.1%",
+        trendType: "negative"
+    },
+
+    soilMoisture: {
+        value: 61,
+        unit: "%",
+        label: "Average Soil Moisture",
+        trend: "Optimal",
+        trendType: "positive"
+    },
+
+    temperature: {
+        value: 30,
+        unit: "°C",
+        label: "Current Temperature",
+        trend: "Normal",
+        trendType: "positive"
+    },
+
+    humidity: {
+        value: 78,
+        unit: "%",
+        label: "Relative Humidity",
+        trend: "High",
+        trendType: "negative"
+    },
+
+    rainfall: {
+        value: 18,
+        unit: "mm",
+        label: "Rainfall / 24h",
+        trend: "Moderate",
+        trendType: "positive"
+    }
+};
+
+
+/* ============================================================
+   09. ALERT DATABASE
+============================================================ */
+
+const ALERTS = [
+
+    {
+        id: "ALT-001",
+
+        severity: "high",
+
+        type: "Disease Risk",
+
+        title: "High Rice Blast Risk",
+
+        fieldId: "field-01",
+
+        fieldName: "North Paddy Field",
+
+        message:
+            "Environmental conditions are favorable for rice blast development. High humidity and recent rainfall have increased the predicted risk.",
+
+        riskScore: 82,
+
+        createdAt: "Today, 10:05 AM",
+
+        status: "active",
+
+        reasons: [
+            "Humidity 78%",
+            "Rainfall 18 mm",
+            "Leaf wetness elevated"
+        ],
+
+        recommendedAction:
+            "Inspect the field within 24 hours and follow locally approved disease-management guidance if symptoms are confirmed."
+    },
+
+
+    {
+        id: "ALT-002",
+
+        severity: "high",
+
+        type: "Disease Risk",
+
+        title: "Chilli Leaf Curl Risk Increasing",
+
+        fieldId: "field-03",
+
+        fieldName: "South Chilli Field",
+
+        message:
+            "Leaf-curl risk is elevated. Monitor for curling, distortion and vector activity.",
+
+        riskScore: 82,
+
+        createdAt: "Today, 10:22 AM",
+
+        status: "active",
+
+        reasons: [
+            "Warm weather",
+            "High humidity",
+            "Vector pressure"
+        ],
+
+        recommendedAction:
+            "Inspect plants and monitor vector populations. Remove severely affected plants where appropriate."
+    },
+
+
+    {
+        id: "ALT-003",
+
+        severity: "medium",
+
+        type: "Weather",
+
+        title: "Rainfall Advisory",
+
+        fieldId: "field-01",
+
+        fieldName: "North Paddy Field",
+
+        message:
+            "Rainfall probability is elevated over the next 48 hours.",
+
+        riskScore: 61,
+
+        createdAt: "Today, 09:50 AM",
+
+        status: "active",
+
+        reasons: [
+            "72% rainfall probability",
+            "High humidity",
+            "Repeated leaf wetness"
+        ],
+
+        recommendedAction:
+            "Monitor field drainage and inspect crops after rainfall."
+    },
+
+
+    {
+        id: "ALT-004",
+
+        severity: "medium",
+
+        type: "Soil",
+
+        title: "Nitrogen Level Above Target",
+
+        fieldId: "field-01",
+
+        fieldName: "North Paddy Field",
+
+        message:
+            "Soil nitrogen is slightly above the target range for the current crop stage.",
+
+        riskScore: 54,
+
+        createdAt: "Today, 09:35 AM",
+
+        status: "active",
+
+        reasons: [
+            "Nitrogen 72 kg/ha",
+            "Dense canopy",
+            "Disease susceptibility"
+        ],
+
+        recommendedAction:
+            "Avoid unnecessary additional nitrogen application and reassess during the next soil check."
+    },
+
+
+    {
+        id: "ALT-005",
+
+        severity: "low",
+
+        type: "Monitoring",
+
+        title: "Groundnut Field Requires Routine Scan",
+
+        fieldId: "field-05",
+
+        fieldName: "Central Groundnut Field",
+
+        message:
+            "Early leaf spot risk is moderate. Continue routine crop monitoring.",
+
+        riskScore: 47,
+
+        createdAt: "Yesterday, 03:18 PM",
+
+        status: "monitoring",
+
+        reasons: [
+            "Moderate humidity",
+            "Recent rainfall",
+            "Existing low-level symptoms"
+        ],
+
+        recommendedAction:
+            "Perform another image scan within 48 hours."
+    }
+];
+
+
+/* ============================================================
+   10. DIAGNOSIS HISTORY
+============================================================ */
+
+const DIAGNOSIS_HISTORY = [
+
+    {
+        id: "DX-1001",
+
+        fieldId: "field-01",
+
+        cropId: "rice",
+
+        diseaseId: "rice_blast",
+
+        diseaseName: "Rice Blast",
+
+        confidence: 94.7,
+
+        severity: "High",
+
+        riskScore: 82,
+
+        imageQuality: 92,
+
+        date: "2026-08-27",
+
+        time: "09:42 AM",
+
+        status: "confirmed"
+    },
+
+
+    {
+        id: "DX-1002",
+
+        fieldId: "field-03",
+
+        cropId: "chilli",
+
+        diseaseId: "leaf_curl",
+
+        diseaseName: "Chilli Leaf Curl",
+
+        confidence: 95.1,
+
+        severity: "High",
+
+        riskScore: 82,
+
+        imageQuality: 89,
+
+        date: "2026-08-27",
+
+        time: "10:21 AM",
+
+        status: "suspected"
+    },
+
+
+    {
+        id: "DX-1003",
+
+        fieldId: "field-05",
+
+        cropId: "groundnut",
+
+        diseaseId: "early_leaf_spot",
+
+        diseaseName: "Groundnut Early Leaf Spot",
+
+        confidence: 90.6,
+
+        severity: "Moderate",
+
+        riskScore: 47,
+
+        imageQuality: 86,
+
+        date: "2026-08-26",
+
+        time: "03:18 PM",
+
+        status: "monitoring"
+    },
+
+
+    {
+        id: "DX-1004",
+
+        fieldId: "field-04",
+
+        cropId: "tomato",
+
+        diseaseId: null,
+
+        diseaseName: "Healthy",
+
+        confidence: 96.4,
+
+        severity: "None",
+
+        riskScore: 19,
+
+        imageQuality: 94,
+
+        date: "2026-08-26",
+
+        time: "05:32 PM",
+
+        status: "healthy"
+    }
+];
+
+
+/* ============================================================
+   11. AI DIAGNOSIS DEMO RESPONSES
+============================================================ */
+
+/*
+    These responses simulate what an ML model/API would return.
+
+    The prototype can therefore demonstrate the complete workflow:
+
+    IMAGE
+       ↓
+    AI ANALYSIS
+       ↓
+    DISEASE
+       ↓
+    CONFIDENCE
+       ↓
+    RISK
+       ↓
+    RECOMMENDATION
+       ↓
+    ALERT
+*/
+
+const DEMO_DIAGNOSIS_RESPONSES = {
+
+    rice: {
+
+        healthy: {
+            diseaseId: null,
+            diseaseName: "Healthy Rice Leaf",
+            confidence: 97.1,
+            severity: "None",
+            riskScore: 12,
+            explanation:
+                "No significant visual indicators of the supported rice diseases were detected."
+        },
+
+        rice_blast: {
+            diseaseId: "rice_blast",
+            diseaseName: "Rice Blast",
+            confidence: 94.7,
+            severity: "High",
+            riskScore: 82,
+            explanation:
+                "The image pattern is consistent with characteristic rice blast lesions. Environmental conditions also increase disease risk."
+        },
+
+        brown_spot: {
+            diseaseId: "brown_spot",
+            diseaseName: "Rice Brown Spot",
+            confidence: 91.2,
+            severity: "Moderate",
+            riskScore: 57,
+            explanation:
+                "Brown circular lesions are consistent with rice brown spot."
+        },
+
+        bacterial_leaf_blight: {
+            diseaseId: "bacterial_leaf_blight",
+            diseaseName: "Bacterial Leaf Blight",
+            confidence: 92.8,
+            severity: "High",
+            riskScore: 76,
+            explanation:
+                "Leaf-edge discoloration and drying patterns are consistent with bacterial leaf blight."
+        }
+    },
+
+
+    chilli: {
+
+        healthy: {
+            diseaseId: null,
+            diseaseName: "Healthy Chilli Leaf",
+            confidence: 96.8,
+            severity: "None",
+            riskScore: 15,
+            explanation:
+                "No significant supported disease pattern was identified."
+        },
+
+        leaf_curl: {
+            diseaseId: "leaf_curl",
+            diseaseName: "Chilli Leaf Curl",
+            confidence: 95.1,
+            severity: "High",
+            riskScore: 82,
+            explanation:
+                "Leaf curling and distortion patterns are consistent with chilli leaf curl. Vector monitoring is recommended."
+        },
+
+        anthracnose: {
+            diseaseId: "anthracnose",
+            diseaseName: "Chilli Anthracnose",
+            confidence: 92.3,
+            severity: "Moderate",
+            riskScore: 61,
+            explanation:
+                "Visible lesions are consistent with anthracnose infection."
+        }
+    },
+
+
+    tomato: {
+
+        healthy: {
+            diseaseId: null,
+            diseaseName: "Healthy Tomato Leaf",
+            confidence: 96.4,
+            severity: "None",
+            riskScore: 19,
+            explanation:
+                "No significant supported disease pattern was identified."
+        },
+
+        early_blight: {
+            diseaseId: "early_blight",
+            diseaseName: "Tomato Early Blight",
+            confidence: 94.2,
+            severity: "Moderate",
+            riskScore: 58,
+            explanation:
+                "Concentric dark lesions are consistent with early blight."
+        },
+
+        late_blight: {
+            diseaseId: "late_blight",
+            diseaseName: "Tomato Late Blight",
+            confidence: 96.2,
+            severity: "Critical",
+            riskScore: 91,
+            explanation:
+                "Irregular dark lesions combined with cool and wet conditions indicate a high-risk late blight pattern."
+        }
+    },
+
+
+    cotton: {
+
+        healthy: {
+            diseaseId: null,
+            diseaseName: "Healthy Cotton Leaf",
+            confidence: 96.2,
+            severity: "None",
+            riskScore: 18,
+            explanation:
+                "No significant supported disease pattern was identified."
+        },
+
+        bacterial_blight: {
+            diseaseId: "bacterial_blight",
+            diseaseName: "Cotton Bacterial Blight",
+            confidence: 88.5,
+            severity: "Moderate",
+            riskScore: 54,
+            explanation:
+                "Angular leaf lesions are consistent with bacterial blight."
+        },
+
+        alternaria_leaf_spot: {
+            diseaseId: "alternaria_leaf_spot",
+            diseaseName: "Alternaria Leaf Spot",
+            confidence: 90.4,
+            severity: "Moderate",
+            riskScore: 52,
+            explanation:
+                "Circular lesions with darker margins are consistent with Alternaria leaf spot."
+        }
+    },
+
+
+    groundnut: {
+
+        healthy: {
+            diseaseId: null,
+            diseaseName: "Healthy Groundnut Leaf",
+            confidence: 96.1,
+            severity: "None",
+            riskScore: 14,
+            explanation:
+                "No significant supported disease pattern was identified."
+        },
+
+        early_leaf_spot: {
+            diseaseId: "early_leaf_spot",
+            diseaseName: "Groundnut Early Leaf Spot",
+            confidence: 90.6,
+            severity: "Moderate",
+            riskScore: 47,
+            explanation:
+                "Circular brown lesions and yellow halos are consistent with early leaf spot."
+        },
+
+        late_leaf_spot: {
+            diseaseId: "late_leaf_spot",
+            diseaseName: "Groundnut Late Leaf Spot",
+            confidence: 93.5,
+            severity: "High",
+            riskScore: 72,
+            explanation:
+                "Dark lesions and progressive defoliation indicate a possible late leaf spot pattern."
+        }
+    }
+};
+
+
+/* ============================================================
+   12. RECOMMENDATION DATABASE
+============================================================ */
+
+const RECOMMENDATIONS = {
+
+    rice_blast: {
+
+        immediate: [
+            "Inspect the affected field section within 24 hours.",
+            "Mark suspected hotspots for follow-up monitoring.",
+            "Avoid unnecessary nitrogen application.",
+            "Check drainage and canopy humidity."
+        ],
+
+        cultural: [
+            "Maintain balanced crop nutrition.",
+            "Avoid excessive nitrogen.",
+            "Use suitable plant spacing.",
+            "Maintain appropriate water management."
+        ],
+
+        monitoring: [
+            "Repeat image scanning after 48 hours.",
+            "Inspect neighboring plants.",
+            "Monitor weather-driven disease risk.",
+            "Record disease progression."
+        ],
+
+        escalation:
+            "If symptoms spread rapidly or panicle/neck infection is suspected, consult the local agricultural extension service for approved management options."
+    },
+
+
+    leaf_curl: {
+
+        immediate: [
+            "Inspect plants for leaf curling and distortion.",
+            "Check for whiteflies or other vectors.",
+            "Remove severely affected plants where appropriate.",
+            "Inspect nearby plants for early symptoms."
+        ],
+
+        cultural: [
+            "Control weed hosts.",
+            "Use healthy planting material.",
+            "Maintain field sanitation.",
+            "Avoid unnecessary plant stress."
+        ],
+
+        monitoring: [
+            "Monitor vector populations.",
+            "Repeat field scouting within 48 hours.",
+            "Scan new growth.",
+            "Record affected plant percentage."
+        ],
+
+        escalation:
+            "Seek local agricultural advice if disease incidence increases rapidly."
+    },
+
+
+    early_blight: {
+
+        immediate: [
+            "Inspect lower leaves for expanding lesions.",
+            "Remove severely affected leaves where appropriate.",
+            "Avoid prolonged leaf wetness.",
+            "Improve airflow through the crop."
+        ],
+
+        cultural: [
+            "Remove infected crop residues.",
+            "Maintain suitable plant spacing.",
+            "Avoid overhead irrigation where possible.",
+            "Maintain balanced plant nutrition."
+        ],
+
+        monitoring: [
+            "Inspect plants after rainfall.",
+            "Repeat image scanning within 48–72 hours.",
+            "Monitor disease progression.",
+            "Check nearby plants."
+        ],
+
+        escalation:
+            "Consult local agricultural experts if disease continues to spread despite cultural management."
+    },
+
+
+    late_blight: {
+
+        immediate: [
+            "Inspect the entire affected area immediately.",
+            "Separate severely affected plant material where practical.",
+            "Reduce prolonged leaf wetness.",
+            "Monitor neighboring plants closely."
+        ],
+
+        cultural: [
+            "Improve canopy airflow.",
+            "Avoid unnecessary overhead irrigation.",
+            "Remove infected debris.",
+            "Use resistant varieties where available."
+        ],
+
+        monitoring: [
+            "Monitor weather conditions daily.",
+            "Repeat image scanning within 24–48 hours.",
+            "Check nearby fields where possible.",
+            "Track disease spread."
+        ],
+
+        escalation:
+            "Because late blight can spread rapidly, obtain local expert guidance promptly when symptoms are confirmed."
+    }
+};
+
+
+/* ============================================================
+   13. FARM OPERATIONS / ACTIVITY LOG
+============================================================ */
+
+const ACTIVITY_LOG = [
+
+    {
+        id: "ACT-001",
+        type: "diagnosis",
+        icon: "🔬",
+        title: "AI diagnosis completed",
+        description: "Rice Blast detected in North Paddy Field",
+        time: "Today, 09:42 AM",
+        severity: "high"
+    },
+
+    {
+        id: "ACT-002",
+        type: "weather",
+        icon: "🌧️",
+        title: "Weather risk updated",
+        description: "Rainfall probability increased for next 48 hours",
+        time: "Today, 09:50 AM",
+        severity: "medium"
+    },
+
+    {
+        id: "ACT-003",
+        type: "soil",
+        icon: "🧪",
+        title: "Soil analysis updated",
+        description: "Nitrogen level slightly above target",
+        time: "Today, 09:35 AM",
+        severity: "medium"
+    },
+
+    {
+        id: "ACT-004",
+        type: "diagnosis",
+        icon: "🔬",
+        title: "AI diagnosis completed",
+        description: "Chilli Leaf Curl suspected",
+        time: "Today, 10:21 AM",
+        severity: "high"
+    },
+
+    {
+        id: "ACT-005",
+        type: "monitoring",
+        icon: "🌱",
+        title: "Groundnut monitoring required",
+        description: "Early Leaf Spot risk remains moderate",
+        time: "Yesterday, 03:18 PM",
+        severity: "low"
+    }
+];
+
+
+/* ============================================================
+   14. ANALYTICS DATA
+============================================================ */
+
+const ANALYTICS_DATA = {
+
+    diseaseDistribution: [
+
+        {
+            disease: "Rice Blast",
+            count: 14,
+            percentage: 32
+        },
+
+        {
+            disease: "Leaf Curl",
+            count: 10,
+            percentage: 23
+        },
+
+        {
+            disease: "Early Blight",
+            count: 8,
+            percentage: 18
+        },
+
+        {
+            disease: "Leaf Spot",
+            count: 7,
+            percentage: 16
+        },
+
+        {
+            disease: "Other",
+            count: 5,
+            percentage: 11
+        }
+    ],
+
+
+    monthlyScans: [
+
+        {
+            month: "Apr",
+            scans: 21
+        },
+
+        {
+            month: "May",
+            scans: 28
+        },
+
+        {
+            month: "Jun",
+            scans: 35
+        },
+
+        {
+            month: "Jul",
+            scans: 42
+        },
+
+        {
+            month: "Aug",
+            scans: 57
+        }
+    ],
+
+
+    healthTrend: [
+
+        {
+            date: "Aug 01",
+            score: 73
+        },
+
+        {
+            date: "Aug 08",
+            score: 76
+        },
+
+        {
+            date: "Aug 15",
+            score: 79
+        },
+
+        {
+            date: "Aug 22",
+            score: 80
+        },
+
+        {
+            date: "Aug 27",
+            score: 81
+        }
+    ],
+
+
+    riskTrend: [
+
+        {
+            date: "Aug 01",
+            score: 32
+        },
+
+        {
+            date: "Aug 08",
+            score: 39
+        },
+
+        {
+            date: "Aug 15",
+            score: 47
+        },
+
+        {
+            date: "Aug 22",
+            score: 55
+        },
+
+        {
+            date: "Aug 27",
+            score: 64
+        }
+    ]
+};
+
+
+/* ============================================================
+   15. GOVERNMENT / AGRICULTURAL SUPPORT INFORMATION
+============================================================ */
+
+const AGRICULTURAL_SUPPORT = [
+
+    {
+        title: "Local Agriculture Officer",
+
+        category: "Expert Support",
+
+        description:
+            "Consult the nearest agriculture extension officer when disease symptoms are severe, rapidly spreading or uncertain.",
+
+        action: "Contact Agriculture Department"
+    },
+
+    {
+        title: "Integrated Pest Management",
+
+        category: "Best Practice",
+
+        description:
+            "Use monitoring, cultural practices, biological measures and approved chemical interventions as part of an integrated approach.",
+
+        action: "View IPM Guidance"
+    },
+
+    {
+        title: "Soil Testing",
+
+        category: "Soil Health",
+
+        description:
+            "Regular soil testing helps optimize nutrient application and reduce unnecessary input use.",
+
+        action: "Schedule Soil Test"
+    },
+
+    {
+        title: "Weather-Based Advisory",
+
+        category: "Early Warning",
+
+        description:
+            "Weather conditions can influence disease development. Monitor rainfall, temperature, humidity and leaf wetness.",
+
+        action: "View Weather Risk"
+    }
+];
+
+
+/* ============================================================
+   16. APP DEMO STATE
+============================================================ */
+
+const APP_STATE = {
+
+    activePage: "dashboard",
+
+    selectedFieldId: "field-01",
+
+    selectedCropId: "rice",
+
+    selectedDiseaseId: null,
+
+    selectedDiagnosis: null,
+
+    uploadedImage: null,
+
+    diagnosisInProgress: false,
+
+    notificationCount: ALERTS.filter(
+        alert => alert.status === "active"
+    ).length,
+
+    lastUpdated: new Date().toISOString()
+};
+
+
+/* ============================================================
+   17. DATA ACCESS HELPERS
+============================================================ */
+
+/**
+ * Find crop by ID.
+ */
+function getCropById(cropId) {
+
+    return CROPS.find(
+        crop => crop.id === cropId
+    ) || null;
+}
+
+
+/**
+ * Find disease by ID.
+ */
+function getDiseaseById(diseaseId) {
+
+    return DISEASES.find(
+        disease => disease.id === diseaseId
+    ) || null;
+}
+
+
+/**
+ * Find field by ID.
+ */
+function getFieldById(fieldId) {
+
+    return FIELDS.find(
+        field => field.id === fieldId
+    ) || null;
+}
+
+
+/**
+ * Get all diseases for a crop.
+ */
+function getDiseasesForCrop(cropId) {
+
+    return DISEASES.filter(
+        disease => disease.cropId === cropId
+    );
+}
+
+
+/**
+ * Get alerts for a field.
+ */
+function getAlertsForField(fieldId) {
+
+    return ALERTS.filter(
+        alert => alert.fieldId === fieldId
+    );
+}
+
+
+/**
+ * Get diagnosis history for a field.
+ */
+function getDiagnosisHistoryForField(fieldId) {
+
+    return DIAGNOSIS_HISTORY.filter(
+        diagnosis => diagnosis.fieldId === fieldId
+    );
+}
+
+
+/**
+ * Get recommendation for a disease.
+ */
+function getRecommendationForDisease(diseaseId) {
+
+    return RECOMMENDATIONS[diseaseId] || null;
+}
+
+
+/**
+ * Get demo diagnosis.
+ */
+function getDemoDiagnosis(cropId, diseaseKey) {
+
+    if (
+        !DEMO_DIAGNOSIS_RESPONSES[cropId]
+    ) {
+        return null;
+    }
+
+    return (
+        DEMO_DIAGNOSIS_RESPONSES[cropId][diseaseKey]
+        || DEMO_DIAGNOSIS_RESPONSES[cropId].healthy
+    );
+}
+
+
+/* ============================================================
+   18. RISK CLASSIFICATION
+============================================================ */
+
+function classifyRisk(score) {
+
+    if (score >= 70) {
+        return {
+            label: "High",
+            className: "risk-high"
+        };
+    }
+
+    if (score >= 40) {
+        return {
+            label: "Medium",
+            className: "risk-medium"
+        };
+    }
+
+    return {
+        label: "Low",
+        className: "risk-low"
+    };
+}
+
+
+/**
+ * Determine crop health category.
+ */
+function classifyHealth(score) {
+
+    if (score >= 85) {
+        return "Healthy";
+    }
+
+    if (score >= 70) {
+        return "Good";
+    }
+
+    if (score >= 50) {
+        return "At Risk";
+    }
+
+    return "Critical";
+}
+
+
+/* ============================================================
+   19. WEATHER RISK HELPERS
+============================================================ */
+
+function calculateWeatherRisk(weather) {
+
+    let risk = 0;
+
+    if (weather.humidity >= 80) {
+        risk += 30;
+    } else if (weather.humidity >= 70) {
+        risk += 20;
+    } else if (weather.humidity >= 60) {
+        risk += 10;
+    }
+
+    if (weather.rainfall24h >= 30) {
+        risk += 30;
+    } else if (weather.rainfall24h >= 15) {
+        risk += 20;
+    } else if (weather.rainfall24h >= 5) {
+        risk += 10;
+    }
+
+    if (weather.temperature >= 30) {
+        risk += 15;
+    } else if (weather.temperature >= 25) {
+        risk += 8;
+    }
+
+    return Math.min(
+        100,
+        risk
+    );
+}
+
+
+/* ============================================================
+   20. SOIL HEALTH HELPERS
+============================================================ */
+
+function calculateSoilHealth(soil) {
+
+    let score = 100;
+
+    /*
+        pH
+    */
+
+    if (
+        soil.ph < 5.5 ||
+        soil.ph > 7.5
+    ) {
+        score -= 20;
+    }
+
+    /*
+        Moisture
+    */
+
+    if (
+        soil.moisture < 30 ||
+        soil.moisture > 80
+    ) {
+        score -= 20;
+    }
+
+    /*
+        Nitrogen
+    */
+
+    if (
+        soil.nitrogen < 35 ||
+        soil.nitrogen > 85
+    ) {
+        score -= 15;
+    }
+
+    /*
+        Phosphorus
+    */
+
+    if (
+        soil.phosphorus < 25 ||
+        soil.phosphorus > 75
+    ) {
+        score -= 15;
+    }
+
+    /*
+        Potassium
+    */
+
+    if (
+        soil.potassium < 35 ||
+        soil.potassium > 90
+    ) {
+        score -= 15;
+    }
+
+    /*
+        Organic carbon
+    */
+
+    if (
+        soil.organicCarbon < 0.4
+    ) {
+        score -= 15;
+    }
+
+    return Math.max(
+        0,
+        score
+    );
+}
+
+
+/* ============================================================
+   21. FIELD RISK CALCULATION
+============================================================ */
+
+function calculateFieldRisk(field) {
+
+    if (!field) {
+        return 0;
+    }
+
+    let risk = field.riskScore || 0;
+
+    const weatherRisk =
+        calculateWeatherRisk(
+            field.weather
+        );
+
+    /*
+        Combine existing field risk
+        with environmental risk.
+    */
+
+    risk =
+        (risk * 0.65) +
+        (weatherRisk * 0.35);
+
+    return Math.round(
+        Math.min(
+            100,
+            risk
+        )
+    );
+}
+
+
+/* ============================================================
+   22. DASHBOARD SUMMARY
+============================================================ */
+
+function getDashboardSummary() {
+
+    const totalArea =
+        FIELDS.reduce(
+            (sum, field) =>
+                sum + field.area,
+            0
+        );
+
+    const averageHealth =
+        FIELDS.reduce(
+            (sum, field) =>
+                sum + field.healthScore,
+            0
+        ) / FIELDS.length;
+
+    const averageRisk =
+        FIELDS.reduce(
+            (sum, field) =>
+                sum + field.riskScore,
+            0
+        ) / FIELDS.length;
+
+    return {
+
+        totalArea:
+            Number(totalArea.toFixed(1)),
+
+        averageHealth:
+            Math.round(averageHealth),
+
+        averageRisk:
+            Math.round(averageRisk),
+
+        activeAlerts:
+            ALERTS.filter(
+                alert =>
+                    alert.status === "active"
+            ).length,
+
+        monitoredFields:
+            FIELDS.length,
+
+        diagnoses:
+            DIAGNOSIS_HISTORY.length
+    };
+}
+
+
+/* ============================================================
+   23. DIAGNOSIS RESULT BUILDER
+============================================================ */
+
+function buildDiagnosisResult(
+    cropId,
+    diseaseKey
+) {
+
+    const response =
+        getDemoDiagnosis(
+            cropId,
+            diseaseKey
+        );
+
+    if (!response) {
+        return null;
+    }
+
+    const disease =
+        response.diseaseId
+            ? getDiseaseById(
+                response.diseaseId
+            )
+            : null;
+
+    const recommendation =
+        response.diseaseId
+            ? getRecommendationForDisease(
+                response.diseaseId
+            )
+            : null;
+
+    const risk =
+        classifyRisk(
+            response.riskScore
+        );
+
+    return {
+
+        ...response,
+
+        crop:
+            getCropById(
+                cropId
+            ),
+
+        disease,
+
+        risk,
+
+        recommendation,
+
+        timestamp:
+            new Date().toLocaleString(
+                "en-IN",
+                {
+                    dateStyle: "medium",
+                    timeStyle: "short"
+                }
+            )
+    };
+}
+
+
+/* ============================================================
+   24. EXPORT / GLOBAL DATA ACCESS
+============================================================ */
+
+/*
+    The application currently uses normal browser JavaScript
+    rather than ES modules so it can be deployed directly on
+    Vercel/GitHub Pages without a build step.
+
+    Therefore these objects/functions are explicitly exposed
+    through window.
+*/
+
+window.AGRIGUARD_CONFIG = AGRIGUARD_CONFIG;
+
+window.CROPS = CROPS;
+
+window.DISEASES = DISEASES;
+
+window.FIELDS = FIELDS;
+
+window.WEATHER_DATA = WEATHER_DATA;
+
+window.SOIL_DATA = SOIL_DATA;
+
+window.DISEASE_RISK_HISTORY =
+    DISEASE_RISK_HISTORY;
+
+window.DASHBOARD_KPIS =
+    DASHBOARD_KPIS;
+
+window.ALERTS = ALERTS;
+
+window.DIAGNOSIS_HISTORY =
+    DIAGNOSIS_HISTORY;
+
+window.DEMO_DIAGNOSIS_RESPONSES =
+    DEMO_DIAGNOSIS_RESPONSES;
+
+window.RECOMMENDATIONS =
+    RECOMMENDATIONS;
+
+window.ACTIVITY_LOG =
+    ACTIVITY_LOG;
+
+window.ANALYTICS_DATA =
+    ANALYTICS_DATA;
+
+window.AGRICULTURAL_SUPPORT =
+    AGRICULTURAL_SUPPORT;
+
+window.APP_STATE =
+    APP_STATE;
+
+
+/* Helpers */
+
+window.getCropById =
+    getCropById;
+
+window.getDiseaseById =
+    getDiseaseById;
+
+window.getFieldById =
+    getFieldById;
+
+window.getDiseasesForCrop =
+    getDiseasesForCrop;
+
+window.getAlertsForField =
+    getAlertsForField;
+
+window.getDiagnosisHistoryForField =
+    getDiagnosisHistoryForField;
+
+window.getRecommendationForDisease =
+    getRecommendationForDisease;
+
+window.getDemoDiagnosis =
+    getDemoDiagnosis;
+
+window.classifyRisk =
+    classifyRisk;
+
+window.classifyHealth =
+    classifyHealth;
+
+window.calculateWeatherRisk =
+    calculateWeatherRisk;
+
+window.calculateSoilHealth =
+    calculateSoilHealth;
+
+window.calculateFieldRisk =
+    calculateFieldRisk;
+
+window.getDashboardSummary =
+    getDashboardSummary;
+
+window.buildDiagnosisResult =
+    buildDiagnosisResult;
+
+
+/* ============================================================
+   25. INITIALIZATION MESSAGE
+============================================================ */
+
+console.log(
+    "%c🌱 AgriGuard AI",
+    "font-size:18px;font-weight:bold;"
+);
+
+console.log(
+    "SIH 2026 Prototype Data Layer Loaded"
+);
+
+console.log(
+    `📊 ${FIELDS.length} fields loaded`
+);
+
+console.log(
+    `🌾 ${CROPS.length} crops supported`
+);
+
+console.log(
+    `🦠 ${DISEASES.length} disease profiles loaded`
+);
+
+console.log(
+    `🚨 ${ALERTS.length} alerts loaded`
+);
+
+console.log(
+    "🤖 AI demo responses ready"
+);
