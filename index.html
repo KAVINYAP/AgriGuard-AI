@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="AgriGuard AI - Intelligent crop disease detection, risk prediction and disease management system."
+    >
+
+    <meta name="theme-color" content="#173f2a">
+
+    <title>AgriGuard AI | Smart Crop Disease Management</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- ============================================================
+     APP SHELL
+============================================================ -->
+
+<div id="app">
+
+    <!-- ========================================================
+         SIDEBAR
+    ========================================================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">
+                <span>🌱</span>
+            </div>
+
+            <div class="brand-text">
+                <h1>AgriGuard</h1>
+                <span>AI</span>
+            </div>
+        </div>
+
+        <div class="brand-tagline">
+            Intelligent Crop Protection
+        </div>
+
+        <nav class="main-navigation">
+
+            <button
+                class="nav-item active"
+                data-section="dashboard"
+                type="button"
+            >
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="diagnosis"
+                type="button"
+            >
+                <span class="nav-icon">◉</span>
+                <span>AI Diagnosis</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="fields"
+                type="button"
+            >
+                <span class="nav-icon">⌖</span>
+                <span>My Fields</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="analytics"
+                type="button"
+            >
+                <span class="nav-icon">▥</span>
+                <span>Analytics</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="alerts"
+                type="button"
+            >
+                <span class="nav-icon">◈</span>
+                <span>Early Warnings</span>
+
+                <span class="nav-badge" id="sidebarAlertCount">
+                    3
+                </span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>System Online</strong>
+                    <small>AI services operational</small>
+                </div>
+            </div>
+
+            <button
+                class="sidebar-help"
+                id="helpButton"
+                type="button"
+            >
+                <span>?</span>
+                Help & Information
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ========================================================
+         MAIN CONTENT
+    ========================================================= -->
+
+    <main class="main-content">
+
+        <!-- ====================================================
+             TOP HEADER
+        ==================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button"
+                    aria-label="Open navigation"
+                >
+                    ☰
+                </button>
+
+                <div>
+                    <p class="eyebrow" id="currentDate">
+                        THURSDAY, AUGUST 27, 2026
+                    </p>
+
+                    <h2 id="pageTitle">
+                        Farm Overview
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    class="location-pill"
+                    id="locationButton"
+                    type="button"
+                >
+                    <span>⌖</span>
+                    <span>
+                        <small>LOCATION</small>
+                        <strong id="locationName">Andhra Pradesh</strong>
+                    </span>
+                </button>
+
+
+                <button
+                    class="notification-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="Notifications"
+                >
+                    <span>🔔</span>
+                    <b id="notificationCount">3</b>
+                </button>
+
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+                        KP
+                    </div>
+
+                    <div class="user-details">
+                        <strong>Farmer</strong>
+                        <small>Field Manager</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ====================================================
+             PAGE CONTENT
+        ==================================================== -->
+
+        <div class="page-container">
+
+
+            <!-- =================================================
+                 DASHBOARD SECTION
+            ================================================= -->
+
+            <section
+                class="page-section active"
+                id="dashboardSection"
+                data-page="dashboard"
+            >
+
+                <!-- Welcome banner -->
+
+                <div class="welcome-banner">
+
+                    <div class="welcome-content">
+
+                        <span class="welcome-label">
+                            AGRIGUARD AI
+                        </span>
+
+                        <h3>
+                            Protect your crops before
+                            disease becomes a threat.
+                        </h3>
+
+                        <p>
+                            AI-powered crop monitoring combines
+                            plant images, weather, soil and crop
+                            conditions to identify risks early.
+                        </p>
+
+                        <button
+                            class="primary-button"
+                            data-action="open-diagnosis"
+                            type="button"
+                        >
+                            <span>◉</span>
+                            Diagnose a Crop
+                        </button>
+
+                    </div>
+
+                    <div class="welcome-visual">
+                        <div class="plant-orbit">
+                            <span>🌾</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- KPI cards -->
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">
+                            FARM INTELLIGENCE
+                        </span>
+
+                        <h3>
+                            Today's Crop Health
+                        </h3>
+                    </div>
+
+                    <span class="live-indicator">
+                        <i></i>
+                        LIVE MONITORING
+                    </span>
+
+                </div>
+
+
+                <div class="kpi-grid">
+
+                    <article class="kpi-card health-card">
+
+                        <div class="kpi-card-top">
+                            <div class="kpi-icon">🌱</div>
+
+                            <span class="trend positive">
+                                ↑ 4.2%
+                            </span>
+                        </div>
+
+                        <div class="kpi-value">
+                            <span id="cropHealthValue">86</span>%
+                        </div>
+
+                        <div class="kpi-label">
+                            Overall Crop Health
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                class="progress-fill"
+                                id="cropHealthProgress"
+                                style="width: 86%"
+                            ></div>
+                        </div>
+
+                        <small>
+                            Across 4 monitored fields
+                        </small>
+
+                    </article>
+
+
+                    <article class="kpi-card risk-card">
+
+                        <div class="kpi-card-top">
+                            <div class="kpi-icon">⚠️</div>
+
+                            <span class="trend negative">
+                                ↑ 8.1%
+                            </span>
+                        </div>
+
+                        <div class="kpi-value">
+                            <span id="diseaseRiskValue">23</span>%
+                        </div>
+
+                        <div class="kpi-label">
+                            Disease Risk
+                        </div>
+
+                        <div class="risk-meter">
+                            <div
+                                id="diseaseRiskMeter"
+                                style="width: 23%"
+                            ></div>
+                        </div>
+
+                        <small>
+                            Current field risk level: Low
+                        </small>
+
+                    </article>
+
+
+                    <article class="kpi-card weather-card">
+
+                        <div class="kpi-card-top">
+                            <div class="kpi-icon">🌦️</div>
+
+                            <span class="weather-status">
+                                Stable
+                            </span>
+                        </div>
+
+                        <div class="kpi-value">
+                            <span id="temperatureValue">29</span>°
+                            <small>C</small>
+                        </div>
+
+                        <div class="kpi-label">
+                            Current Temperature
+                        </div>
+
+                        <div class="weather-mini">
+
+                            <span>
+                                💧
+                                <strong id="humidityValue">78</strong>%
+                            </span>
+
+                            <span>
+                                🌧
+                                <strong id="rainProbabilityValue">42</strong>%
+                            </span>
+
+                        </div>
+
+                        <small>
+                            Conditions monitored continuously
+                        </small>
+
+                    </article>
+
+
+                    <article class="kpi-card soil-card">
+
+                        <div class="kpi-card-top">
+                            <div class="kpi-icon">💧</div>
+
+                            <span class="soil-status">
+                                Good
+                            </span>
+                        </div>
+
+                        <div class="kpi-value">
+                            <span id="soilMoistureValue">61</span>%
+                        </div>
+
+                        <div class="kpi-label">
+                            Soil Moisture
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                class="progress-fill"
+                                style="width: 61%"
+                            ></div>
+                        </div>
+
+                        <small>
+                            Within recommended range
+                        </small>
+
+                    </article>
+
+                </div>
+
+
+                <!-- Main dashboard grid -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- Risk chart -->
+
+                    <article class="panel risk-chart-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="section-kicker">
+                                    RISK MONITORING
+                                </span>
+
+                                <h3>
+                                    Disease Risk Trend
+                                </h3>
+                            </div>
+
+                            <select
+                                id="riskChartRange"
+                                class="select-control"
+                            >
+                                <option value="7">Last 7 days</option>
+                                <option value="14">Last 14 days</option>
+                                <option value="30">Last 30 days</option>
+                            </select>
+
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="riskTrendChart"></canvas>
+                        </div>
+
+                    </article>
+
+
+                    <!-- Early warning -->
+
+                    <article class="panel warning-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="section-kicker">
+                                    ATTENTION REQUIRED
+                                </span>
+
+                                <h3>
+                                    Early Warning
+                                </h3>
+                            </div>
+
+                            <span class="warning-count">
+                                3
+                            </span>
+
+                        </div>
+
+
+                        <div class="warning-main">
+
+                            <div class="warning-icon">
+                                ⚠
+                            </div>
+
+                            <div>
+
+                                <span class="severity-label">
+                                    HIGH RISK
+                                </span>
+
+                                <h4>
+                                    Fungal disease conditions
+                                </h4>
+
+                                <p>
+                                    Field A has elevated humidity
+                                    and rainfall probability.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="warning-reasons">
+
+                            <div>
+                                <span>Humidity</span>
+                                <strong>87%</strong>
+                            </div>
+
+                            <div>
+                                <span>Rain Probability</span>
+                                <strong>72%</strong>
+                            </div>
+
+                            <div>
+                                <span>Crop Stage</span>
+                                <strong>Flowering</strong>
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="secondary-button full-width"
+                            data-action="open-alerts"
+                            type="button"
+                        >
+                            View Recommended Action
+                            <span>→</span>
+                        </button>
+
+                    </article>
+
+                </div>
+
+
+                <!-- Lower dashboard -->
+
+                <div class="dashboard-grid lower-grid">
+
+
+                    <!-- Field health -->
+
+                    <article class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="section-kicker">
+                                    FIELD STATUS
+                                </span>
+
+                                <h3>
+                                    Your Fields
+                                </h3>
+                            </div>
+
+                            <button
+                                class="text-button"
+                                data-action="open-fields"
+                                type="button"
+                            >
+                                View all →
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="field-list"
+                            id="dashboardFieldList"
+                        >
+
+                            <!-- Populated by app.js -->
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Weather -->
+
+                    <article class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="section-kicker">
+                                    WEATHER INTELLIGENCE
+                                </span>
+
+                                <h3>
+                                    Next 5 Days
+                                </h3>
+                            </div>
+
+                            <span class="weather-location">
+                                Andhra Pradesh
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="weather-forecast"
+                            id="weatherForecast"
+                        >
+
+                            <!-- Populated by app.js -->
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 AI DIAGNOSIS SECTION
+            ================================================= -->
+
+            <section
+                class="page-section"
+                id="diagnosisSection"
+                data-page="diagnosis"
+            >
+
+                <div class="page-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            AI VISION ENGINE
+                        </span>
+
+                        <h2>
+                            Crop Disease Diagnosis
+                        </h2>
+
+                        <p>
+                            Upload a crop image and combine
+                            visual evidence with field conditions
+                            for an intelligent disease assessment.
+                        </p>
+
+                    </div>
+
+                    <div class="ai-status-badge">
+                        <span></span>
+                        AI ENGINE READY
+                    </div>
+
+                </div>
+
+
+                <div class="diagnosis-layout">
+
+
+                    <!-- Upload panel -->
+
+                    <article class="panel upload-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="section-kicker">
+                                    STEP 01
+                                </span>
+
+                                <h3>
+                                    Upload Crop Image
+                                </h3>
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="upload-zone"
+                            id="uploadZone"
+                            tabindex="0"
+                        >
+
+                            <input
+                                type="file"
+                                id="cropImageInput"
+                                accept="image/*"
+                                hidden
+                            >
+
+                            <div
+                                class="upload-placeholder"
+                                id="uploadPlaceholder"
+                            >
+
+                                <div class="upload-icon">
+                                    📷
+                                </div>
+
+                                <h4>
+                                    Drop crop image here
+                                </h4>
+
+                                <p>
+                                    or click to browse from your device
+                                </p>
+
+                                <span>
+                                    JPG, PNG or WEBP • Max 10 MB
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="image-preview"
+                                id="imagePreview"
+                                hidden
+                            >
+
+                                <img
+                                    id="previewImage"
+                                    alt="Selected crop image"
+                                >
+
+                                <button
+                                    class="remove-image"
+                                    id="removeImageButton"
+                                    type="button"
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="upload-info">
+
+                            <span>🔒</span>
+
+                            <p>
+                                Your image is processed securely
+                                for diagnosis.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Crop context -->
+
+                    <article class="panel context-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="section-kicker">
+                                    STEP 02
+                                </span>
+
+                                <h3>
+                                    Field Context
+                                </h3>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="cropSelect">
+                                    Crop
+                                </label>
+
+                                <select
+                                    id="cropSelect"
+                                    class="input-control"
+                                >
+                                    <option value="rice">
+                                        Rice
+                                    </option>
+
+                                    <option value="cotton">
+                                        Cotton
+                                    </option>
+
+                                    <option value="chilli">
+                                        Chilli
+                                    </option>
+
+                                    <option value="tomato">
+                                        Tomato
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="fieldSelect">
+                                    Field
+                                </label>
+
+                                <select
+                                    id="fieldSelect"
+                                    class="input-control"
+                                >
+                                    <option value="field-a">
+                                        Field A — Rice
+                                    </option>
+
+                                    <option value="field-b">
+                                        Field B — Cotton
+                                    </option>
+
+                                    <option value="field-c">
+                                        Field C — Chilli
+                                    </option>
+
+                                    <option value="field-d">
+                                        Field D — Tomato
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="growthStage">
+                                    Growth Stage
+                                </label>
+
+                                <select
+                                    id="growthStage"
+                                    class="input-control"
+                                >
+                                    <option>
+                                        Seedling
+                                    </option>
+
+                                    <option selected>
+                                        Vegetative
+                                    </option>
+
+                                    <option>
+                                        Flowering
+                                    </option>
+
+                                    <option>
+                                        Fruiting
+                                    </option>
+
+                                    <option>
+                                        Maturity
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="soilCondition">
+                                    Soil Condition
+                                </label>
+
+                                <select
+                                    id="soilCondition"
+                                    class="input-control"
+                                >
+                                    <option>
+                                        Healthy
+                                    </option>
+
+                                    <option selected>
+                                        Normal
+                                    </option>
+
+                                    <option>
+                                        Moist
+                                    </option>
+
+                                    <option>
+                                        Dry
+                                    </option>
+
+                                    <option>
+                                        Poor drainage
+                                    </option>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="primary-button diagnose-button"
+                            id="diagnoseButton"
+                            type="button"
+                        >
+                            <span>✦</span>
+                            Analyze Crop with AI
+                        </button>
+
+                    </article>
+
+                </div>
+
+
+                <!-- Diagnosis result -->
+
+                <article
+                    class="panel diagnosis-result"
+                    id="diagnosisResult"
+                    hidden
+                >
+
+                    <div class="result-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                AI ANALYSIS COMPLETE
+                            </span>
+
+                            <h3>
+                                Diagnosis Result
+                            </h3>
+
+                        </div>
+
+                        <span class="result-timestamp">
+                            Just now
+                        </span>
+
+                    </div>
+
+
+                    <div class="result-overview">
+
+                        <div class="diagnosis-disease">
+
+                            <div class="disease-icon">
+                                🦠
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    DETECTED DISEASE
+                                </span>
+
+                                <h2 id="diagnosisDisease">
+                                    Rice Blast
+                                </h2>
+
+                                <p id="diagnosisDescription">
+                                    Disease indicators detected
+                                    on the crop leaf.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="confidence-score">
+
+                            <div
+                                class="circular-score"
+                                id="confidenceScore"
+                            >
+                                <span>
+                                    94.7%
+                                </span>
+                            </div>
+
+                            <small>
+                                AI Confidence
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-metrics">
+
+                        <div class="result-metric">
+
+                            <span>
+                                Severity
+                            </span>
+
+                            <strong
+                                id="diagnosisSeverity"
+                                class="severity-moderate"
+                            >
+                                Moderate
+                            </strong>
+
+                        </div>
+
+
+                        <div class="result-metric">
+
+                            <span>
+                                Disease Risk
+                            </span>
+
+                            <strong
+                                id="diagnosisRisk"
+                                class="risk-high"
+                            >
+                                High
+                            </strong>
+
+                        </div>
+
+
+                        <div class="result-metric">
+
+                            <span>
+                                Affected Area
+                            </span>
+
+                            <strong id="diagnosisArea">
+                                Leaf
+                            </strong>
+
+                        </div>
+
+
+                        <div class="result-metric">
+
+                            <span>
+                                Crop Stage
+                            </span>
+
+                            <strong id="diagnosisStage">
+                                Vegetative
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-actions">
+
+                        <button
+                            class="secondary-button"
+                            data-action="open-alerts"
+                            type="button"
+                        >
+                            ⚠ View Risk Assessment
+                        </button>
+
+                        <button
+                            class="primary-button"
+                            data-action="open-diagnosis-recommendation"
+                            type="button"
+                        >
+                            ✦ View Treatment Plan
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Recommendation -->
+
+                <article
+                    class="panel recommendation-panel"
+                    id="recommendationPanel"
+                    hidden
+                >
+
+                    <div class="panel-header">
+
+                        <div>
+                            <span class="section-kicker">
+                                INTEGRATED DISEASE MANAGEMENT
+                            </span>
+
+                            <h3>
+                                Recommended Action Plan
+                            </h3>
+                        </div>
+
+                        <span class="priority-badge">
+                            HIGH PRIORITY
+                        </span>
+
+                    </div>
+
+
+                    <div class="recommendation-grid">
+
+                        <div class="recommendation-column">
+
+                            <h4>
+                                Immediate Actions
+                            </h4>
+
+                            <ul id="immediateActions">
+                                <li>
+                                    Inspect affected plants
+                                </li>
+
+                                <li>
+                                    Remove severely infected leaves
+                                </li>
+
+                                <li>
+                                    Avoid overhead irrigation
+                                </li>
+                            </ul>
+
+                        </div>
+
+
+                        <div class="recommendation-column">
+
+                            <h4>
+                                Preventive Measures
+                            </h4>
+
+                            <ul id="preventiveActions">
+                                <li>
+                                    Improve field ventilation
+                                </li>
+
+                                <li>
+                                    Maintain balanced nutrition
+                                </li>
+
+                                <li>
+                                    Monitor field conditions regularly
+                                </li>
+                            </ul>
+
+                        </div>
+
+
+                        <div class="recommendation-column">
+
+                            <h4>
+                                Treatment Guidance
+                            </h4>
+
+                            <ul id="treatmentActions">
+                                <li>
+                                    Follow locally approved treatment
+                                    recommendations
+                                </li>
+
+                                <li>
+                                    Follow product label instructions
+                                </li>
+
+                                <li>
+                                    Reassess crop condition after treatment
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    <div class="recommendation-note">
+                        <span>💡</span>
+
+                        <p>
+                            Recommendations are decision-support
+                            guidance. Always follow local agricultural
+                            authority and product-label instructions
+                            before applying treatments.
+                        </p>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 FIELDS SECTION
+            ================================================= -->
+
+            <section
+                class="page-section"
+                id="fieldsSection"
+                data-page="fields"
+            >
+
+                <div class="page-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            FIELD MANAGEMENT
+                        </span>
+
+                        <h2>
+                            My Fields
+                        </h2>
+
+                        <p>
+                            Monitor crop health and disease risk
+                            across your agricultural fields.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        id="addFieldButton"
+                        type="button"
+                    >
+                        + Add Field
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="fields-grid"
+                    id="fieldsGrid"
+                >
+
+                    <!-- Populated by app.js -->
+
+                </div>
+
+
+                <article class="panel field-detail-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                SELECTED FIELD
+                            </span>
+
+                            <h3 id="selectedFieldName">
+                                Field A
+                            </h3>
+
+                        </div>
+
+                        <span
+                            class="field-health-badge"
+                            id="selectedFieldStatus"
+                        >
+                            Healthy
+                        </span>
+
+                    </div>
+
+
+                    <div class="field-detail-grid">
+
+                        <div class="field-detail-stat">
+
+                            <span>Crop</span>
+                            <strong id="selectedFieldCrop">
+                                Rice
+                            </strong>
+
+                        </div>
+
+
+                        <div class="field-detail-stat">
+
+                            <span>Area</span>
+                            <strong id="selectedFieldArea">
+                                2.4 acres
+                            </strong>
+
+                        </div>
+
+
+                        <div class="field-detail-stat">
+
+                            <span>Crop Stage</span>
+                            <strong id="selectedFieldStage">
+                                Flowering
+                            </strong>
+
+                        </div>
+
+
+                        <div class="field-detail-stat">
+
+                            <span>Health</span>
+                            <strong id="selectedFieldHealth">
+                                86%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="field-detail-stat">
+
+                            <span>Disease Risk</span>
+                            <strong id="selectedFieldRisk">
+                                23%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="field-detail-stat">
+
+                            <span>Soil Moisture</span>
+                            <strong id="selectedFieldMoisture">
+                                61%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field-health-bar">
+
+                        <div class="field-health-label">
+                            <span>Field Health</span>
+                            <strong id="fieldHealthPercent">
+                                86%
+                            </strong>
+                        </div>
+
+                        <div class="progress-track large">
+                            <div
+                                class="progress-fill"
+                                id="fieldHealthBar"
+                                style="width: 86%"
+                            ></div>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 ANALYTICS SECTION
+            ================================================= -->
+
+            <section
+                class="page-section"
+                id="analyticsSection"
+                data-page="analytics"
+            >
+
+                <div class="page-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            DATA INTELLIGENCE
+                        </span>
+
+                        <h2>
+                            Crop Analytics
+                        </h2>
+
+                        <p>
+                            Understand disease trends and environmental
+                            factors affecting your fields.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-kpi-grid">
+
+                    <div class="analytics-stat">
+
+                        <span>
+                            Fields Monitored
+                        </span>
+
+                        <strong>
+                            4
+                        </strong>
+
+                        <small>
+                            ↑ 1 this month
+                        </small>
+
+                    </div>
+
+
+                    <div class="analytics-stat">
+
+                        <span>
+                            Diagnoses
+                        </span>
+
+                        <strong>
+                            27
+                        </strong>
+
+                        <small>
+                            This season
+                        </small>
+
+                    </div>
+
+
+                    <div class="analytics-stat">
+
+                        <span>
+                            Early Warnings
+                        </span>
+
+                        <strong>
+                            12
+                        </strong>
+
+                        <small>
+                            Generated
+                        </small>
+
+                    </div>
+
+
+                    <div class="analytics-stat">
+
+                        <span>
+                            Healthy Area
+                        </span>
+
+                        <strong>
+                            82%
+                        </strong>
+
+                        <small>
+                            Across monitored fields
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-grid">
+
+                    <article class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    FIELD HEALTH
+                                </span>
+
+                                <h3>
+                                    Crop Health Distribution
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-container pie-chart">
+                            <canvas id="cropHealthChart"></canvas>
+                        </div>
+
+                    </article>
+
+
+                    <article class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    ENVIRONMENT
+                                </span>
+
+                                <h3>
+                                    Weather vs Disease Risk
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="environmentRiskChart"></canvas>
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <article class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                DISEASE HISTORY
+                            </span>
+
+                            <h3>
+                                Recent Diagnoses
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="data-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Field</th>
+                                    <th>Crop</th>
+                                    <th>Detected Disease</th>
+                                    <th>Confidence</th>
+                                    <th>Risk</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="diagnosisHistoryTable">
+
+                                <!-- Populated by app.js -->
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 ALERTS SECTION
+            ================================================= -->
+
+            <section
+                class="page-section"
+                id="alertsSection"
+                data-page="alerts"
+            >
+
+                <div class="page-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            PROACTIVE PROTECTION
+                        </span>
+
+                        <h2>
+                            Early Warning Center
+                        </h2>
+
+                        <p>
+                            Detect changing conditions before
+                            they become severe crop losses.
+                        </p>
+
+                    </div>
+
+                    <div class="alert-summary">
+                        <strong id="activeAlertCount">
+                            3
+                        </strong>
+                        active alerts
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="alerts-list"
+                    id="alertsList"
+                >
+
+                    <!-- Populated by app.js -->
+
+                </div>
+
+
+                <article class="panel prevention-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                PREVENTIVE INTELLIGENCE
+                            </span>
+
+                            <h3>
+                                Keep Your Fields Protected
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="prevention-grid">
+
+                        <div class="prevention-card">
+
+                            <span>💧</span>
+
+                            <h4>
+                                Monitor Moisture
+                            </h4>
+
+                            <p>
+                                Avoid prolonged leaf wetness
+                                and excessive irrigation.
+                            </p>
+
+                        </div>
+
+
+                        <div class="prevention-card">
+
+                            <span>🌦️</span>
+
+                            <h4>
+                                Watch Weather
+                            </h4>
+
+                            <p>
+                                Monitor humidity and rainfall
+                                conditions linked to disease risk.
+                            </p>
+
+                        </div>
+
+
+                        <div class="prevention-card">
+
+                            <span>🌱</span>
+
+                            <h4>
+                                Inspect Regularly
+                            </h4>
+
+                            <p>
+                                Early visual inspection can help
+                                identify problems sooner.
+                            </p>
+
+                        </div>
+
+
+                        <div class="prevention-card">
+
+                            <span>🛡️</span>
+
+                            <h4>
+                                Act Early
+                            </h4>
+
+                            <p>
+                                Follow appropriate integrated
+                                disease-management practices.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ============================================================
+     TOAST NOTIFICATION
+============================================================ -->
+
+<div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+>
+
+    <span id="toastIcon">
+        ✓
+    </span>
+
+    <div>
+        <strong id="toastTitle">
+            Success
+        </strong>
+
+        <p id="toastMessage">
+            Operation completed.
+        </p>
+    </div>
+
+    <button
+        id="toastClose"
+        type="button"
+        aria-label="Close notification"
+    >
+        ×
+    </button>
+
+</div>
+
+
+<!-- ============================================================
+     MODAL
+============================================================ -->
+
+<div
+    class="modal-overlay"
+    id="modalOverlay"
+    hidden
+>
+
+    <div
+        class="modal"
+        id="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+    >
+
+        <button
+            class="modal-close"
+            id="modalClose"
+            type="button"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+        <div id="modalContent">
+
+            <h3 id="modalTitle">
+                Information
+            </h3>
+
+            <p>
+                AgriGuard AI combines crop-health information,
+                environmental conditions and AI-assisted diagnosis
+                to support farmers with early disease management.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     APPLICATION SCRIPTS
+============================================================ -->
+
+<script src="js/data.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/modules/diseaseDetection.js"></script>
+<script src="js/modules/riskEngine.js"></script>
+<script src="js/modules/weatherEngine.js"></script>
+<script src="js/modules/soilEngine.js"></script>
+<script src="js/modules/recommendationEngine.js"></script>
+<script src="js/modules/alertEngine.js"></script>
+<script src="js/modules/fieldEngine.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
