@@ -1,0 +1,38 @@
+{
+  "defaultSoilProfile": {
+    "nitrogen": 72,
+    "phosphorus": 68,
+    "potassium": 81,
+    "moisture": 65,
+    "organicMatter": 74,
+    "ph": 6.7
+  },
+
+  "interpretation": {
+    "nitrogen": {
+      "low": 40,
+      "optimal": 70,
+      "high": 90
+    },
+    "phosphorus": {
+      "low": 40,
+      "optimal": 65,
+      "high": 90
+    },
+    "potassium": {
+      "low": 40,
+      "optimal": 70,
+      "high": 90
+    },
+    "moisture": {
+      "low": 30,
+      "optimal": 65,
+      "high": 90
+    },
+    "organicMatter": {
+      "low": 30,
+      "optimal": 65,
+      "high": 90
+    }
+  }
+}
