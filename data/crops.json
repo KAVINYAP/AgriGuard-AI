@@ -1,0 +1,57 @@
+[
+  {
+    "id": "rice",
+    "name": "Rice",
+    "scientificName": "Oryza sativa",
+    "category": "Cereal",
+    "commonDiseases": [
+      "Rice Blast",
+      "Bacterial Leaf Blight",
+      "Brown Spot"
+    ]
+  },
+  {
+    "id": "wheat",
+    "name": "Wheat",
+    "scientificName": "Triticum aestivum",
+    "category": "Cereal",
+    "commonDiseases": [
+      "Leaf Rust",
+      "Stripe Rust",
+      "Powdery Mildew"
+    ]
+  },
+  {
+    "id": "maize",
+    "name": "Maize",
+    "scientificName": "Zea mays",
+    "category": "Cereal",
+    "commonDiseases": [
+      "Northern Corn Leaf Blight",
+      "Common Rust",
+      "Gray Leaf Spot"
+    ]
+  },
+  {
+    "id": "tomato",
+    "name": "Tomato",
+    "scientificName": "Solanum lycopersicum",
+    "category": "Vegetable",
+    "commonDiseases": [
+      "Early Blight",
+      "Late Blight",
+      "Bacterial Spot"
+    ]
+  },
+  {
+    "id": "cotton",
+    "name": "Cotton",
+    "scientificName": "Gossypium",
+    "category": "Commercial Crop",
+    "commonDiseases": [
+      "Bacterial Blight",
+      "Fusarium Wilt",
+      "Verticillium Wilt"
+    ]
+  }
+]
