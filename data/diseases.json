@@ -1,0 +1,122 @@
+[
+  {
+    "id": "rice-blast",
+    "crop": "rice",
+    "name": "Rice Blast",
+    "severity": "High",
+    "symptoms": [
+      "Diamond-shaped lesions",
+      "Brown or gray spots on leaves",
+      "Neck lesions",
+      "Reduced grain development"
+    ],
+    "causes": [
+      "High humidity",
+      "Excess nitrogen",
+      "Poor air circulation",
+      "Fungal infection"
+    ],
+    "management": [
+      "Use resistant varieties",
+      "Avoid excessive nitrogen",
+      "Maintain proper field spacing",
+      "Monitor during humid conditions"
+    ]
+  },
+  {
+    "id": "bacterial-leaf-blight",
+    "crop": "rice",
+    "name": "Bacterial Leaf Blight",
+    "severity": "High",
+    "symptoms": [
+      "Yellowing leaf margins",
+      "Water-soaked lesions",
+      "Leaf drying",
+      "Wilting"
+    ],
+    "causes": [
+      "Bacterial infection",
+      "Heavy rainfall",
+      "Strong winds",
+      "Excessive irrigation"
+    ],
+    "management": [
+      "Use disease-resistant varieties",
+      "Avoid excessive nitrogen",
+      "Maintain field sanitation",
+      "Improve water management"
+    ]
+  },
+  {
+    "id": "early-blight",
+    "crop": "tomato",
+    "name": "Early Blight",
+    "severity": "Medium",
+    "symptoms": [
+      "Circular brown lesions",
+      "Concentric rings",
+      "Yellowing leaves",
+      "Premature leaf drop"
+    ],
+    "causes": [
+      "Fungal infection",
+      "Leaf wetness",
+      "High humidity",
+      "Poor sanitation"
+    ],
+    "management": [
+      "Remove infected leaves",
+      "Improve air circulation",
+      "Avoid overhead irrigation",
+      "Practice crop rotation"
+    ]
+  },
+  {
+    "id": "leaf-rust",
+    "crop": "wheat",
+    "name": "Leaf Rust",
+    "severity": "Medium",
+    "symptoms": [
+      "Orange-brown pustules",
+      "Leaf discoloration",
+      "Reduced photosynthesis",
+      "Premature leaf aging"
+    ],
+    "causes": [
+      "Fungal infection",
+      "Moderate temperatures",
+      "Leaf moisture",
+      "Windborne spores"
+    ],
+    "management": [
+      "Use resistant varieties",
+      "Monitor crop regularly",
+      "Remove severely infected plants",
+      "Apply approved disease-management practices"
+    ]
+  },
+  {
+    "id": "bacterial-spot",
+    "crop": "tomato",
+    "name": "Bacterial Spot",
+    "severity": "Medium",
+    "symptoms": [
+      "Small dark spots",
+      "Yellow halos",
+      "Leaf damage",
+      "Fruit spotting"
+    ],
+    "causes": [
+      "Bacterial infection",
+      "High humidity",
+      "Rain splash",
+      "Contaminated plant material"
+    ],
+    "management": [
+      "Use clean seeds",
+      "Remove infected plant material",
+      "Avoid working with wet plants",
+      "Maintain field sanitation"
+    ]
+  }
+]
