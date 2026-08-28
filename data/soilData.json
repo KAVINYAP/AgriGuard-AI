@@ -1,0 +1,480 @@
+```json
+{
+  "metadata": {
+    "name": "AgriGuard AI Soil Dataset",
+    "version": "1.0.0",
+    "description": "Soil health, nutrient, moisture and environmental data used by AgriGuard AI for crop monitoring and disease-risk assessment.",
+    "units": {
+      "ph": "pH",
+      "nitrogen": "mg/kg",
+      "phosphorus": "mg/kg",
+      "potassium": "mg/kg",
+      "moisture": "%",
+      "organicMatter": "%",
+      "electricalConductivity": "dS/m",
+      "temperature": "°C"
+    }
+  },
+
+  "referenceRanges": {
+    "pH": {
+      "minimum": 5.5,
+      "maximum": 7.5,
+      "optimalMinimum": 6.0,
+      "optimalMaximum": 7.0
+    },
+
+    "nitrogen": {
+      "minimum": 20,
+      "maximum": 140,
+      "optimalMinimum": 50,
+      "optimalMaximum": 100
+    },
+
+    "phosphorus": {
+      "minimum": 10,
+      "maximum": 100,
+      "optimalMinimum": 25,
+      "optimalMaximum": 60
+    },
+
+    "potassium": {
+      "minimum": 50,
+      "maximum": 300,
+      "optimalMinimum": 100,
+      "optimalMaximum": 200
+    },
+
+    "moisture": {
+      "minimum": 20,
+      "maximum": 90,
+      "optimalMinimum": 45,
+      "optimalMaximum": 75
+    },
+
+    "organicMatter": {
+      "minimum": 0.5,
+      "maximum": 5,
+      "optimalMinimum": 1.5,
+      "optimalMaximum": 3.5
+    },
+
+    "electricalConductivity": {
+      "minimum": 0,
+      "maximum": 4,
+      "optimalMinimum": 0.2,
+      "optimalMaximum": 1.5
+    },
+
+    "temperature": {
+      "minimum": 10,
+      "maximum": 40,
+      "optimalMinimum": 20,
+      "optimalMaximum": 32
+    }
+  },
+
+  "fields": [
+    {
+      "id": "field-a",
+      "name": "Field A",
+      "crop": "rice",
+      "area": 2.4,
+      "location": "Andhra Pradesh",
+      "soilType": "Clay Loam",
+
+      "current": {
+        "pH": 6.4,
+        "nitrogen": 82,
+        "phosphorus": 42,
+        "potassium": 156,
+        "moisture": 61,
+        "organicMatter": 2.8,
+        "electricalConductivity": 0.72,
+        "temperature": 28
+      },
+
+      "history": {
+        "pH": [
+          6.5,
+          6.4,
+          6.4,
+          6.3,
+          6.4,
+          6.4
+        ],
+
+        "moisture": [
+          58,
+          61,
+          64,
+          60,
+          63,
+          61
+        ],
+
+        "nitrogen": [
+          78,
+          80,
+          82,
+          81,
+          83,
+          82
+        ],
+
+        "phosphorus": [
+          40,
+          41,
+          42,
+          43,
+          42,
+          42
+        ],
+
+        "potassium": [
+          151,
+          154,
+          156,
+          158,
+          157,
+          156
+        ]
+      }
+    },
+
+    {
+      "id": "field-b",
+      "name": "Field B",
+      "crop": "cotton",
+      "area": 3.1,
+      "location": "Andhra Pradesh",
+      "soilType": "Sandy Loam",
+
+      "current": {
+        "pH": 7.1,
+        "nitrogen": 61,
+        "phosphorus": 36,
+        "potassium": 132,
+        "moisture": 54,
+        "organicMatter": 2.1,
+        "electricalConductivity": 0.91,
+        "temperature": 29
+      },
+
+      "history": {
+        "pH": [
+          7.0,
+          7.1,
+          7.1,
+          7.2,
+          7.1,
+          7.1
+        ],
+
+        "moisture": [
+          57,
+          55,
+          52,
+          54,
+          53,
+          54
+        ],
+
+        "nitrogen": [
+          66,
+          65,
+          64,
+          62,
+          61,
+          61
+        ],
+
+        "phosphorus": [
+          38,
+          37,
+          37,
+          36,
+          36,
+          36
+        ],
+
+        "potassium": [
+          136,
+          134,
+          133,
+          132,
+          132,
+          132
+        ]
+      }
+    },
+
+    {
+      "id": "field-c",
+      "name": "Field C",
+      "crop": "chilli",
+      "area": 1.8,
+      "location": "Andhra Pradesh",
+      "soilType": "Loam",
+
+      "current": {
+        "pH": 6.7,
+        "nitrogen": 74,
+        "phosphorus": 51,
+        "potassium": 181,
+        "moisture": 68,
+        "organicMatter": 3.1,
+        "electricalConductivity": 0.64,
+        "temperature": 27
+      },
+
+      "history": {
+        "pH": [
+          6.6,
+          6.7,
+          6.7,
+          6.8,
+          6.7,
+          6.7
+        ],
+
+        "moisture": [
+          64,
+          66,
+          69,
+          67,
+          70,
+          68
+        ],
+
+        "nitrogen": [
+          71,
+          72,
+          74,
+          73,
+          75,
+          74
+        ],
+
+        "phosphorus": [
+          48,
+          49,
+          51,
+          50,
+          52,
+          51
+        ],
+
+        "potassium": [
+          176,
+          179,
+          181,
+          183,
+          182,
+          181
+        ]
+      }
+    },
+
+    {
+      "id": "field-d",
+      "name": "Field D",
+      "crop": "tomato",
+      "area": 2.7,
+      "location": "Andhra Pradesh",
+      "soilType": "Loam",
+
+      "current": {
+        "pH": 6.2,
+        "nitrogen": 91,
+        "phosphorus": 58,
+        "potassium": 194,
+        "moisture": 79,
+        "organicMatter": 3.4,
+        "electricalConductivity": 1.12,
+        "temperature": 28
+      },
+
+      "history": {
+        "pH": [
+          6.3,
+          6.3,
+          6.2,
+          6.2,
+          6.1,
+          6.2
+        ],
+
+        "moisture": [
+          73,
+          75,
+          78,
+          80,
+          81,
+          79
+        ],
+
+        "nitrogen": [
+          87,
+          88,
+          90,
+          91,
+          92,
+          91
+        ],
+
+        "phosphorus": [
+          55,
+          56,
+          57,
+          59,
+          58,
+          58
+        ],
+
+        "potassium": [
+          188,
+          190,
+          192,
+          195,
+          194,
+          194
+        ]
+      }
+    }
+  ],
+
+  "soilHealthSummary": {
+    "overallScore": 74,
+
+    "parameters": {
+      "nitrogen": 72,
+      "phosphorus": 68,
+      "potassium": 81,
+      "moisture": 65,
+      "organicMatter": 74
+    },
+
+    "status": "Good",
+
+    "description": "Overall soil conditions are suitable for crop growth, with moisture and nutrient levels generally within acceptable ranges."
+  },
+
+  "soilConditions": {
+    "healthy": {
+      "description": "Soil parameters are within suitable ranges for crop growth.",
+      "riskMultiplier": 0.8
+    },
+
+    "normal": {
+      "description": "Soil conditions are generally acceptable but should continue to be monitored.",
+      "riskMultiplier": 1.0
+    },
+
+    "moist": {
+      "description": "Elevated soil moisture may increase prolonged leaf wetness and fungal disease risk.",
+      "riskMultiplier": 1.2
+    },
+
+    "dry": {
+      "description": "Low soil moisture may cause crop stress and reduce plant resilience.",
+      "riskMultiplier": 1.25
+    },
+
+    "poorDrainage": {
+      "description": "Poor drainage can cause prolonged soil saturation and increase root and fungal disease risk.",
+      "riskMultiplier": 1.35
+    }
+  },
+
+  "nutrientInterpretation": {
+    "nitrogen": {
+      "low": "Nitrogen deficiency may reduce vegetative growth and leaf development.",
+      "adequate": "Nitrogen level is generally suitable for healthy crop growth.",
+      "high": "Excessive nitrogen may promote excessive vegetative growth and increase susceptibility to some diseases."
+    },
+
+    "phosphorus": {
+      "low": "Low phosphorus may affect root development and crop establishment.",
+      "adequate": "Phosphorus level is generally suitable.",
+      "high": "High phosphorus should be monitored to avoid nutrient imbalance."
+    },
+
+    "potassium": {
+      "low": "Low potassium may reduce plant strength and stress tolerance.",
+      "adequate": "Potassium level is generally suitable and supports plant resilience.",
+      "high": "High potassium may indicate nutrient imbalance and should be monitored."
+    }
+  },
+
+  "moistureRisk": {
+    "veryDry": {
+      "range": [0, 25],
+      "risk": "High",
+      "score": 80
+    },
+
+    "dry": {
+      "range": [25, 40],
+      "risk": "Moderate",
+      "score": 60
+    },
+
+    "optimal": {
+      "range": [40, 75],
+      "risk": "Low",
+      "score": 20
+    },
+
+    "wet": {
+      "range": [75, 85],
+      "risk": "Moderate",
+      "score": 55
+    },
+
+    "veryWet": {
+      "range": [85, 100],
+      "risk": "High",
+      "score": 80
+    }
+  },
+
+  "diseaseRiskFactors": {
+    "highMoisture": {
+      "threshold": 75,
+      "risk": "High",
+      "effect": "Increases the likelihood of moisture-associated fungal and bacterial diseases."
+    },
+
+    "lowMoisture": {
+      "threshold": 35,
+      "risk": "Moderate",
+      "effect": "Increases crop stress and may reduce natural disease resistance."
+    },
+
+    "poorDrainage": {
+      "risk": "High",
+      "effect": "Can increase root disease and prolonged soil wetness."
+    },
+
+    "highNitrogen": {
+      "threshold": 100,
+      "risk": "Moderate",
+      "effect": "Excessive vegetative growth may increase susceptibility to some pathogens."
+    },
+
+    "highElectricalConductivity": {
+      "threshold": 2,
+      "risk": "Moderate",
+      "effect": "Elevated salinity may create plant stress."
+    },
+
+    "extremePH": {
+      "minimum": 5.5,
+      "maximum": 7.5,
+      "risk": "Moderate",
+      "effect": "Extreme pH can reduce nutrient availability and weaken crop growth."
+    }
+  }
+}
+```
