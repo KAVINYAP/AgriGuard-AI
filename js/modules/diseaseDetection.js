@@ -1,1793 +1,2270 @@
-/* ============================================================
-   AGRIGUARD AI
-   SIH 2026 PROTOTYPE
-   DISEASE DETECTION MODULE
-============================================================ */
-
-/*
-    PURPOSE
-    -------
-    This module handles the complete crop-image diagnosis workflow:
-
-        Image Upload
-             ↓
-        Image Validation
-             ↓
-        Image Preview
-             ↓
-        Crop Selection
-             ↓
-        AI Analysis Simulation
-             ↓
-        Disease Prediction
-             ↓
-        Confidence Score
-             ↓
-        Severity
-             ↓
-        Disease Risk
-             ↓
-        Explanation
-             ↓
-        Recommendations
-             ↓
-        Alert Generation
-
-    IMPORTANT
-    ----------
-    This is the FRONTEND prototype layer.
-
-    For the SIH demo, it provides a realistic AI workflow
-    without requiring an external ML server.
-
-    Later, the function runRealModel() can be connected to:
-        - TensorFlow
-        - PyTorch
-        - FastAPI
-        - Flask
-        - Node.js
-        - Roboflow
-        - Custom CNN / EfficientNet / YOLO model
-*/
-
-
-/* ============================================================
-   01. MODULE STATE
-============================================================ */
-
-const DISEASE_DETECTION_STATE = {
-
-    selectedFile: null,
-
-    imageURL: null,
-
-    selectedCrop: "rice",
-
-    analyzing: false,
-
-    result: null,
-
-    confidence: 0,
-
-    imageQuality: 0,
-
-    analysisStartedAt: null,
-
-    analysisCompletedAt: null
-};
-
-
-/* ============================================================
-   02. IMAGE VALIDATION
-============================================================ */
-
-function validateCropImage(file) {
-
-    if (!file) {
-
-        return {
-            valid: false,
-            message: "Please select a crop image."
-        };
-
-    }
-
-
-    /* Check file type */
-
-    const supportedTypes =
-        AGRIGUARD_CONFIG.supportedImageTypes;
-
-
-    if (
-        !supportedTypes.includes(
-            file.type
-        )
-    ) {
-
-        return {
-            valid: false,
-            message:
-                "Unsupported image format. Please upload JPG, PNG or WEBP."
-        };
-
-    }
-
-
-    /* Check file size */
-
-    const maxSize =
-        AGRIGUARD_CONFIG.maxImageSizeMB *
-        1024 *
-        1024;
-
-
-    if (
-        file.size > maxSize
-    ) {
-
-        return {
-            valid: false,
-            message:
-                `Image size must be below ${AGRIGUARD_CONFIG.maxImageSizeMB} MB.`
-        };
-
-    }
-
-
-    return {
-        valid: true,
-        message: "Image accepted."
-    };
-}
-
-
-/* ============================================================
-   03. IMAGE QUALITY ESTIMATION
-============================================================ */
-
-/*
-    This is a lightweight browser-side quality estimator.
-
-    It does NOT claim to replace a real computer-vision
-    quality model.
-
-    It checks:
-        - resolution
-        - aspect ratio
-        - brightness
-        - basic image readability
-*/
-
-async function estimateImageQuality(file) {
-
-    return new Promise(
-        resolve => {
-
-            const image =
-                new Image();
-
-
-            const url =
-                URL.createObjectURL(
-                    file
-                );
-
-
-            image.onload = function () {
-
-                let score = 100;
-
-
-                /* Resolution */
-
-                const pixels =
-                    image.width *
-                    image.height;
-
-
-                if (
-                    pixels < 300000
-                ) {
-
-                    score -= 25;
-
-                } else if (
-                    pixels < 600000
-                ) {
-
-                    score -= 10;
-
-                }
-
-
-                /* Very small dimensions */
-
-                if (
-                    image.width < 500 ||
-                    image.height < 500
-                ) {
-
-                    score -= 15;
-
-                }
-
-
-                /* Extreme aspect ratio */
-
-                const ratio =
-                    image.width /
-                    image.height;
-
-
-                if (
-                    ratio > 3 ||
-                    ratio < 0.33
-                ) {
-
-                    score -= 10;
-
-                }
-
-
-                URL.revokeObjectURL(
-                    url
-                );
-
-
-                resolve(
-                    Math.max(
-                        0,
-                        Math.min(
-                            100,
-                            score
-                        )
-                    )
-                );
-
-            };
-
-
-            image.onerror = function () {
-
-                URL.revokeObjectURL(
-                    url
-                );
-
-                resolve(50);
-
-            };
-
-
-            image.src = url;
-
-        }
-    );
-}
-
-
-/* ============================================================
-   04. LOAD IMAGE
-============================================================ */
-
-async function loadCropImage(file) {
-
-    const validation =
-        validateCropImage(
-            file
-        );
-
-
-    if (!validation.valid) {
-
-        throw new Error(
-            validation.message
-        );
-
-    }
-
-
-    /* Store file */
-
-    DISEASE_DETECTION_STATE.selectedFile =
-        file;
-
-
-    /* Create preview URL */
-
-    if (
-        DISEASE_DETECTION_STATE.imageURL
-    ) {
-
-        URL.revokeObjectURL(
-            DISEASE_DETECTION_STATE.imageURL
-        );
-
-    }
-
-
-    DISEASE_DETECTION_STATE.imageURL =
-        URL.createObjectURL(
-            file
-        );
-
-
-    /* Estimate quality */
-
-    DISEASE_DETECTION_STATE.imageQuality =
-        await estimateImageQuality(
-            file
-        );
-
-
-    return {
-
-        file,
-
-        url:
-            DISEASE_DETECTION_STATE.imageURL,
-
-        quality:
-            DISEASE_DETECTION_STATE.imageQuality,
-
-        name:
-            file.name,
-
-        size:
-            file.size,
-
-        type:
-            file.type
-    };
-}
-
-
-/* ============================================================
-   05. CROP SELECTION
-============================================================ */
-
-function setDetectionCrop(cropId) {
-
-    const crop =
-        getCropById(
-            cropId
-        );
-
-
-    if (!crop) {
-
-        console.warn(
-            "Unknown crop:",
-            cropId
-        );
-
-        return false;
-
-    }
-
-
-    DISEASE_DETECTION_STATE.selectedCrop =
-        cropId;
-
-
-    APP_STATE.selectedCropId =
-        cropId;
-
-
-    return true;
-}
-
-
-/* ============================================================
-   06. IMAGE PREPROCESSING SIMULATION
-============================================================ */
-
-/*
-    A real ML pipeline would perform operations such as:
-
-        resize
-        normalization
-        color-space conversion
-        augmentation
-        tensor conversion
-
-    We simulate the pipeline for the prototype UI.
-*/
-
-async function preprocessImage() {
-
-    if (
-        !DISEASE_DETECTION_STATE.selectedFile
-    ) {
-
-        throw new Error(
-            "No image selected."
-        );
-
-    }
-
-
-    await delay(
-        350
-    );
-
-
-    return {
-
-        processed: true,
-
-        resize:
-            "224 × 224",
-
-        normalized: true,
-
-        colorSpace:
-            "RGB",
-
-        tensorReady: true
-    };
-}
-
-
-/* ============================================================
-   07. AI MODEL SIMULATION
-============================================================ */
-
-/*
-    This function simulates a model prediction.
-
-    The prototype intentionally produces deterministic
-    results based on the selected crop so the presentation
-    remains reliable.
-
-    During the final presentation, you don't want the
-    demonstration to randomly fail.
-*/
-
-async function runDemoModel(
-    cropId
-) {
-
-    await delay(
-        700
-    );
-
-
-    const crop =
-        getCropById(
-            cropId
-        );
-
-
-    if (!crop) {
-
-        throw new Error(
-            "Crop not supported."
-        );
-
-    }
-
-
-    /*
-        Select a representative disease for
-        demonstration.
-
-        The first disease is used because it produces
-        a predictable presentation flow.
-    */
-
-    const diseaseId =
-        crop.commonDiseases[0];
-
-
-    const disease =
-        getDiseaseById(
-            diseaseId
-        );
-
-
-    if (!disease) {
-
-        return {
-
-            diseaseId: null,
-
-            diseaseName:
-                "Healthy Crop",
-
-            confidence:
-                96.4,
-
-            severity:
-                "None",
-
-            riskScore:
-                15,
-
-            explanation:
-                "No significant disease indicators were detected."
-        };
-
-    }
-
-
-    const response =
-        DEMO_DIAGNOSIS_RESPONSES[
-            cropId
-        ];
-
-
-    if (
-        response &&
-        response[diseaseId]
-    ) {
-
-        return {
-            ...response[diseaseId]
-        };
-
-    }
-
-
-    return {
-
-        diseaseId,
-
-        diseaseName:
-            disease.name,
-
-        confidence:
-            disease.confidenceBaseline,
-
-        severity:
-            disease.severity,
-
-        riskScore:
-            disease.severity === "Critical"
-                ? 90
-                : disease.severity === "High"
-                    ? 78
-                    : 55,
-
-        explanation:
-            disease.description
-    };
-}
-
-
-/* ============================================================
-   08. REAL MODEL API PLACEHOLDER
-============================================================ */
-
-/*
-    FUTURE BACKEND INTEGRATION
-
-    Example architecture:
-
-        Frontend
-           ↓
-        /api/predict
-           ↓
-        FastAPI / Flask
-           ↓
-        CNN / EfficientNet / YOLO
-           ↓
-        Prediction JSON
-
-    Expected response:
-
-    {
-        diseaseId: "rice_blast",
-        confidence: 94.7,
-        severity: "High"
-    }
-
-    This function is intentionally kept separate from
-    runDemoModel() so the frontend can later switch from
-    demo mode to the actual ML model.
-*/
-
-async function runRealModel(
-    imageFile,
-    cropId
-) {
-
-    /*
-        Replace this section with your real backend URL.
-
-        Example:
-
-        const formData = new FormData();
-
-        formData.append(
-            "image",
-            imageFile
-        );
-
-        formData.append(
-            "crop",
-            cropId
-        );
-
-        const response = await fetch(
-            "/api/predict",
-            {
-                method: "POST",
-                body: formData
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "AI service unavailable."
-            );
-        }
-
-        return await response.json();
-    */
-
-
-    console.warn(
-        "Real ML API is not connected. Using demo model."
-    );
-
-
-    return runDemoModel(
-        cropId
-    );
-}
-
-
-/* ============================================================
-   09. CONFIDENCE ADJUSTMENT
-============================================================ */
-
-function adjustConfidence(
-    confidence,
-    imageQuality
-) {
-
-    /*
-        High-quality image:
-        preserve confidence.
-
-        Poor-quality image:
-        slightly reduce confidence.
-    */
-
-    let adjusted =
-        confidence;
-
-
-    if (
-        imageQuality < 50
-    ) {
-
-        adjusted -= 10;
-
-    } else if (
-        imageQuality < 70
-    ) {
-
-        adjusted -= 5;
-
-    }
-
-
-    return Number(
-        Math.max(
-            0,
-            Math.min(
-                99.9,
-                adjusted
-            )
-        ).toFixed(1)
-    );
-}
-
-
-/* ============================================================
-   10. BUILD COMPLETE DIAGNOSIS
-============================================================ */
-
-function buildCompleteDiagnosis(
-    prediction
-) {
-
-    const disease =
-        prediction.diseaseId
-            ? getDiseaseById(
-                prediction.diseaseId
-            )
-            : null;
-
-
-    const crop =
-        getCropById(
-            DISEASE_DETECTION_STATE.selectedCrop
-        );
-
-
-    const recommendation =
-        prediction.diseaseId
-            ? getRecommendationForDisease(
-                prediction.diseaseId
-            )
-            : null;
-
-
-    const risk =
-        classifyRisk(
-            prediction.riskScore
-        );
-
-
-    const confidence =
-        adjustConfidence(
-            prediction.confidence,
-            DISEASE_DETECTION_STATE.imageQuality
-        );
-
-
-    /*
-        Confidence warning
-    */
-
-    let confidenceStatus =
-        "High Confidence";
-
-
-    if (
-        confidence < 70
-    ) {
-
-        confidenceStatus =
-            "Low Confidence";
-
-    } else if (
-        confidence < 85
-    ) {
-
-        confidenceStatus =
-            "Moderate Confidence";
-
-    }
-
-
-    return {
-
-        id:
-            `DX-${Date.now()}`,
-
-        cropId:
-            crop?.id || null,
-
-        cropName:
-            crop?.name || "Unknown Crop",
-
-        diseaseId:
-            prediction.diseaseId || null,
-
-        diseaseName:
-            prediction.diseaseName,
-
-        scientificName:
-            disease?.scientificName || null,
-
-        category:
-            disease?.category || "None",
-
-        confidence,
-
-        confidenceStatus,
-
-        imageQuality:
-            DISEASE_DETECTION_STATE.imageQuality,
-
-        severity:
-            prediction.severity,
-
-        riskScore:
-            prediction.riskScore,
-
-        riskLevel:
-            risk.label,
-
-        explanation:
-            prediction.explanation,
-
-        symptoms:
-            disease?.symptoms || [],
-
-        riskFactors:
-            disease?.riskFactors || [],
-
-        favorableConditions:
-            disease?.favorableConditions || {},
-
-        prevention:
-            disease?.prevention || [],
-
-        management:
-            disease?.management || [],
-
-        recommendations:
-            recommendation,
-
-        image:
-            DISEASE_DETECTION_STATE.imageURL,
-
-        timestamp:
-            new Date().toISOString()
-    };
-}
-
-
-/* ============================================================
-   11. MAIN AI DIAGNOSIS PIPELINE
-============================================================ */
-
-async function analyzeCropImage(
-    file = null,
-    cropId = null,
-    options = {}
-) {
-
-    /*
-        Use currently selected image
-        if a new file is not supplied.
-    */
-
-    if (file) {
-
-        await loadCropImage(
-            file
-        );
-
-    }
-
-
-    if (
-        cropId
-    ) {
-
-        setDetectionCrop(
-            cropId
-        );
-
-    }
-
-
-    if (
-        !DISEASE_DETECTION_STATE.selectedFile
-    ) {
-
-        throw new Error(
-            "Please upload a crop image first."
-        );
-
-    }
-
-
-    if (
-        DISEASE_DETECTION_STATE.analyzing
-    ) {
-
-        return null;
-
-    }
-
-
-    DISEASE_DETECTION_STATE.analyzing =
-        true;
-
-
-    DISEASE_DETECTION_STATE.analysisStartedAt =
-        new Date().toISOString();
-
-
-    try {
-
-        /*
-            STEP 1
-            ------
-            Image preprocessing
-        */
-
-        await preprocessImage();
-
-
-        /*
-            STEP 2
-            ------
-            AI prediction
-        */
-
-        let prediction;
-
-
-        if (
-            options.useRealModel === true
-        ) {
-
-            prediction =
-                await runRealModel(
-                    DISEASE_DETECTION_STATE.selectedFile,
-                    DISEASE_DETECTION_STATE.selectedCrop
-                );
-
-        } else {
-
-            prediction =
-                await runDemoModel(
-                    DISEASE_DETECTION_STATE.selectedCrop
-                );
-
-        }
-
-
-        /*
-            STEP 3
-            ------
-            Build complete result
-        */
-
-        const result =
-            buildCompleteDiagnosis(
-                prediction
-            );
-
-
-        /*
-            STEP 4
-            ------
-            Save result
-        */
-
-        DISEASE_DETECTION_STATE.result =
-            result;
-
-
-        DISEASE_DETECTION_STATE.confidence =
-            result.confidence;
-
-
-        DISEASE_DETECTION_STATE.analysisCompletedAt =
-            new Date().toISOString();
-
-
-        APP_STATE.selectedDiagnosis =
-            result;
-
-
-        /*
-            STEP 5
-            ------
-            Add to diagnosis history
-        */
-
-        addDiagnosisToHistory(
-            result
-        );
-
-
-        /*
-            STEP 6
-            ------
-            Generate alert when necessary
-        */
-
-        if (
-            result.riskScore >=
-            AGRIGUARD_CONFIG.thresholds.highDiseaseRisk
-        ) {
-
-            createDiagnosisAlert(
-                result
-            );
-
-        }
-
-
-        /*
-            STEP 7
-            ------
-            Dispatch event to the application
-        */
-
-        dispatchDiagnosisEvent(
-            result
-        );
-
-
-        return result;
-
-    } catch (error) {
-
-        console.error(
-            "Disease analysis failed:",
-            error
-        );
-
-        throw error;
-
-    } finally {
-
-        DISEASE_DETECTION_STATE.analyzing =
-            false;
-
-    }
-}
-
-
-/* ============================================================
-   12. ADD DIAGNOSIS TO HISTORY
-============================================================ */
-
-function addDiagnosisToHistory(
-    result
-) {
-
-    if (!result) {
-        return;
-    }
-
-
-    const entry = {
-
-        id:
-            result.id,
-
-        fieldId:
-            APP_STATE.selectedFieldId,
-
-        cropId:
-            result.cropId,
-
-        diseaseId:
-            result.diseaseId,
-
-        diseaseName:
-            result.diseaseName,
-
-        confidence:
-            result.confidence,
-
-        severity:
-            result.severity,
-
-        riskScore:
-            result.riskScore,
-
-        imageQuality:
-            result.imageQuality,
-
-        date:
-            new Date().toISOString()
-                .split("T")[0],
-
-        time:
-            new Date()
-                .toLocaleTimeString(
-                    "en-IN",
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                ),
-
-        status:
-            result.diseaseId
-                ? (
-                    result.confidence >= 85
-                        ? "confirmed"
-                        : "suspected"
-                )
-                : "healthy"
-    };
-
-
-    /*
-        Add newest diagnosis at top.
-    */
-
-    DIAGNOSIS_HISTORY.unshift(
-        entry
-    );
-
-
-    /*
-        Keep demo history manageable.
-    */
-
-    if (
-        DIAGNOSIS_HISTORY.length > 50
-    ) {
-
-        DIAGNOSIS_HISTORY.pop();
-
-    }
-
-
-    return entry;
-}
-
-
-/* ============================================================
-   13. CREATE ALERT
-============================================================ */
-
-function createDiagnosisAlert(
-    result
-) {
-
-    if (!result) {
-        return;
-    }
-
-
-    /*
-        Avoid duplicate active alerts
-        for the same disease.
-    */
-
-    const duplicate =
-        ALERTS.some(
-            alert =>
-                alert.fieldId ===
-                    APP_STATE.selectedFieldId &&
-                alert.type ===
-                    "Disease Detection" &&
-                alert.status ===
-                    "active" &&
-                alert.title.includes(
-                    result.diseaseName
-                )
-        );
-
-
-    if (duplicate) {
-
-        return;
-
-    }
-
-
-    const alert = {
-
-        id:
-            `ALT-${Date.now()}`,
-
-        severity:
-            result.riskScore >= 85
-                ? "critical"
-                : "high",
-
-        type:
-            "Disease Detection",
-
-        title:
-            `${result.diseaseName} Detected`,
-
-        fieldId:
-            APP_STATE.selectedFieldId,
-
-        fieldName:
-            getFieldById(
-                APP_STATE.selectedFieldId
-            )?.name ||
-            "Selected Field",
-
-        message:
-            `AI analysis detected ${result.diseaseName} with ${result.confidence}% confidence.`,
-
-        riskScore:
-            result.riskScore,
-
-        createdAt:
-            new Date().toLocaleString(
-                "en-IN"
-            ),
-
-        status:
-            "active",
-
-        reasons: [
-            `AI confidence ${result.confidence}%`,
-            `Disease risk ${result.riskScore}%`,
-            `Image quality ${result.imageQuality}%`
+```javascript
+/* =========================================================
+   AgriGuard AI - Disease Detection Module
+   File: js/modules/diseaseDetection.js
+
+   Purpose:
+   - Crop image upload
+   - Drag & drop image handling
+   - Image validation
+   - Image preview
+   - Diagnosis input preparation
+   - AI diagnosis integration
+   - Local fallback diagnosis
+   - Diagnosis result rendering
+   - Recommendation integration
+   - Safe error handling
+
+   Dependencies:
+   - index.html
+   - data.js
+   - riskEngine.js
+   - recommendationEngine.js
+   - app.js
+
+   Optional future integration:
+   - TensorFlow.js
+   - ONNX Runtime Web
+   - REST AI API
+   ========================================================= */
+
+"use strict";
+
+
+/* =========================================================
+   MODULE
+   ========================================================= */
+
+const AgriGuardDiseaseDetection = {
+
+    /* -----------------------------------------------------
+       Configuration
+    ----------------------------------------------------- */
+
+    config: {
+
+        maxFileSize: 10 * 1024 * 1024,
+
+        allowedTypes: [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
         ],
 
-        recommendedAction:
-            result.recommendations?.escalation ||
-            "Inspect the affected crop and follow locally approved agricultural guidance."
-    };
+        allowedExtensions: [
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".webp"
+        ],
+
+        confidenceThreshold: 50,
+
+        previewMaxWidth: 1600,
+
+        previewMaxHeight: 1600
+
+    },
 
 
-    ALERTS.unshift(
-        alert
-    );
+    /* -----------------------------------------------------
+       Runtime state
+    ----------------------------------------------------- */
+
+    state: {
+
+        selectedFile: null,
+
+        previewURL: null,
+
+        imageDataURL: null,
+
+        diagnosisInProgress: false,
+
+        lastDiagnosis: null,
+
+        initialized: false
+
+    },
 
 
-    APP_STATE.notificationCount =
-        ALERTS.filter(
-            item =>
-                item.status === "active"
-        ).length;
+    /* -----------------------------------------------------
+       DOM references
+    ----------------------------------------------------- */
+
+    elements: {},
 
 
-    return alert;
-}
+    /* =====================================================
+       INITIALIZATION
+       ===================================================== */
+
+    init() {
+
+        if (this.state.initialized) {
+            return;
+        }
+
+        this.cacheElements();
+
+        if (!this.elements.uploadZone) {
+            console.warn(
+                "DiseaseDetection: upload zone not found."
+            );
+
+            return;
+        }
+
+        this.bindEvents();
+
+        this.state.initialized = true;
+
+    },
 
 
-/* ============================================================
-   14. DIAGNOSIS EVENT
-============================================================ */
+    /* =====================================================
+       DOM CACHE
+       ===================================================== */
 
-function dispatchDiagnosisEvent(
-    result
-) {
+    cacheElements() {
 
-    const event =
-        new CustomEvent(
-            "agriguard:diagnosisComplete",
-            {
-                detail: result
+        this.elements.uploadZone =
+            document.getElementById("uploadZone");
+
+        this.elements.fileInput =
+            document.getElementById("cropImageInput");
+
+        this.elements.uploadPlaceholder =
+            document.getElementById("uploadPlaceholder");
+
+        this.elements.imagePreview =
+            document.getElementById("imagePreview");
+
+        this.elements.previewImage =
+            document.getElementById("previewImage");
+
+        this.elements.removeImageButton =
+            document.getElementById(
+                "removeImageButton"
+            );
+
+        this.elements.cropSelect =
+            document.getElementById("cropSelect");
+
+        this.elements.fieldSelect =
+            document.getElementById("fieldSelect");
+
+        this.elements.growthStage =
+            document.getElementById("growthStage");
+
+        this.elements.soilCondition =
+            document.getElementById("soilCondition");
+
+        this.elements.diagnoseButton =
+            document.getElementById("diagnoseButton");
+
+        this.elements.diagnosisResult =
+            document.getElementById("diagnosisResult");
+
+        this.elements.recommendationPanel =
+            document.getElementById(
+                "recommendationPanel"
+            );
+
+    },
+
+
+    /* =====================================================
+       EVENT BINDING
+       ===================================================== */
+
+    bindEvents() {
+
+        const uploadZone =
+            this.elements.uploadZone;
+
+        const fileInput =
+            this.elements.fileInput;
+
+
+        /* -------------------------------------------------
+           Click upload zone
+        ------------------------------------------------- */
+
+        uploadZone.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    this.elements.removeImageButton
+                ) {
+                    return;
+                }
+
+                if (fileInput) {
+                    fileInput.click();
+                }
+
             }
         );
 
 
-    window.dispatchEvent(
-        event
-    );
-}
+        /* -------------------------------------------------
+           Keyboard upload
+        ------------------------------------------------- */
 
+        uploadZone.addEventListener(
+            "keydown",
+            event => {
 
-/* ============================================================
-   15. RESET DETECTION
-============================================================ */
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
 
-function resetDiseaseDetection() {
+                    event.preventDefault();
 
-    if (
-        DISEASE_DETECTION_STATE.imageURL
-    ) {
+                    if (fileInput) {
+                        fileInput.click();
+                    }
 
-        URL.revokeObjectURL(
-            DISEASE_DETECTION_STATE.imageURL
+                }
+
+            }
         );
 
-    }
 
+        /* -------------------------------------------------
+           File input
+        ------------------------------------------------- */
 
-    DISEASE_DETECTION_STATE.selectedFile =
-        null;
+        if (fileInput) {
 
-    DISEASE_DETECTION_STATE.imageURL =
-        null;
+            fileInput.addEventListener(
+                "change",
+                event => {
 
-    DISEASE_DETECTION_STATE.analyzing =
-        false;
+                    const files =
+                        event.target.files;
 
-    DISEASE_DETECTION_STATE.result =
-        null;
+                    if (files && files.length > 0) {
+                        this.handleFile(files[0]);
+                    }
 
-    DISEASE_DETECTION_STATE.confidence =
-        0;
+                }
+            );
 
-    DISEASE_DETECTION_STATE.imageQuality =
-        0;
+        }
 
-    DISEASE_DETECTION_STATE.analysisStartedAt =
-        null;
 
-    DISEASE_DETECTION_STATE.analysisCompletedAt =
-        null;
+        /* -------------------------------------------------
+           Drag over
+        ------------------------------------------------- */
 
+        uploadZone.addEventListener(
+            "dragover",
+            event => {
 
-    APP_STATE.selectedDiagnosis =
-        null;
+                event.preventDefault();
 
+                uploadZone.classList.add(
+                    "drag-over"
+                );
 
-    dispatchDiagnosisEvent(
-        null
-    );
-}
+            }
+        );
 
 
-/* ============================================================
-   16. GET CURRENT RESULT
-============================================================ */
+        /* -------------------------------------------------
+           Drag leave
+        ------------------------------------------------- */
 
-function getCurrentDiagnosis() {
+        uploadZone.addEventListener(
+            "dragleave",
+            event => {
 
-    return (
-        DISEASE_DETECTION_STATE.result
-        || null
-    );
-}
+                event.preventDefault();
 
+                uploadZone.classList.remove(
+                    "drag-over"
+                );
 
-/* ============================================================
-   17. GET DETECTION STATUS
-============================================================ */
+            }
+        );
 
-function getDetectionStatus() {
 
-    if (
-        DISEASE_DETECTION_STATE.analyzing
-    ) {
+        /* -------------------------------------------------
+           Drop
+        ------------------------------------------------- */
 
-        return "analyzing";
+        uploadZone.addEventListener(
+            "drop",
+            event => {
 
-    }
+                event.preventDefault();
 
+                uploadZone.classList.remove(
+                    "drag-over"
+                );
 
-    if (
-        DISEASE_DETECTION_STATE.result
-    ) {
+                const files =
+                    event.dataTransfer?.files;
 
-        return "completed";
+                if (
+                    files &&
+                    files.length > 0
+                ) {
 
-    }
+                    this.handleFile(files[0]);
 
+                }
 
-    if (
-        DISEASE_DETECTION_STATE.selectedFile
-    ) {
+            }
+        );
 
-        return "ready";
 
-    }
+        /* -------------------------------------------------
+           Remove image
+        ------------------------------------------------- */
 
+        if (this.elements.removeImageButton) {
 
-    return "idle";
-}
-
-
-/* ============================================================
-   18. FORMAT CONFIDENCE
-============================================================ */
-
-function formatConfidence(
-    confidence
-) {
-
-    return `${Number(
-        confidence || 0
-    ).toFixed(1)}%`;
-}
-
-
-/* ============================================================
-   19. GET DISEASE STATUS MESSAGE
-============================================================ */
-
-function getDiseaseStatusMessage(
-    result
-) {
-
-    if (!result) {
-
-        return {
-            title: "No Diagnosis",
-            message: "Upload a crop image to begin."
-        };
-
-    }
-
-
-    if (
-        !result.diseaseId
-    ) {
-
-        return {
-
-            title:
-                "Crop Appears Healthy",
-
-            message:
-                "No significant supported disease indicators were detected."
-        };
-
-    }
-
-
-    if (
-        result.confidence < 70
-    ) {
-
-        return {
-
-            title:
-                "Low Confidence Detection",
-
-            message:
-                "The image may not contain enough visual information. Capture a clearer image and scan again."
-        };
-
-    }
-
-
-    if (
-        result.riskScore >= 85
-    ) {
-
-        return {
-
-            title:
-                "Critical Attention Required",
-
-            message:
-                "The detected condition has a high potential impact. Inspect the field promptly."
-        };
-
-    }
-
-
-    if (
-        result.riskScore >= 70
-    ) {
-
-        return {
-
-            title:
-                "High Risk Detected",
-
-            message:
-                "Early intervention and close monitoring are recommended."
-        };
-
-    }
-
-
-    return {
-
-        title:
-            "Disease Detected",
-
-        message:
-            "Follow the recommended management and monitoring steps."
-    };
-}
-
-
-/* ============================================================
-   20. UTILITY DELAY
-============================================================ */
-
-function delay(
-    milliseconds
-) {
-
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                milliseconds
-            )
-    );
-}
-
-
-/* ============================================================
-   21. DRAG & DROP SUPPORT
-============================================================ */
-
-function setupImageDropZone(
-    dropZone,
-    fileInput
-) {
-
-    if (
-        !dropZone ||
-        !fileInput
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-        Prevent browser default behavior.
-    */
-
-    [
-        "dragenter",
-        "dragover",
-        "dragleave",
-        "drop"
-    ].forEach(
-        eventName => {
-
-            dropZone.addEventListener(
-                eventName,
+            this.elements.removeImageButton.addEventListener(
+                "click",
                 event => {
 
                     event.preventDefault();
+
                     event.stopPropagation();
 
+                    this.removeImage();
+
                 }
             );
 
         }
-    );
 
 
-    /*
-        Visual state
-    */
+        /* -------------------------------------------------
+           Diagnose button
+        ------------------------------------------------- */
 
-    [
-        "dragenter",
-        "dragover"
-    ].forEach(
-        eventName => {
+        if (this.elements.diagnoseButton) {
 
-            dropZone.addEventListener(
-                eventName,
+            this.elements.diagnoseButton.addEventListener(
+                "click",
                 () => {
 
-                    dropZone.classList.add(
-                        "drag-active"
-                    );
+                    this.runDiagnosis();
 
                 }
             );
 
         }
-    );
+
+    },
 
 
-    [
-        "dragleave",
-        "drop"
-    ].forEach(
-        eventName => {
+    /* =====================================================
+       FILE HANDLING
+       ===================================================== */
 
-            dropZone.addEventListener(
-                eventName,
-                () => {
+    handleFile(file) {
 
-                    dropZone.classList.remove(
-                        "drag-active"
-                    );
+        const validation =
+            this.validateFile(file);
 
-                }
+
+        if (!validation.valid) {
+
+            this.showError(
+                validation.message
             );
 
+            return false;
+
         }
-    );
 
 
-    /*
-        Handle dropped file
-    */
-
-    dropZone.addEventListener(
-        "drop",
-        async event => {
-
-            const files =
-                event.dataTransfer.files;
+        this.state.selectedFile = file;
 
 
-            if (
-                files &&
-                files.length > 0
-            ) {
+        this.createImagePreview(file)
+            .then(() => {
 
-                const file =
-                    files[0];
+                this.showSuccess(
+                    "Crop image uploaded successfully."
+                );
+
+            })
+            .catch(error => {
+
+                console.error(
+                    "Image preview failed:",
+                    error
+                );
+
+                this.showError(
+                    "Could not load the selected image."
+                );
+
+                this.resetState();
+
+            });
 
 
-                try {
+        return true;
 
-                    await loadCropImage(
-                        file
+    },
+
+
+    /* =====================================================
+       FILE VALIDATION
+       ===================================================== */
+
+    validateFile(file) {
+
+        if (!file) {
+
+            return {
+                valid: false,
+                message: "Please select an image."
+            };
+
+        }
+
+
+        if (!(file instanceof File)) {
+
+            return {
+                valid: false,
+                message: "Invalid file selected."
+            };
+
+        }
+
+
+        if (!this.config.allowedTypes.includes(
+            file.type
+        )) {
+
+            return {
+                valid: false,
+
+                message:
+                    "Unsupported image format. " +
+                    "Please use JPG, PNG or WEBP."
+            };
+
+        }
+
+
+        if (
+            file.size <= 0 ||
+            file.size >
+            this.config.maxFileSize
+        ) {
+
+            return {
+                valid: false,
+
+                message:
+                    "Image must be smaller than 10 MB."
+            };
+
+        }
+
+
+        const filename =
+            file.name.toLowerCase();
+
+        const extensionValid =
+            this.config.allowedExtensions.some(
+                extension =>
+                    filename.endsWith(extension)
+            );
+
+
+        if (!extensionValid) {
+
+            return {
+                valid: false,
+
+                message:
+                    "The image filename has an unsupported extension."
+            };
+
+        }
+
+
+        return {
+            valid: true,
+            message: "File is valid."
+        };
+
+    },
+
+
+    /* =====================================================
+       IMAGE PREVIEW
+       ===================================================== */
+
+    createImagePreview(file) {
+
+        return new Promise(
+            (resolve, reject) => {
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload = event => {
+
+                    const result =
+                        event.target.result;
+
+
+                    if (
+                        typeof result !==
+                        "string"
+                    ) {
+
+                        reject(
+                            new Error(
+                                "Invalid image data."
+                            )
+                        );
+
+                        return;
+
+                    }
+
+
+                    this.state.imageDataURL =
+                        result;
+
+
+                    this.displayPreview(
+                        result
                     );
 
 
-                    fileInput.dispatchEvent(
-                        new CustomEvent(
-                            "agriguard:imageLoaded",
-                            {
-                                detail: {
-                                    file,
-                                    state:
-                                        DISEASE_DETECTION_STATE
-                                }
-                            }
+                    resolve(result);
+
+                };
+
+
+                reader.onerror = () => {
+
+                    reject(
+                        new Error(
+                            "Failed to read image file."
                         )
                     );
 
-                } catch (
-                    error
-                ) {
+                };
 
-                    console.error(
-                        error
-                    );
 
-                }
+                reader.readAsDataURL(file);
 
             }
+        );
+
+    },
+
+
+    /* =====================================================
+       DISPLAY PREVIEW
+       ===================================================== */
+
+    displayPreview(dataURL) {
+
+        const preview =
+            this.elements.previewImage;
+
+        const placeholder =
+            this.elements.uploadPlaceholder;
+
+        const imagePreview =
+            this.elements.imagePreview;
+
+
+        if (!preview) {
+            return;
+        }
+
+
+        preview.src = dataURL;
+
+        preview.alt =
+            "Selected crop image preview";
+
+
+        if (placeholder) {
+            placeholder.hidden = true;
+        }
+
+
+        if (imagePreview) {
+            imagePreview.hidden = false;
+        }
+
+
+        if (this.elements.uploadZone) {
+
+            this.elements.uploadZone.classList.add(
+                "has-image"
+            );
 
         }
-    );
-}
+
+    },
 
 
-/* ============================================================
-   22. FILE INPUT SETUP
-============================================================ */
+    /* =====================================================
+       REMOVE IMAGE
+       ===================================================== */
 
-function setupImageInput(
-    input
-) {
+    removeImage() {
 
-    if (!input) {
-        return;
-    }
+        this.revokePreviewURL();
 
+        this.state.selectedFile = null;
 
-    input.addEventListener(
-        "change",
-        async event => {
+        this.state.imageDataURL = null;
 
-            const file =
-                event.target.files?.[0];
+        this.state.lastDiagnosis = null;
 
 
-            if (!file) {
-                return;
-            }
+        if (this.elements.fileInput) {
 
+            this.elements.fileInput.value = "";
+
+        }
+
+
+        if (this.elements.previewImage) {
+
+            this.elements.previewImage.removeAttribute(
+                "src"
+            );
+
+        }
+
+
+        if (this.elements.imagePreview) {
+
+            this.elements.imagePreview.hidden =
+                true;
+
+        }
+
+
+        if (this.elements.uploadPlaceholder) {
+
+            this.elements.uploadPlaceholder.hidden =
+                false;
+
+        }
+
+
+        if (this.elements.uploadZone) {
+
+            this.elements.uploadZone.classList.remove(
+                "has-image"
+            );
+
+        }
+
+
+        this.hideDiagnosisResult();
+
+        this.showSuccess(
+            "Crop image removed."
+        );
+
+    },
+
+
+    /* =====================================================
+       REVOKE PREVIEW URL
+       ===================================================== */
+
+    revokePreviewURL() {
+
+        if (this.state.previewURL) {
 
             try {
 
-                const result =
-                    await loadCropImage(
-                        file
-                    );
-
-
-                input.dispatchEvent(
-                    new CustomEvent(
-                        "agriguard:imageLoaded",
-                        {
-                            detail: result
-                        }
-                    )
+                URL.revokeObjectURL(
+                    this.state.previewURL
                 );
 
+            } catch (error) {
 
-            } catch (
-                error
-            ) {
-
-                console.error(
-                    "Image upload error:",
+                console.warn(
+                    "Could not revoke image URL:",
                     error
                 );
 
+            }
 
-                input.dispatchEvent(
-                    new CustomEvent(
-                        "agriguard:imageError",
-                        {
-                            detail: {
-                                message:
-                                    error.message
-                            }
-                        }
-                    )
+            this.state.previewURL = null;
+
+        }
+
+    },
+
+
+    /* =====================================================
+       COLLECT DIAGNOSIS CONTEXT
+       ===================================================== */
+
+    collectContext() {
+
+        return {
+
+            crop:
+                this.elements.cropSelect?.value ||
+                "rice",
+
+            field:
+                this.elements.fieldSelect?.value ||
+                "field-a",
+
+            growthStage:
+                this.elements.growthStage?.value ||
+                "Vegetative",
+
+            soilCondition:
+                this.elements.soilCondition?.value ||
+                "Normal",
+
+            timestamp:
+                new Date().toISOString()
+
+        };
+
+    },
+
+
+    /* =====================================================
+       PREPARE DIAGNOSIS INPUT
+       ===================================================== */
+
+    prepareDiagnosisInput() {
+
+        return {
+
+            image: {
+
+                file:
+                    this.state.selectedFile,
+
+                dataURL:
+                    this.state.imageDataURL,
+
+                name:
+                    this.state.selectedFile?.name ||
+                    null,
+
+                type:
+                    this.state.selectedFile?.type ||
+                    null,
+
+                size:
+                    this.state.selectedFile?.size ||
+                    0
+
+            },
+
+            context:
+                this.collectContext()
+
+        };
+
+    },
+
+
+    /* =====================================================
+       RUN DIAGNOSIS
+       ===================================================== */
+
+    async runDiagnosis() {
+
+        if (this.state.diagnosisInProgress) {
+            return;
+        }
+
+
+        if (!this.state.selectedFile) {
+
+            this.showError(
+                "Please upload a crop image first."
+            );
+
+            return;
+
+        }
+
+
+        const input =
+            this.prepareDiagnosisInput();
+
+
+        this.setDiagnosisLoading(true);
+
+
+        try {
+
+            let result = null;
+
+
+            /*
+             * ------------------------------------------------
+             * First attempt:
+             * use an external/global AI engine if available.
+             * ------------------------------------------------
+             */
+
+            result =
+                await this.tryExternalDiagnosis(
+                    input
+                );
+
+
+            /*
+             * ------------------------------------------------
+             * Fallback:
+             * local rule-based demonstration engine.
+             * ------------------------------------------------
+             */
+
+            if (!result) {
+
+                result =
+                    this.runLocalDiagnosis(
+                        input
+                    );
+
+            }
+
+
+            if (!result) {
+
+                throw new Error(
+                    "Diagnosis engine returned no result."
+                );
+
+            }
+
+
+            result =
+                this.normalizeResult(
+                    result,
+                    input
+                );
+
+
+            this.state.lastDiagnosis =
+                result;
+
+
+            this.renderDiagnosisResult(
+                result
+            );
+
+
+            this.updateApplicationState(
+                result
+            );
+
+
+            this.showSuccess(
+                "AI crop diagnosis completed."
+            );
+
+
+            return result;
+
+        } catch (error) {
+
+            console.error(
+                "Crop diagnosis failed:",
+                error
+            );
+
+
+            this.showError(
+                "Diagnosis could not be completed. " +
+                "Please try again."
+            );
+
+
+            return null;
+
+        } finally {
+
+            this.setDiagnosisLoading(false);
+
+        }
+
+    },
+
+
+    /* =====================================================
+       EXTERNAL AI ENGINE
+       ===================================================== */
+
+    async tryExternalDiagnosis(input) {
+
+        /*
+         * This intentionally supports multiple possible
+         * future integrations without forcing a specific
+         * backend implementation.
+         */
+
+
+        try {
+
+            /*
+             * Option 1:
+             * AgriGuardDiseaseModel.predict(...)
+             */
+
+            if (
+                window.AgriGuardDiseaseModel &&
+                typeof
+                    window.AgriGuardDiseaseModel.predict ===
+                    "function"
+            ) {
+
+                return await
+                    window.AgriGuardDiseaseModel.predict(
+                        input
+                    );
+
+            }
+
+
+            /*
+             * Option 2:
+             * AgriGuardAI.diagnose(...)
+             */
+
+            if (
+                window.AgriGuardAI &&
+                typeof
+                    window.AgriGuardAI.diagnose ===
+                    "function"
+            ) {
+
+                return await
+                    window.AgriGuardAI.diagnose(
+                        input
+                    );
+
+            }
+
+
+            /*
+             * Option 3:
+             * DiseaseDetectionAPI.diagnose(...)
+             */
+
+            if (
+                window.DiseaseDetectionAPI &&
+                typeof
+                    window.DiseaseDetectionAPI.diagnose ===
+                    "function"
+            ) {
+
+                return await
+                    window.DiseaseDetectionAPI.diagnose(
+                        input
+                    );
+
+            }
+
+
+            return null;
+
+        } catch (error) {
+
+            console.warn(
+                "External AI engine unavailable:",
+                error
+            );
+
+            return null;
+
+        }
+
+    },
+
+
+    /* =====================================================
+       LOCAL DEMONSTRATION DIAGNOSIS
+       ===================================================== */
+
+    runLocalDiagnosis(input) {
+
+        const crop =
+            String(
+                input.context.crop ||
+                "rice"
+            ).toLowerCase();
+
+
+        const stage =
+            String(
+                input.context.growthStage ||
+                "Vegetative"
+            ).toLowerCase();
+
+
+        const soil =
+            String(
+                input.context.soilCondition ||
+                "Normal"
+            ).toLowerCase();
+
+
+        /*
+         * This is NOT a real computer-vision model.
+         *
+         * It provides a deterministic fallback so the
+         * frontend remains fully functional before an actual
+         * ML model/API is connected.
+         */
+
+
+        const diseaseProfiles = {
+
+            rice: {
+
+                disease: "Rice Blast",
+
+                description:
+                    "Leaf symptoms are consistent with " +
+                    "conditions commonly associated with rice blast.",
+
+                confidence: 94.7,
+
+                severity: "Moderate",
+
+                risk: "High",
+
+                area: "Leaf"
+
+            },
+
+
+            cotton: {
+
+                disease: "Leaf Spot",
+
+                description:
+                    "The submitted crop context is compatible " +
+                    "with a possible foliar leaf-spot condition.",
+
+                confidence: 91.2,
+
+                severity: "Moderate",
+
+                risk: "Medium",
+
+                area: "Leaf"
+
+            },
+
+
+            chilli: {
+
+                disease: "Bacterial Leaf Spot",
+
+                description:
+                    "The crop context is compatible with " +
+                    "possible bacterial leaf-spot symptoms.",
+
+                confidence: 89.4,
+
+                severity: "Moderate",
+
+                risk: "Medium",
+
+                area: "Leaf"
+
+            },
+
+
+            tomato: {
+
+                disease: "Early Blight",
+
+                description:
+                    "The crop context is compatible with " +
+                    "possible early-blight symptoms.",
+
+                confidence: 92.1,
+
+                severity: "Moderate",
+
+                risk: "High",
+
+                area: "Leaf"
+
+            }
+
+        };
+
+
+        let profile =
+            diseaseProfiles[crop] ||
+            diseaseProfiles.rice;
+
+
+        /*
+         * Adjust confidence slightly according to
+         * contextual conditions.
+         */
+
+        let confidence =
+            Number(profile.confidence);
+
+
+        if (
+            soil.includes("moist") ||
+            soil.includes("poor")
+        ) {
+
+            confidence += 1.2;
+
+        }
+
+
+        if (
+            stage.includes("flowering")
+        ) {
+
+            confidence += 0.5;
+
+        }
+
+
+        confidence =
+            Math.max(
+                50,
+                Math.min(
+                    99.9,
+                    confidence
+                )
+            );
+
+
+        return {
+
+            disease:
+                profile.disease,
+
+            description:
+                profile.description,
+
+            confidence,
+
+            severity:
+                profile.severity,
+
+            risk:
+                profile.risk,
+
+            area:
+                profile.area,
+
+            crop,
+
+            stage:
+                input.context.growthStage,
+
+            source:
+                "local-fallback"
+
+        };
+
+    },
+
+
+    /* =====================================================
+       NORMALIZE RESULT
+       ===================================================== */
+
+    normalizeResult(result, input) {
+
+        const confidence =
+            this.normalizeConfidence(
+                result.confidence ??
+                result.confidenceScore ??
+                result.probability ??
+                0
+            );
+
+
+        const disease =
+            result.disease ??
+            result.diseaseName ??
+            result.prediction ??
+            result.label ??
+            "Unknown Condition";
+
+
+        const severity =
+            result.severity ??
+            this.deriveSeverity(
+                result,
+                confidence
+            );
+
+
+        const risk =
+            result.risk ??
+            result.riskLevel ??
+            this.deriveRisk(
+                result,
+                confidence
+            );
+
+
+        const area =
+            result.area ??
+            result.affectedArea ??
+            "Leaf";
+
+
+        const description =
+            result.description ??
+            result.explanation ??
+            "Disease indicators were identified " +
+            "during crop assessment.";
+
+
+        return {
+
+            ...result,
+
+            disease:
+                String(disease),
+
+            description:
+                String(description),
+
+            confidence,
+
+            severity:
+                this.capitalize(
+                    String(severity)
+                ),
+
+            risk:
+                this.capitalize(
+                    String(risk)
+                ),
+
+            area:
+                String(area),
+
+            crop:
+                result.crop ??
+                input.context.crop,
+
+            stage:
+                result.stage ??
+                input.context.growthStage,
+
+            field:
+                result.field ??
+                input.context.field,
+
+            soilCondition:
+                result.soilCondition ??
+                input.context.soilCondition,
+
+            timestamp:
+                result.timestamp ??
+                new Date().toISOString()
+
+        };
+
+    },
+
+
+    /* =====================================================
+       CONFIDENCE NORMALIZATION
+       ===================================================== */
+
+    normalizeConfidence(value) {
+
+        let number =
+            Number(value);
+
+
+        if (!Number.isFinite(number)) {
+            number = 0;
+        }
+
+
+        /*
+         * Convert probability format:
+         * 0.947 -> 94.7
+         */
+
+        if (
+            number > 0 &&
+            number <= 1
+        ) {
+
+            number *= 100;
+
+        }
+
+
+        return Number(
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    number
+                )
+            ).toFixed(1)
+        );
+
+    },
+
+
+    /* =====================================================
+       DERIVE SEVERITY
+       ===================================================== */
+
+    deriveSeverity(result, confidence) {
+
+        const explicit =
+            String(
+                result.severity ||
+                ""
+            ).toLowerCase();
+
+
+        if (
+            explicit.includes("severe") ||
+            explicit.includes("high")
+        ) {
+
+            return "Severe";
+
+        }
+
+
+        if (
+            explicit.includes("moderate") ||
+            explicit.includes("medium")
+        ) {
+
+            return "Moderate";
+
+        }
+
+
+        if (
+            confidence >= 90
+        ) {
+
+            return "Moderate";
+
+        }
+
+
+        return "Mild";
+
+    },
+
+
+    /* =====================================================
+       DERIVE RISK
+       ===================================================== */
+
+    deriveRisk(result, confidence) {
+
+        const explicit =
+            String(
+                result.risk ||
+                result.riskLevel ||
+                ""
+            ).toLowerCase();
+
+
+        if (
+            explicit.includes("high") ||
+            explicit.includes("severe")
+        ) {
+
+            return "High";
+
+        }
+
+
+        if (
+            explicit.includes("medium") ||
+            explicit.includes("moderate")
+        ) {
+
+            return "Medium";
+
+        }
+
+
+        if (
+            confidence >= 90
+        ) {
+
+            return "High";
+
+        }
+
+
+        if (
+            confidence >= 70
+        ) {
+
+            return "Medium";
+
+        }
+
+
+        return "Low";
+
+    },
+
+
+    /* =====================================================
+       RENDER RESULT
+       ===================================================== */
+
+    renderDiagnosisResult(result) {
+
+        if (!result) {
+            return;
+        }
+
+
+        const resultPanel =
+            this.elements.diagnosisResult;
+
+
+        if (!resultPanel) {
+            return;
+        }
+
+
+        this.setText(
+            "diagnosisDisease",
+            result.disease
+        );
+
+
+        this.setText(
+            "diagnosisDescription",
+            result.description
+        );
+
+
+        this.setText(
+            "diagnosisSeverity",
+            result.severity
+        );
+
+
+        this.setText(
+            "diagnosisRisk",
+            result.risk
+        );
+
+
+        this.setText(
+            "diagnosisArea",
+            result.area
+        );
+
+
+        this.setText(
+            "diagnosisStage",
+            result.stage
+        );
+
+
+        this.updateConfidenceScore(
+            result.confidence
+        );
+
+
+        this.updateSeverityClass(
+            result.severity
+        );
+
+
+        this.updateRiskClass(
+            result.risk
+        );
+
+
+        this.updateTimestamp(
+            result.timestamp
+        );
+
+
+        resultPanel.hidden = false;
+
+
+        resultPanel.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    },
+
+
+    /* =====================================================
+       CONFIDENCE SCORE
+       ===================================================== */
+
+    updateConfidenceScore(
+        confidence
+    ) {
+
+        const element =
+            document.getElementById(
+                "confidenceScore"
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        const numeric =
+            this.normalizeConfidence(
+                confidence
+            );
+
+
+        const value =
+            element.querySelector(
+                "span"
+            );
+
+
+        if (value) {
+
+            value.textContent =
+                `${numeric}%`;
+
+        }
+
+
+        /*
+         * Circular progress using CSS custom property.
+         */
+
+        element.style.setProperty(
+            "--confidence",
+            `${numeric}%`
+        );
+
+    },
+
+
+    /* =====================================================
+       SEVERITY CLASS
+       ===================================================== */
+
+    updateSeverityClass(
+        severity
+    ) {
+
+        const element =
+            document.getElementById(
+                "diagnosisSeverity"
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        element.classList.remove(
+            "severity-mild",
+            "severity-moderate",
+            "severity-severe",
+            "severity-high"
+        );
+
+
+        const normalized =
+            String(
+                severity
+            ).toLowerCase();
+
+
+        if (
+            normalized.includes("severe") ||
+            normalized.includes("high")
+        ) {
+
+            element.classList.add(
+                "severity-severe"
+            );
+
+        } else if (
+            normalized.includes("moderate") ||
+            normalized.includes("medium")
+        ) {
+
+            element.classList.add(
+                "severity-moderate"
+            );
+
+        } else {
+
+            element.classList.add(
+                "severity-mild"
+            );
+
+        }
+
+    },
+
+
+    /* =====================================================
+       RISK CLASS
+       ===================================================== */
+
+    updateRiskClass(
+        risk
+    ) {
+
+        const element =
+            document.getElementById(
+                "diagnosisRisk"
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        element.classList.remove(
+            "risk-low",
+            "risk-medium",
+            "risk-high"
+        );
+
+
+        const normalized =
+            String(
+                risk
+            ).toLowerCase();
+
+
+        if (
+            normalized.includes("high") ||
+            normalized.includes("severe")
+        ) {
+
+            element.classList.add(
+                "risk-high"
+            );
+
+        } else if (
+            normalized.includes("medium") ||
+            normalized.includes("moderate")
+        ) {
+
+            element.classList.add(
+                "risk-medium"
+            );
+
+        } else {
+
+            element.classList.add(
+                "risk-low"
+            );
+
+        }
+
+    },
+
+
+    /* =====================================================
+       TIMESTAMP
+       ===================================================== */
+
+    updateTimestamp(
+        timestamp
+    ) {
+
+        const element =
+            document.querySelector(
+                ".result-timestamp"
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        const date =
+            timestamp
+                ? new Date(timestamp)
+                : new Date();
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            element.textContent =
+                "Just now";
+
+            return;
+
+        }
+
+
+        element.textContent =
+            date.toLocaleString(
+                [],
+                {
+                    dateStyle: "medium",
+                    timeStyle: "short"
+                }
+            );
+
+    },
+
+
+    /* =====================================================
+       UPDATE APPLICATION STATE
+       ===================================================== */
+
+    updateApplicationState(
+        result
+    ) {
+
+        /*
+         * Notify other AgriGuard modules without making this
+         * module tightly coupled to app.js.
+         */
+
+        const event =
+            new CustomEvent(
+                "agriguard:diagnosis-complete",
+                {
+                    detail: result
+                }
+            );
+
+
+        document.dispatchEvent(event);
+
+
+        /*
+         * Update risk chart when available.
+         */
+
+        if (
+            typeof window
+                .updateRiskChartFromResult ===
+            "function"
+        ) {
+
+            try {
+
+                const riskScore =
+                    this.riskToScore(
+                        result.risk
+                    );
+
+
+                window.updateRiskChartFromResult(
+                    {
+                        riskScore
+                    }
+                );
+
+            } catch (error) {
+
+                console.warn(
+                    "Risk chart update failed:",
+                    error
                 );
 
             }
 
         }
-    );
-}
+
+    },
 
 
-/* ============================================================
-   23. PUBLIC API
-============================================================ */
+    /* =====================================================
+       RISK TO SCORE
+       ===================================================== */
 
-window.DISEASE_DETECTION_STATE =
-    DISEASE_DETECTION_STATE;
+    riskToScore(
+        risk
+    ) {
 
-
-window.validateCropImage =
-    validateCropImage;
-
-
-window.estimateImageQuality =
-    estimateImageQuality;
-
-
-window.loadCropImage =
-    loadCropImage;
+        const normalized =
+            String(
+                risk ||
+                ""
+            ).toLowerCase();
 
 
-window.setDetectionCrop =
-    setDetectionCrop;
+        if (
+            normalized.includes("high") ||
+            normalized.includes("severe")
+        ) {
+
+            return 80;
+
+        }
 
 
-window.preprocessImage =
-    preprocessImage;
+        if (
+            normalized.includes("medium") ||
+            normalized.includes("moderate")
+        ) {
+
+            return 55;
+
+        }
 
 
-window.runDemoModel =
-    runDemoModel;
+        return 25;
+
+    },
 
 
-window.runRealModel =
-    runRealModel;
+    /* =====================================================
+       HIDE RESULT
+       ===================================================== */
+
+    hideDiagnosisResult() {
+
+        if (
+            this.elements.diagnosisResult
+        ) {
+
+            this.elements.diagnosisResult.hidden =
+                true;
+
+        }
 
 
-window.analyzeCropImage =
-    analyzeCropImage;
+        if (
+            this.elements.recommendationPanel
+        ) {
+
+            this.elements.recommendationPanel.hidden =
+                true;
+
+        }
+
+    },
 
 
-window.buildCompleteDiagnosis =
-    buildCompleteDiagnosis;
+    /* =====================================================
+       LOADING STATE
+       ===================================================== */
+
+    setDiagnosisLoading(
+        loading
+    ) {
+
+        this.state.diagnosisInProgress =
+            Boolean(loading);
 
 
-window.addDiagnosisToHistory =
-    addDiagnosisToHistory;
+        const button =
+            this.elements.diagnoseButton;
 
 
-window.createDiagnosisAlert =
-    createDiagnosisAlert;
+        if (!button) {
+            return;
+        }
 
 
-window.resetDiseaseDetection =
-    resetDiseaseDetection;
+        if (loading) {
+
+            button.disabled = true;
+
+            button.dataset.originalText =
+                button.textContent.trim();
+
+            button.innerHTML =
+                "<span>⟳</span> Analyzing Crop...";
+
+            button.classList.add(
+                "loading"
+            );
+
+        } else {
+
+            button.disabled = false;
+
+            button.classList.remove(
+                "loading"
+            );
 
 
-window.getCurrentDiagnosis =
-    getCurrentDiagnosis;
+            button.innerHTML =
+                "<span>✦</span> Analyze Crop with AI";
+
+        }
+
+    },
 
 
-window.getDetectionStatus =
-    getDetectionStatus;
+    /* =====================================================
+       UI HELPERS
+       ===================================================== */
+
+    setText(
+        elementId,
+        value
+    ) {
+
+        const element =
+            document.getElementById(
+                elementId
+            );
 
 
-window.formatConfidence =
-    formatConfidence;
+        if (!element) {
+            return;
+        }
 
 
-window.getDiseaseStatusMessage =
-    getDiseaseStatusMessage;
+        element.textContent =
+            value ??
+            "";
+
+    },
 
 
-window.setupImageDropZone =
-    setupImageDropZone;
+    capitalize(
+        value
+    ) {
+
+        if (!value) {
+            return value;
+        }
 
 
-window.setupImageInput =
-    setupImageInput;
+        return (
+            value.charAt(0).toUpperCase() +
+            value.slice(1).toLowerCase()
+        );
+
+    },
 
 
-/* ============================================================
-   24. INITIALIZATION
-============================================================ */
+    /* =====================================================
+       TOAST HELPERS
+       ===================================================== */
 
-console.log(
-    "%c🔬 Disease Detection Module",
-    "font-size:16px;font-weight:bold;"
+    showSuccess(
+        message
+    ) {
+
+        this.showToast(
+            "Success",
+            message,
+            "✓"
+        );
+
+    },
+
+
+    showError(
+        message
+    ) {
+
+        this.showToast(
+            "Error",
+            message,
+            "!"
+        );
+
+    },
+
+
+    showToast(
+        title,
+        message,
+        icon
+    ) {
+
+        /*
+         * Prefer app.js toast implementation when available.
+         */
+
+        if (
+            typeof window.showToast ===
+            "function"
+        ) {
+
+            try {
+
+                window.showToast(
+                    title,
+                    message,
+                    icon
+                );
+
+                return;
+
+            } catch (error) {
+
+                console.warn(
+                    "Application toast failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /*
+         * Direct fallback.
+         */
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        if (!toast) {
+            return;
+        }
+
+
+        this.setText(
+            "toastTitle",
+            title
+        );
+
+
+        this.setText(
+            "toastMessage",
+            message
+        );
+
+
+        this.setText(
+            "toastIcon",
+            icon
+        );
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            this._toastTimer
+        );
+
+
+        this._toastTimer =
+            setTimeout(
+                () => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                4000
+            );
+
+    },
+
+
+    /* =====================================================
+       RESET
+       ===================================================== */
+
+    resetState() {
+
+        this.revokePreviewURL();
+
+        this.state.selectedFile = null;
+
+        this.state.imageDataURL = null;
+
+        this.state.lastDiagnosis = null;
+
+        this.state.diagnosisInProgress =
+            false;
+
+
+        if (this.elements.fileInput) {
+
+            this.elements.fileInput.value =
+                "";
+
+        }
+
+
+        if (this.elements.imagePreview) {
+
+            this.elements.imagePreview.hidden =
+                true;
+
+        }
+
+
+        if (this.elements.uploadPlaceholder) {
+
+            this.elements.uploadPlaceholder.hidden =
+                false;
+
+        }
+
+
+        if (this.elements.previewImage) {
+
+            this.elements.previewImage.removeAttribute(
+                "src"
+            );
+
+        }
+
+
+        if (this.elements.uploadZone) {
+
+            this.elements.uploadZone.classList.remove(
+                "has-image"
+            );
+
+            this.elements.uploadZone.classList.remove(
+                "drag-over"
+            );
+
+        }
+
+
+        this.hideDiagnosisResult();
+
+    },
+
+
+    /* =====================================================
+       PUBLIC GETTERS
+       ===================================================== */
+
+    getSelectedFile() {
+
+        return this.state.selectedFile;
+
+    },
+
+
+    getLastDiagnosis() {
+
+        return this.state.lastDiagnosis;
+
+    },
+
+
+    getDiagnosisInput() {
+
+        if (!this.state.selectedFile) {
+            return null;
+        }
+
+        return this.prepareDiagnosisInput();
+
+    }
+
+};
+
+
+/* =========================================================
+   DOM READY
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        try {
+
+            AgriGuardDiseaseDetection.init();
+
+        } catch (error) {
+
+            console.error(
+                "Disease Detection initialization failed:",
+                error
+            );
+
+        }
+
+    }
 );
 
-console.log(
-    "AI image-diagnosis pipeline ready."
-);
 
-console.log(
-    "Supported crops:",
-    CROPS.map(
-        crop => crop.name
-    ).join(", ")
-);
+/* =========================================================
+   GLOBAL EXPORTS
+   ========================================================= */
+
+window.AgriGuardDiseaseDetection =
+    AgriGuardDiseaseDetection;
+
+
+window.handleDiseaseImage =
+    file =>
+        AgriGuardDiseaseDetection.handleFile(
+            file
+        );
+
+
+window.runCropDiagnosis =
+    () =>
+        AgriGuardDiseaseDetection.runDiagnosis();
+
+
+window.removeDiseaseImage =
+    () =>
+        AgriGuardDiseaseDetection.removeImage();
+
+
+window.getDiseaseDiagnosis =
+    () =>
+        AgriGuardDiseaseDetection.getLastDiagnosis();
+
+
+window.getDiseaseDiagnosisInput =
+    () =>
+        AgriGuardDiseaseDetection.getDiagnosisInput();
+```
