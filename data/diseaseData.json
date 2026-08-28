@@ -1,0 +1,1411 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-08-28",
+
+  "diseases": [
+    {
+      "id": "rice-blast",
+      "name": "Rice Blast",
+      "scientificCause": "Magnaporthe oryzae",
+      "crop": "rice",
+      "category": "Fungal Disease",
+      "severity": "High",
+
+      "symptoms": [
+        "Spindle-shaped lesions on leaves",
+        "Gray or white centers surrounded by brown margins",
+        "Lesions may enlarge and merge",
+        "Neck infection may cause panicle breakage",
+        "Reduced grain development in severe infections"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Leaf collar",
+        "Stem",
+        "Panicle",
+        "Neck"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 20,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 85,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall or prolonged leaf wetness",
+        "soilMoisture": "High"
+      },
+
+      "riskFactors": [
+        "High humidity",
+        "Prolonged leaf wetness",
+        "Frequent rainfall",
+        "Dense crop canopy",
+        "Excess nitrogen",
+        "Poor field ventilation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.25,
+        "rainfall": 0.2,
+        "temperature": 0.15,
+        "soilMoisture": 0.1,
+        "growthStage": 0.15,
+        "visualSymptoms": 0.15
+      },
+
+      "visualIndicators": [
+        "Spindle-shaped lesions",
+        "Brown leaf spots",
+        "Gray lesion centers",
+        "Neck discoloration"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect surrounding plants for similar symptoms",
+          "Remove and properly dispose of severely affected plant material",
+          "Avoid unnecessary overhead irrigation",
+          "Improve air circulation where practical"
+        ],
+        "preventive": [
+          "Maintain balanced nitrogen nutrition",
+          "Avoid excessive plant density",
+          "Monitor humidity and prolonged leaf wetness",
+          "Inspect the crop regularly during high-risk weather"
+        ],
+        "treatmentGuidance": [
+          "Use only locally approved disease-management products",
+          "Follow the product label and applicable agricultural guidance",
+          "Reassess disease progression after intervention"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Characteristic lesion shape",
+        "Crop identity",
+        "High humidity",
+        "Recent rainfall",
+        "Compatible growth stage"
+      ]
+    },
+
+    {
+      "id": "bacterial-leaf-blight",
+      "name": "Bacterial Leaf Blight",
+      "scientificCause": "Xanthomonas oryzae pv. oryzae",
+      "crop": "rice",
+      "category": "Bacterial Disease",
+      "severity": "High",
+
+      "symptoms": [
+        "Water-soaked lesions along leaf margins",
+        "Yellowing and drying of leaves",
+        "Wavy lesion margins",
+        "Leaf tip drying",
+        "Severe cases may cause extensive leaf blighting"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Leaf margin",
+        "Leaf tip"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 25,
+          "max": 34,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 75,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rain and storm conditions",
+        "soilMoisture": "High"
+      },
+
+      "riskFactors": [
+        "Heavy rainfall",
+        "High humidity",
+        "Strong winds",
+        "Excess nitrogen",
+        "Plant injury",
+        "Poor drainage"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.2,
+        "rainfall": 0.25,
+        "temperature": 0.15,
+        "soilMoisture": 0.1,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.2
+      },
+
+      "visualIndicators": [
+        "Water-soaked leaf margins",
+        "Yellow-orange leaf discoloration",
+        "Wavy lesions",
+        "Leaf tip drying"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect nearby plants",
+          "Avoid unnecessary movement through affected areas",
+          "Maintain appropriate field drainage",
+          "Monitor disease progression closely"
+        ],
+        "preventive": [
+          "Use healthy planting material",
+          "Maintain balanced fertilizer application",
+          "Avoid excessive nitrogen",
+          "Monitor fields after heavy rainfall"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved bacterial-disease management practices",
+          "Use only authorized products where applicable",
+          "Follow all product-label instructions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Water-soaked lesions",
+        "Leaf-margin symptoms",
+        "Recent rainfall",
+        "High humidity",
+        "Rice crop identification"
+      ]
+    },
+
+    {
+      "id": "brown-spot",
+      "name": "Rice Brown Spot",
+      "scientificCause": "Bipolaris oryzae",
+      "crop": "rice",
+      "category": "Fungal Disease",
+      "severity": "Moderate",
+
+      "symptoms": [
+        "Small circular or oval brown spots",
+        "Spots may develop darker margins",
+        "Yellowing around lesions",
+        "Multiple lesions may occur across leaves",
+        "Severe infection can reduce plant vigor"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Leaf sheath",
+        "Grain"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 20,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 70,
+          "max": 95,
+          "unit": "%"
+        },
+        "rainfall": "Moderate to frequent rainfall",
+        "soilMoisture": "Variable"
+      },
+
+      "riskFactors": [
+        "Nutrient deficiency",
+        "Plant stress",
+        "High humidity",
+        "Poor soil fertility",
+        "Prolonged wetness"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.2,
+        "rainfall": 0.15,
+        "temperature": 0.15,
+        "soilMoisture": 0.1,
+        "growthStage": 0.15,
+        "visualSymptoms": 0.25
+      },
+
+      "visualIndicators": [
+        "Circular brown spots",
+        "Oval lesions",
+        "Dark lesion margins",
+        "Leaf yellowing"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect plants throughout the field",
+          "Assess overall crop vigor",
+          "Check soil fertility and moisture conditions"
+        ],
+        "preventive": [
+          "Maintain balanced crop nutrition",
+          "Avoid prolonged plant stress",
+          "Monitor disease during humid weather",
+          "Use healthy planting material"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved disease-management recommendations",
+          "Use authorized products according to their labels when required"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Characteristic brown lesions",
+        "Plant stress",
+        "Nutrient condition",
+        "Humidity",
+        "Rice crop identity"
+      ]
+    },
+
+    {
+      "id": "sheath-blight",
+      "name": "Rice Sheath Blight",
+      "scientificCause": "Rhizoctonia solani",
+      "crop": "rice",
+      "category": "Fungal Disease",
+      "severity": "High",
+
+      "symptoms": [
+        "Oval or irregular lesions on leaf sheaths",
+        "Gray-green lesions near water level",
+        "Lesions may spread upward",
+        "Affected leaves may dry",
+        "Dense canopies may show rapid disease development"
+      ],
+
+      "affectedParts": [
+        "Leaf sheath",
+        "Leaf",
+        "Stem"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 28,
+          "max": 32,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 80,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall",
+        "soilMoisture": "High"
+      },
+
+      "riskFactors": [
+        "Dense planting",
+        "High humidity",
+        "Excess nitrogen",
+        "Standing water",
+        "Poor air circulation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.25,
+        "rainfall": 0.15,
+        "temperature": 0.15,
+        "soilMoisture": 0.2,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.15
+      },
+
+      "visualIndicators": [
+        "Sheath lesions",
+        "Gray-green patches",
+        "Lesions near water level",
+        "Rapid spread in dense canopy"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect lower plant portions",
+          "Improve field monitoring",
+          "Avoid excessive irrigation",
+          "Assess crop density"
+        ],
+        "preventive": [
+          "Avoid excessive nitrogen",
+          "Maintain suitable plant spacing",
+          "Improve canopy ventilation",
+          "Monitor humid conditions"
+        ],
+        "treatmentGuidance": [
+          "Use locally approved management practices",
+          "Follow product-label directions for any authorized treatment"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Sheath lesions",
+        "Dense canopy",
+        "High humidity",
+        "High soil moisture",
+        "Rice crop identity"
+      ]
+    },
+
+    {
+      "id": "cotton-leaf-curl",
+      "name": "Cotton Leaf Curl Disease",
+      "scientificCause": "Cotton leaf curl begomovirus complex",
+      "crop": "cotton",
+      "category": "Viral Disease",
+      "severity": "High",
+
+      "symptoms": [
+        "Upward or downward curling of leaves",
+        "Leaf thickening",
+        "Vein swelling",
+        "Reduced plant growth",
+        "Shortened internodes",
+        "Leaf-like enations may develop"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Young shoots",
+        "Growing points"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 25,
+          "max": 35,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 45,
+          "max": 75,
+          "unit": "%"
+        },
+        "rainfall": "Variable",
+        "soilMoisture": "Moderate"
+      },
+
+      "riskFactors": [
+        "Whitefly vector pressure",
+        "Infected planting material",
+        "Presence of infected plants",
+        "Warm conditions",
+        "Poor field sanitation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.1,
+        "rainfall": 0.05,
+        "temperature": 0.15,
+        "soilMoisture": 0.05,
+        "growthStage": 0.15,
+        "visualSymptoms": 0.5
+      },
+
+      "visualIndicators": [
+        "Leaf curling",
+        "Vein swelling",
+        "Leaf thickening",
+        "Enations",
+        "Stunted growth"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect neighboring plants",
+          "Monitor vector populations",
+          "Remove severely affected plants where locally recommended",
+          "Avoid movement of infected plant material"
+        ],
+        "preventive": [
+          "Use healthy planting material",
+          "Monitor whitefly populations",
+          "Maintain field sanitation",
+          "Inspect young plants regularly"
+        ],
+        "treatmentGuidance": [
+          "Virus diseases generally require vector and source management rather than direct curative treatment",
+          "Follow locally approved integrated pest-management guidance"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Characteristic leaf curling",
+        "Vein swelling",
+        "Vector presence",
+        "Cotton crop identity",
+        "Young plant symptoms"
+      ]
+    },
+
+    {
+      "id": "bacterial-blight",
+      "name": "Cotton Bacterial Blight",
+      "scientificCause": "Xanthomonas citri pv. malvacearum",
+      "crop": "cotton",
+      "category": "Bacterial Disease",
+      "severity": "Moderate",
+
+      "symptoms": [
+        "Angular water-soaked leaf spots",
+        "Dark brown lesions",
+        "Leaf drop in severe cases",
+        "Lesions on stems and petioles",
+        "Boll symptoms may occur"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Petiole",
+        "Stem",
+        "Boll"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 25,
+          "max": 35,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 75,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall",
+        "soilMoisture": "High"
+      },
+
+      "riskFactors": [
+        "Frequent rainfall",
+        "High humidity",
+        "Plant injury",
+        "Infected seed",
+        "Poor sanitation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.2,
+        "rainfall": 0.25,
+        "temperature": 0.1,
+        "soilMoisture": 0.1,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.25
+      },
+
+      "visualIndicators": [
+        "Angular lesions",
+        "Water-soaked spots",
+        "Dark brown leaf lesions",
+        "Stem lesions"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect surrounding plants",
+          "Remove heavily infected plant material where appropriate",
+          "Improve field sanitation",
+          "Monitor after rainfall"
+        ],
+        "preventive": [
+          "Use healthy seed",
+          "Avoid unnecessary plant injury",
+          "Maintain field sanitation",
+          "Monitor humid conditions"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved bacterial disease-management guidance",
+          "Use only authorized products according to label directions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Angular leaf lesions",
+        "Water-soaked appearance",
+        "Rainfall",
+        "Humidity",
+        "Cotton crop identity"
+      ]
+    },
+
+    {
+      "id": "alternaria-leaf-spot",
+      "name": "Alternaria Leaf Spot",
+      "scientificCause": "Alternaria spp.",
+      "crop": "cotton",
+      "category": "Fungal Disease",
+      "severity": "Moderate",
+
+      "symptoms": [
+        "Circular brown leaf spots",
+        "Concentric ring patterns",
+        "Yellowing around lesions",
+        "Premature leaf shedding in severe cases"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Boll"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 20,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 70,
+          "max": 95,
+          "unit": "%"
+        },
+        "rainfall": "Frequent or prolonged wet periods",
+        "soilMoisture": "Moderate to high"
+      },
+
+      "riskFactors": [
+        "High humidity",
+        "Leaf wetness",
+        "Plant stress",
+        "Nutrient imbalance",
+        "Poor ventilation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.25,
+        "rainfall": 0.15,
+        "temperature": 0.15,
+        "soilMoisture": 0.1,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.25
+      },
+
+      "visualIndicators": [
+        "Circular lesions",
+        "Concentric rings",
+        "Brown spots",
+        "Yellow halos"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect the crop for expanding lesions",
+          "Remove severely damaged plant material where appropriate",
+          "Monitor disease progression"
+        ],
+        "preventive": [
+          "Improve canopy ventilation",
+          "Avoid prolonged leaf wetness",
+          "Maintain balanced nutrition",
+          "Monitor stressed plants"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved fungicide and disease-management guidance where applicable",
+          "Always follow product-label instructions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Concentric lesions",
+        "Humidity",
+        "Leaf wetness",
+        "Plant stress",
+        "Cotton crop identity"
+      ]
+    },
+
+    {
+      "id": "fusarium-wilt",
+      "name": "Fusarium Wilt",
+      "scientificCause": "Fusarium oxysporum f. sp. vasinfectum",
+      "crop": "cotton",
+      "category": "Fungal Disease",
+      "severity": "High",
+
+      "symptoms": [
+        "Yellowing of leaves",
+        "Wilting",
+        "Stunted growth",
+        "Vascular discoloration",
+        "Progressive plant decline"
+      ],
+
+      "affectedParts": [
+        "Root",
+        "Stem",
+        "Vascular tissue",
+        "Leaf"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 25,
+          "max": 32,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 50,
+          "max": 80,
+          "unit": "%"
+        },
+        "rainfall": "Variable",
+        "soilMoisture": "Moderate to high"
+      },
+
+      "riskFactors": [
+        "Infested soil",
+        "Root injury",
+        "Warm soil",
+        "Plant stress",
+        "Poor crop rotation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.05,
+        "rainfall": 0.05,
+        "temperature": 0.2,
+        "soilMoisture": 0.2,
+        "growthStage": 0.15,
+        "visualSymptoms": 0.35
+      },
+
+      "visualIndicators": [
+        "Wilting",
+        "Leaf yellowing",
+        "Stunting",
+        "Vascular discoloration"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect affected plants and root zones",
+          "Avoid moving contaminated soil between fields",
+          "Remove severely affected plants where locally recommended"
+        ],
+        "preventive": [
+          "Use resistant or recommended varieties where available",
+          "Maintain crop rotation",
+          "Avoid root injury",
+          "Use healthy planting material"
+        ],
+        "treatmentGuidance": [
+          "Soil-borne wilt diseases are difficult to cure after severe infection",
+          "Follow locally recommended integrated disease-management practices"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Wilting pattern",
+        "Vascular symptoms",
+        "Soil condition",
+        "Temperature",
+        "Cotton crop identity"
+      ]
+    },
+
+    {
+      "id": "anthracnose",
+      "name": "Chilli Anthracnose",
+      "scientificCause": "Colletotrichum spp.",
+      "crop": "chilli",
+      "category": "Fungal Disease",
+      "severity": "High",
+
+      "symptoms": [
+        "Sunken circular lesions on fruit",
+        "Dark lesions",
+        "Concentric rings",
+        "Fruit rot",
+        "Dieback of shoots may occur"
+      ],
+
+      "affectedParts": [
+        "Fruit",
+        "Leaf",
+        "Stem",
+        "Shoot"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 24,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 80,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall",
+        "soilMoisture": "High"
+      },
+
+      "riskFactors": [
+        "High humidity",
+        "Frequent rainfall",
+        "Fruit wetness",
+        "Plant injury",
+        "Poor field sanitation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.25,
+        "rainfall": 0.2,
+        "temperature": 0.15,
+        "soilMoisture": 0.1,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.2
+      },
+
+      "visualIndicators": [
+        "Sunken fruit lesions",
+        "Dark circular spots",
+        "Concentric rings",
+        "Fruit rot"
+      ],
+
+      "management": {
+        "immediate": [
+          "Remove severely infected fruit where appropriate",
+          "Inspect nearby plants and fruits",
+          "Improve field sanitation",
+          "Avoid unnecessary fruit wetting"
+        ],
+        "preventive": [
+          "Use healthy planting material",
+          "Improve field ventilation",
+          "Avoid prolonged fruit wetness",
+          "Remove infected plant debris"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved disease-management practices",
+          "Use authorized products according to label directions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Sunken fruit lesions",
+        "Concentric rings",
+        "High humidity",
+        "Rainfall",
+        "Chilli crop identity"
+      ]
+    },
+
+    {
+      "id": "bacterial-leaf-spot",
+      "name": "Chilli Bacterial Leaf Spot",
+      "scientificCause": "Xanthomonas spp.",
+      "crop": "chilli",
+      "category": "Bacterial Disease",
+      "severity": "Moderate",
+
+      "symptoms": [
+        "Small water-soaked spots",
+        "Dark brown or black lesions",
+        "Yellowing around lesions",
+        "Leaf drop under severe infection",
+        "Fruit spotting may occur"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Fruit",
+        "Stem"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 24,
+          "max": 32,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 75,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall",
+        "soilMoisture": "High"
+      },
+
+      "riskFactors": [
+        "High humidity",
+        "Rain splash",
+        "Frequent rainfall",
+        "Plant injury",
+        "Poor sanitation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.2,
+        "rainfall": 0.25,
+        "temperature": 0.1,
+        "soilMoisture": 0.1,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.25
+      },
+
+      "visualIndicators": [
+        "Water-soaked spots",
+        "Dark lesions",
+        "Yellow halos",
+        "Fruit spots"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect neighboring plants",
+          "Remove severely affected plant material where appropriate",
+          "Avoid unnecessary handling of wet plants"
+        ],
+        "preventive": [
+          "Use clean planting material",
+          "Improve field sanitation",
+          "Avoid overhead irrigation where practical",
+          "Monitor after rainfall"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved bacterial disease-management recommendations",
+          "Use only authorized products and follow labels"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Water-soaked lesions",
+        "Rainfall",
+        "Humidity",
+        "Leaf symptoms",
+        "Chilli crop identity"
+      ]
+    },
+
+    {
+      "id": "powdery-mildew",
+      "name": "Powdery Mildew",
+      "scientificCause": "Powdery mildew fungi",
+      "crop": "chilli",
+      "category": "Fungal Disease",
+      "severity": "Moderate",
+
+      "symptoms": [
+        "White powdery growth on leaves",
+        "Leaf yellowing",
+        "Premature leaf drop",
+        "Reduced photosynthetic activity"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Young shoots"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 20,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 50,
+          "max": 85,
+          "unit": "%"
+        },
+        "rainfall": "Rain is not always required; humid conditions favor disease",
+        "soilMoisture": "Moderate"
+      },
+
+      "riskFactors": [
+        "High relative humidity",
+        "Poor air circulation",
+        "Dense canopy",
+        "Moderate temperatures",
+        "Plant stress"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.3,
+        "rainfall": 0.05,
+        "temperature": 0.15,
+        "soilMoisture": 0.05,
+        "growthStage": 0.15,
+        "visualSymptoms": 0.3
+      },
+
+      "visualIndicators": [
+        "White powdery coating",
+        "Leaf yellowing",
+        "Powdery colonies",
+        "Premature leaf drop"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect both upper and lower leaf surfaces",
+          "Remove severely affected leaves where appropriate",
+          "Improve canopy ventilation"
+        ],
+        "preventive": [
+          "Avoid excessively dense planting",
+          "Maintain balanced crop nutrition",
+          "Monitor humidity",
+          "Inspect regularly during favorable conditions"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved disease-management recommendations",
+          "Use authorized products according to label instructions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "White powdery growth",
+        "Humidity",
+        "Temperature",
+        "Leaf symptoms",
+        "Crop identity"
+      ]
+    },
+
+    {
+      "id": "phytophthora-blight",
+      "name": "Chilli Phytophthora Blight",
+      "scientificCause": "Phytophthora spp.",
+      "crop": "chilli",
+      "category": "Oomycete Disease",
+      "severity": "High",
+
+      "symptoms": [
+        "Sudden wilting",
+        "Dark water-soaked lesions",
+        "Stem or collar rot",
+        "Root rot",
+        "Plant collapse under severe infection"
+      ],
+
+      "affectedParts": [
+        "Root",
+        "Stem",
+        "Collar",
+        "Leaf",
+        "Fruit"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 24,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 80,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Heavy rainfall or waterlogging",
+        "soilMoisture": "Very high"
+      },
+
+      "riskFactors": [
+        "Waterlogging",
+        "Poor drainage",
+        "Heavy rainfall",
+        "Excess irrigation",
+        "High soil moisture"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.2,
+        "rainfall": 0.2,
+        "temperature": 0.1,
+        "soilMoisture": 0.3,
+        "growthStage": 0.05,
+        "visualSymptoms": 0.15
+      },
+
+      "visualIndicators": [
+        "Water-soaked lesions",
+        "Collar rot",
+        "Root rot",
+        "Sudden wilting",
+        "Plant collapse"
+      ],
+
+      "management": {
+        "immediate": [
+          "Improve drainage immediately",
+          "Avoid excessive irrigation",
+          "Inspect neighboring plants",
+          "Remove severely affected plants where locally recommended"
+        ],
+        "preventive": [
+          "Maintain good field drainage",
+          "Avoid prolonged waterlogging",
+          "Use appropriate planting beds where suitable",
+          "Monitor fields after heavy rainfall"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved oomycete disease-management guidance",
+          "Use authorized products according to label instructions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Waterlogged soil",
+        "Sudden wilting",
+        "Collar lesions",
+        "High rainfall",
+        "Chilli crop identity"
+      ]
+    },
+
+    {
+      "id": "early-blight",
+      "name": "Tomato Early Blight",
+      "scientificCause": "Alternaria solani",
+      "crop": "tomato",
+      "category": "Fungal Disease",
+      "severity": "Moderate",
+
+      "symptoms": [
+        "Brown circular leaf lesions",
+        "Concentric target-like rings",
+        "Yellowing around lesions",
+        "Lower leaves often affected first",
+        "Defoliation under severe infection"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Stem",
+        "Fruit"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 24,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 70,
+          "max": 95,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall or irrigation wetting foliage",
+        "soilMoisture": "Moderate to high"
+      },
+
+      "riskFactors": [
+        "High humidity",
+        "Leaf wetness",
+        "Plant stress",
+        "Poor air circulation",
+        "Nutrient deficiency"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.25,
+        "rainfall": 0.15,
+        "temperature": 0.15,
+        "soilMoisture": 0.1,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.25
+      },
+
+      "visualIndicators": [
+        "Target-like lesions",
+        "Concentric rings",
+        "Brown leaf spots",
+        "Yellow halos",
+        "Lower-leaf progression"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect lower leaves",
+          "Remove severely affected leaves where appropriate",
+          "Avoid prolonged leaf wetness"
+        ],
+        "preventive": [
+          "Improve air circulation",
+          "Maintain balanced nutrition",
+          "Avoid unnecessary overhead irrigation",
+          "Remove infected plant debris"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved fungal disease-management recommendations",
+          "Use authorized products according to label instructions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Concentric lesions",
+        "Lower-leaf symptoms",
+        "Humidity",
+        "Leaf wetness",
+        "Tomato crop identity"
+      ]
+    },
+
+    {
+      "id": "late-blight",
+      "name": "Tomato Late Blight",
+      "scientificCause": "Phytophthora infestans",
+      "crop": "tomato",
+      "category": "Oomycete Disease",
+      "severity": "Critical",
+
+      "symptoms": [
+        "Irregular water-soaked lesions",
+        "Dark brown to black leaf lesions",
+        "Rapid leaf blighting",
+        "White growth may occur under humid conditions",
+        "Fruit may develop dark greasy lesions"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Stem",
+        "Fruit"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 15,
+          "max": 25,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 80,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall and prolonged leaf wetness",
+        "soilMoisture": "High"
+      },
+
+      "riskFactors": [
+        "Cool humid weather",
+        "Frequent rainfall",
+        "Long leaf-wetness periods",
+        "Dense canopy",
+        "Poor ventilation"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.25,
+        "rainfall": 0.2,
+        "temperature": 0.15,
+        "soilMoisture": 0.1,
+        "growthStage": 0.05,
+        "visualSymptoms": 0.25
+      },
+
+      "visualIndicators": [
+        "Irregular water-soaked lesions",
+        "Dark leaf lesions",
+        "Rapid blighting",
+        "White growth under humid conditions",
+        "Dark fruit lesions"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect the entire field promptly",
+          "Remove severely infected material where locally recommended",
+          "Avoid working through wet plants",
+          "Improve ventilation and drainage"
+        ],
+        "preventive": [
+          "Monitor weather closely",
+          "Reduce prolonged leaf wetness",
+          "Maintain suitable plant spacing",
+          "Use healthy planting material"
+        ],
+        "treatmentGuidance": [
+          "Late blight can progress rapidly and requires prompt local management",
+          "Follow locally approved disease-management recommendations",
+          "Follow all product-label instructions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Rapid symptom progression",
+        "Water-soaked lesions",
+        "Cool humid weather",
+        "Rainfall",
+        "Tomato crop identity"
+      ]
+    },
+
+    {
+      "id": "bacterial-spot",
+      "name": "Tomato Bacterial Spot",
+      "scientificCause": "Xanthomonas spp.",
+      "crop": "tomato",
+      "category": "Bacterial Disease",
+      "severity": "Moderate",
+
+      "symptoms": [
+        "Small dark leaf spots",
+        "Yellow halos around lesions",
+        "Leaf blighting under severe infection",
+        "Fruit spots with raised or scabby appearance",
+        "Stem lesions may occur"
+      ],
+
+      "affectedParts": [
+        "Leaf",
+        "Fruit",
+        "Stem"
+      ],
+
+      "favorableConditions": {
+        "temperature": {
+          "min": 24,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 75,
+          "max": 100,
+          "unit": "%"
+        },
+        "rainfall": "Frequent rainfall or overhead irrigation",
+        "soilMoisture": "Moderate to high"
+      },
+
+      "riskFactors": [
+        "Rain splash",
+        "High humidity",
+        "Overhead irrigation",
+        "Plant injury",
+        "Infected planting material"
+      ],
+
+      "riskWeights": {
+        "humidity": 0.2,
+        "rainfall": 0.25,
+        "temperature": 0.1,
+        "soilMoisture": 0.1,
+        "growthStage": 0.1,
+        "visualSymptoms": 0.25
+      },
+
+      "visualIndicators": [
+        "Small dark spots",
+        "Yellow halos",
+        "Fruit spotting",
+        "Scabby fruit lesions"
+      ],
+
+      "management": {
+        "immediate": [
+          "Inspect neighboring plants",
+          "Avoid unnecessary handling of wet foliage",
+          "Remove severely affected material where appropriate"
+        ],
+        "preventive": [
+          "Use clean planting material",
+          "Reduce rain splash where practical",
+          "Avoid unnecessary overhead irrigation",
+          "Maintain field sanitation"
+        ],
+        "treatmentGuidance": [
+          "Follow locally approved bacterial disease-management practices",
+          "Use only authorized products according to label instructions"
+        ]
+      },
+
+      "confidenceFactors": [
+        "Small dark spots",
+        "Yellow halos",
+        "Fruit lesions",
+        "Humidity",
+        "Tomato crop identity"
+      ]
+    }
+  ],
+
+  "diseaseSeverityScale": {
+    "low": {
+      "scoreMin": 0,
+      "scoreMax": 29,
+      "label": "Low",
+      "description": "Limited symptoms or low-impact condition."
+    },
+    "moderate": {
+      "scoreMin": 30,
+      "scoreMax": 59,
+      "label": "Moderate",
+      "description": "Noticeable symptoms requiring monitoring and management."
+    },
+    "high": {
+      "scoreMin": 60,
+      "scoreMax": 79,
+      "label": "High",
+      "description": "Significant disease risk requiring prompt attention."
+    },
+    "critical": {
+      "scoreMin": 80,
+      "scoreMax": 100,
+      "label": "Critical",
+      "description": "Severe or rapidly developing risk requiring urgent assessment."
+    }
+  },
+
+  "diagnosisConfidenceScale": {
+    "veryHigh": {
+      "min": 90,
+      "max": 100,
+      "label": "Very High"
+    },
+    "high": {
+      "min": 75,
+      "max": 89,
+      "label": "High"
+    },
+    "moderate": {
+      "min": 50,
+      "max": 74,
+      "label": "Moderate"
+    },
+    "low": {
+      "min": 0,
+      "max": 49,
+      "label": "Low"
+    }
+  },
+
+  "diagnosisRules": {
+    "minimumConfidenceForDisease": 60,
+    "minimumConfidenceForHighPriorityAlert": 75,
+    "requireHumanReviewBelow": 60,
+    "environmentalConfirmationRequired": true,
+    "visualConfirmationRequired": true
+  },
+
+  "safetyNotice": {
+    "title": "Decision-Support Notice",
+    "message": "AgriGuard AI provides AI-assisted decision support and does not replace professional agricultural diagnosis. Disease identification should be confirmed using appropriate field inspection, laboratory testing or qualified agricultural guidance when necessary.",
+    "treatmentMessage": "Treatment recommendations must follow local agricultural regulations, approved product labels, crop-specific restrictions and professional guidance."
+  }
+}
