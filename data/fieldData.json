@@ -1,127 +1,403 @@
+```json
 {
+  "metadata": {
+    "name": "AgriGuard AI Field Dataset",
+    "version": "1.0.0",
+    "description": "Field-level crop, health, soil, disease-risk and monitoring data for AgriGuard AI.",
+    "lastUpdated": "2026-08-28"
+  },
+
+  "summary": {
+    "totalFields": 4,
+    "totalAreaAcres": 10.0,
+    "averageCropHealth": 79.25,
+    "averageDiseaseRisk": 47.25,
+    "averageSoilMoisture": 65.5,
+    "healthyFields": 2,
+    "attentionRequired": 2
+  },
+
   "fields": [
     {
       "id": "field-a",
       "name": "Field A",
-      "crop": "Rice",
-      "cropCode": "rice",
+      "crop": "rice",
+      "cropName": "Rice",
+      "variety": "BPT 5204",
       "area": 2.4,
       "areaUnit": "acres",
-      "growthStage": "Flowering",
-      "health": 86,
-      "diseaseRisk": 23,
-      "soilMoisture": 61,
-      "status": "Healthy",
-      "statusCode": "healthy",
       "location": "Andhra Pradesh",
-      "lastInspection": "2026-08-27",
-      "lastDiagnosis": "Rice Blast",
-      "diagnosisConfidence": 94.7,
-      "ndvi": 0.76,
-      "soilHealth": 78,
-      "temperature": 29,
-      "humidity": 78,
-      "rainProbability": 42
+      "soilType": "Clay Loam",
+
+      "coordinates": {
+        "latitude": 16.3067,
+        "longitude": 80.4365
+      },
+
+      "growthStage": "Flowering",
+      "growthStageCode": "flowering",
+      "plantingDate": "2026-06-18",
+      "expectedHarvestDate": "2026-10-05",
+
+      "health": {
+        "score": 86,
+        "status": "Healthy",
+        "trend": 4.2
+      },
+
+      "diseaseRisk": {
+        "score": 23,
+        "level": "Low",
+        "trend": 2.1
+      },
+
+      "soil": {
+        "moisture": 61,
+        "pH": 6.4,
+        "nitrogen": 82,
+        "phosphorus": 42,
+        "potassium": 156,
+        "organicMatter": 2.8,
+        "electricalConductivity": 0.72,
+        "temperature": 28,
+        "condition": "Healthy"
+      },
+
+      "weather": {
+        "temperature": 29,
+        "humidity": 78,
+        "rainProbability": 42,
+        "rainfall": 3.2
+      },
+
+      "monitoring": {
+        "lastInspection": "2026-08-28T08:30:00",
+        "lastImageAnalysis": "2026-08-27T17:45:00",
+        "monitoringStatus": "Active",
+        "sensorStatus": "Online"
+      },
+
+      "diseaseStatus": {
+        "currentDisease": null,
+        "previousDisease": null,
+        "affectedArea": 0,
+        "severity": "None"
+      },
+
+      "recommendations": [
+        "Continue regular field monitoring.",
+        "Maintain recommended irrigation levels.",
+        "Monitor humidity during flowering.",
+        "Inspect leaves after rainfall events."
+      ]
+    },
+
+    {
+      "id": "field-b",
+      "name": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "variety": "Bt Cotton",
+      "area": 3.1,
+      "areaUnit": "acres",
+      "location": "Andhra Pradesh",
+      "soilType": "Sandy Loam",
+
+      "coordinates": {
+        "latitude": 16.3121,
+        "longitude": 80.4418
+      },
+
+      "growthStage": "Vegetative",
+      "growthStageCode": "vegetative",
+      "plantingDate": "2026-06-05",
+      "expectedHarvestDate": "2026-11-20",
+
+      "health": {
+        "score": 64,
+        "status": "Needs Attention",
+        "trend": -3.6
+      },
+
+      "diseaseRisk": {
+        "score": 72,
+        "level": "High",
+        "trend": 8.1
+      },
+
+      "soil": {
+        "moisture": 54,
+        "pH": 7.1,
+        "nitrogen": 61,
+        "phosphorus": 36,
+        "potassium": 132,
+        "organicMatter": 2.1,
+        "electricalConductivity": 0.91,
+        "temperature": 29,
+        "condition": "Normal"
+      },
+
+      "weather": {
+        "temperature": 30,
+        "humidity": 84,
+        "rainProbability": 68,
+        "rainfall": 7.8
+      },
+
+      "monitoring": {
+        "lastInspection": "2026-08-28T07:45:00",
+        "lastImageAnalysis": "2026-08-27T16:20:00",
+        "monitoringStatus": "Active",
+        "sensorStatus": "Online"
+      },
+
+      "diseaseStatus": {
+        "currentDisease": "Leaf Spot",
+        "previousDisease": null,
+        "affectedArea": 18,
+        "severity": "Moderate"
+      },
+
+      "recommendations": [
+        "Inspect affected leaves and nearby plants.",
+        "Monitor humidity and rainfall conditions.",
+        "Avoid unnecessary overhead irrigation.",
+        "Increase field scouting frequency.",
+        "Follow locally approved disease-management guidance if symptoms progress."
+      ]
+    },
+
+    {
+      "id": "field-c",
+      "name": "Field C",
+      "crop": "chilli",
+      "cropName": "Chilli",
+      "variety": "Teja",
+      "area": 1.8,
+      "areaUnit": "acres",
+      "location": "Andhra Pradesh",
+      "soilType": "Loam",
+
+      "coordinates": {
+        "latitude": 16.2984,
+        "longitude": 80.4287
+      },
+
+      "growthStage": "Fruiting",
+      "growthStageCode": "fruiting",
+      "plantingDate": "2026-06-25",
+      "expectedHarvestDate": "2026-10-25",
+
+      "health": {
+        "score": 76,
+        "status": "Good",
+        "trend": 1.8
+      },
+
+      "diseaseRisk": {
+        "score": 54,
+        "level": "Moderate",
+        "trend": 4.3
+      },
+
+      "soil": {
+        "moisture": 68,
+        "pH": 6.7,
+        "nitrogen": 74,
+        "phosphorus": 51,
+        "potassium": 181,
+        "organicMatter": 3.1,
+        "electricalConductivity": 0.64,
+        "temperature": 27,
+        "condition": "Healthy"
+      },
+
+      "weather": {
+        "temperature": 28,
+        "humidity": 81,
+        "rainProbability": 55,
+        "rainfall": 5.4
+      },
+
+      "monitoring": {
+        "lastInspection": "2026-08-28T08:10:00",
+        "lastImageAnalysis": "2026-08-26T18:05:00",
+        "monitoringStatus": "Active",
+        "sensorStatus": "Online"
+      },
+
+      "diseaseStatus": {
+        "currentDisease": null,
+        "previousDisease": "Leaf Curl",
+        "affectedArea": 4,
+        "severity": "Low"
+      },
+
+      "recommendations": [
+        "Continue monitoring new growth.",
+        "Inspect plants for recurring leaf symptoms.",
+        "Maintain balanced irrigation.",
+        "Monitor for disease-favorable humidity."
+      ]
+    },
+
+    {
+      "id": "field-d",
+      "name": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "variety": "Arka Rakshak",
+      "area": 2.7,
+      "areaUnit": "acres",
+      "location": "Andhra Pradesh",
+      "soilType": "Loam",
+
+      "coordinates": {
+        "latitude": 16.3189,
+        "longitude": 80.4472
+      },
+
+      "growthStage": "Flowering",
+      "growthStageCode": "flowering",
+      "plantingDate": "2026-06-12",
+      "expectedHarvestDate": "2026-09-30",
+
+      "health": {
+        "score": 91,
+        "status": "Excellent",
+        "trend": 5.4
+      },
+
+      "diseaseRisk": {
+        "score": 40,
+        "level": "Moderate",
+        "trend": 1.2
+      },
+
+      "soil": {
+        "moisture": 79,
+        "pH": 6.2,
+        "nitrogen": 91,
+        "phosphorus": 58,
+        "potassium": 194,
+        "organicMatter": 3.4,
+        "electricalConductivity": 1.12,
+        "temperature": 28,
+        "condition": "Moist"
+      },
+
+      "weather": {
+        "temperature": 29,
+        "humidity": 87,
+        "rainProbability": 72,
+        "rainfall": 12.6
+      },
+
+      "monitoring": {
+        "lastInspection": "2026-08-28T08:50:00",
+        "lastImageAnalysis": "2026-08-28T06:40:00",
+        "monitoringStatus": "Active",
+        "sensorStatus": "Online"
+      },
+
+      "diseaseStatus": {
+        "currentDisease": "Early Blight Risk",
+        "previousDisease": null,
+        "affectedArea": 6,
+        "severity": "Low"
+      },
+
+      "recommendations": [
+        "Monitor leaves closely following rainfall.",
+        "Avoid prolonged leaf wetness.",
+        "Ensure adequate field drainage.",
+        "Inspect lower leaves for early symptoms.",
+        "Follow locally approved disease-management practices if symptoms are confirmed."
+      ]
+    }
+  ],
+
+  "statusDefinitions": {
+    "health": {
+      "excellent": {
+        "minimum": 90,
+        "maximum": 100
+      },
+      "healthy": {
+        "minimum": 80,
+        "maximum": 89
+      },
+      "good": {
+        "minimum": 70,
+        "maximum": 79
+      },
+      "needsAttention": {
+        "minimum": 50,
+        "maximum": 69
+      },
+      "critical": {
+        "minimum": 0,
+        "maximum": 49
+      }
+    },
+
+    "diseaseRisk": {
+      "low": {
+        "minimum": 0,
+        "maximum": 29
+      },
+      "moderate": {
+        "minimum": 30,
+        "maximum": 59
+      },
+      "high": {
+        "minimum": 60,
+        "maximum": 79
+      },
+      "critical": {
+        "minimum": 80,
+        "maximum": 100
+      }
+    }
+  },
+
+  "dashboardFields": [
+    {
+      "id": "field-a",
+      "name": "Field A",
+      "crop": "Rice",
+      "health": 86,
+      "risk": 23,
+      "moisture": 61,
+      "status": "Healthy"
     },
     {
       "id": "field-b",
       "name": "Field B",
       "crop": "Cotton",
-      "cropCode": "cotton",
-      "area": 3.1,
-      "areaUnit": "acres",
-      "growthStage": "Vegetative",
-      "health": 72,
-      "diseaseRisk": 48,
-      "soilMoisture": 54,
-      "status": "Watch",
-      "statusCode": "watch",
-      "location": "Andhra Pradesh",
-      "lastInspection": "2026-08-26",
-      "lastDiagnosis": "Bacterial Leaf Spot",
-      "diagnosisConfidence": 89.2,
-      "ndvi": 0.68,
-      "soilHealth": 69,
-      "temperature": 30,
-      "humidity": 74,
-      "rainProbability": 55
+      "health": 64,
+      "risk": 72,
+      "moisture": 54,
+      "status": "Needs Attention"
     },
     {
       "id": "field-c",
       "name": "Field C",
       "crop": "Chilli",
-      "cropCode": "chilli",
-      "area": 1.8,
-      "areaUnit": "acres",
-      "growthStage": "Fruiting",
-      "health": 78,
-      "diseaseRisk": 54,
-      "soilMoisture": 68,
-      "status": "Moderate Risk",
-      "statusCode": "moderate",
-      "location": "Andhra Pradesh",
-      "lastInspection": "2026-08-27",
-      "lastDiagnosis": "Leaf Curl",
-      "diagnosisConfidence": 91.4,
-      "ndvi": 0.72,
-      "soilHealth": 74,
-      "temperature": 29,
-      "humidity": 81,
-      "rainProbability": 61
+      "health": 76,
+      "risk": 54,
+      "moisture": 68,
+      "status": "Good"
     },
     {
       "id": "field-d",
       "name": "Field D",
       "crop": "Tomato",
-      "cropCode": "tomato",
-      "area": 2.7,
-      "areaUnit": "acres",
-      "growthStage": "Flowering",
       "health": 91,
-      "diseaseRisk": 18,
-      "soilMoisture": 79,
-      "status": "Healthy",
-      "statusCode": "healthy",
-      "location": "Andhra Pradesh",
-      "lastInspection": "2026-08-27",
-      "lastDiagnosis": "No disease detected",
-      "diagnosisConfidence": 96.1,
-      "ndvi": 0.81,
-      "soilHealth": 84,
-      "temperature": 28,
-      "humidity": 69,
-      "rainProbability": 35
+      "risk": 40,
+      "moisture": 79,
+      "status": "Excellent"
     }
-  ],
-
-  "summary": {
-    "totalFields": 4,
-    "totalArea": 10.0,
-    "averageHealth": 81.75,
-    "averageDiseaseRisk": 35.75,
-    "averageSoilMoisture": 65.5,
-    "healthyFields": 2,
-    "watchFields": 1,
-    "moderateRiskFields": 1,
-    "highRiskFields": 0
-  },
-
-  "riskThresholds": {
-    "low": {
-      "min": 0,
-      "max": 29
-    },
-    "moderate": {
-      "min": 30,
-      "max": 59
-    },
-    "high": {
-      "min": 60,
-      "max": 79
-    },
-    "critical": {
-      "min": 80,
-      "max": 100
-    }
-  }
+  ]
 }
+```
