@@ -1,0 +1,833 @@
+```json
+{
+  "metadata": {
+    "name": "AgriGuard AI Diagnosis History",
+    "version": "1.0.0",
+    "description": "Historical AI-assisted crop disease diagnosis records.",
+    "lastUpdated": "2026-08-28"
+  },
+
+  "summary": {
+    "totalDiagnoses": 27,
+    "thisSeason": 27,
+    "confirmedDiseases": 19,
+    "healthyResults": 8,
+    "highRiskResults": 7,
+    "moderateRiskResults": 11,
+    "lowRiskResults": 9,
+    "averageConfidence": 91.4
+  },
+
+  "records": [
+    {
+      "id": "DX-2026-001",
+      "date": "2026-08-28",
+      "time": "06:40",
+      "fieldId": "field-d",
+      "fieldName": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "growthStage": "Flowering",
+      "image": null,
+      "diagnosis": {
+        "disease": "Early Blight Risk",
+        "diseaseCode": "early-blight",
+        "confidence": 92.8,
+        "severity": "Low",
+        "risk": "Moderate",
+        "riskScore": 40,
+        "affectedArea": "Lower leaves",
+        "affectedAreaPercent": 6
+      },
+      "environment": {
+        "temperature": 29,
+        "humidity": 87,
+        "rainProbability": 72,
+        "soilMoisture": 79
+      },
+      "status": "Monitoring",
+      "recommendationStatus": "Preventive action recommended"
+    },
+
+    {
+      "id": "DX-2026-002",
+      "date": "2026-08-27",
+      "time": "17:45",
+      "fieldId": "field-a",
+      "fieldName": "Field A",
+      "crop": "rice",
+      "cropName": "Rice",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Rice Blast",
+        "diseaseCode": "rice-blast",
+        "confidence": 94.7,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 68,
+        "affectedArea": "Leaf",
+        "affectedAreaPercent": 14
+      },
+      "environment": {
+        "temperature": 29,
+        "humidity": 78,
+        "rainProbability": 42,
+        "soilMoisture": 61
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Treatment guidance available"
+    },
+
+    {
+      "id": "DX-2026-003",
+      "date": "2026-08-27",
+      "time": "16:20",
+      "fieldId": "field-b",
+      "fieldName": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Leaf Spot",
+        "diseaseCode": "leaf-spot",
+        "confidence": 91.6,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 72,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 18
+      },
+      "environment": {
+        "temperature": 30,
+        "humidity": 84,
+        "rainProbability": 68,
+        "soilMoisture": 54
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Immediate inspection recommended"
+    },
+
+    {
+      "id": "DX-2026-004",
+      "date": "2026-08-26",
+      "time": "18:05",
+      "fieldId": "field-c",
+      "fieldName": "Field C",
+      "crop": "chilli",
+      "cropName": "Chilli",
+      "growthStage": "Fruiting",
+      "image": null,
+      "diagnosis": {
+        "disease": "Leaf Curl",
+        "diseaseCode": "leaf-curl",
+        "confidence": 89.4,
+        "severity": "Low",
+        "risk": "Moderate",
+        "riskScore": 54,
+        "affectedArea": "Young leaves",
+        "affectedAreaPercent": 4
+      },
+      "environment": {
+        "temperature": 28,
+        "humidity": 81,
+        "rainProbability": 55,
+        "soilMoisture": 68
+      },
+      "status": "Monitoring",
+      "recommendationStatus": "Continue monitoring"
+    },
+
+    {
+      "id": "DX-2026-005",
+      "date": "2026-08-25",
+      "time": "09:15",
+      "fieldId": "field-a",
+      "fieldName": "Field A",
+      "crop": "rice",
+      "cropName": "Rice",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 96.1,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 18,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 28,
+        "humidity": 72,
+        "rainProbability": 34,
+        "soilMoisture": 59
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-006",
+      "date": "2026-08-24",
+      "time": "10:30",
+      "fieldId": "field-d",
+      "fieldName": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "growthStage": "Flowering",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 94.8,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 21,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 27,
+        "humidity": 73,
+        "rainProbability": 31,
+        "soilMoisture": 72
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-007",
+      "date": "2026-08-23",
+      "time": "08:50",
+      "fieldId": "field-b",
+      "fieldName": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Bacterial Blight",
+        "diseaseCode": "bacterial-blight",
+        "confidence": 90.3,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 67,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 11
+      },
+      "environment": {
+        "temperature": 30,
+        "humidity": 82,
+        "rainProbability": 61,
+        "soilMoisture": 57
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Inspection recommended"
+    },
+
+    {
+      "id": "DX-2026-008",
+      "date": "2026-08-22",
+      "time": "07:40",
+      "fieldId": "field-c",
+      "fieldName": "Field C",
+      "crop": "chilli",
+      "cropName": "Chilli",
+      "growthStage": "Fruiting",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 95.2,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 24,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 27,
+        "humidity": 69,
+        "rainProbability": 28,
+        "soilMoisture": 65
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-009",
+      "date": "2026-08-21",
+      "time": "17:20",
+      "fieldId": "field-a",
+      "fieldName": "Field A",
+      "crop": "rice",
+      "cropName": "Rice",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Brown Spot",
+        "diseaseCode": "brown-spot",
+        "confidence": 88.7,
+        "severity": "Low",
+        "risk": "Moderate",
+        "riskScore": 49,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 7
+      },
+      "environment": {
+        "temperature": 29,
+        "humidity": 76,
+        "rainProbability": 48,
+        "soilMoisture": 62
+      },
+      "status": "Monitoring",
+      "recommendationStatus": "Continue monitoring"
+    },
+
+    {
+      "id": "DX-2026-010",
+      "date": "2026-08-20",
+      "time": "09:35",
+      "fieldId": "field-d",
+      "fieldName": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "growthStage": "Flowering",
+      "image": null,
+      "diagnosis": {
+        "disease": "Early Blight",
+        "diseaseCode": "early-blight",
+        "confidence": 93.5,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 63,
+        "affectedArea": "Lower leaves",
+        "affectedAreaPercent": 9
+      },
+      "environment": {
+        "temperature": 30,
+        "humidity": 86,
+        "rainProbability": 64,
+        "soilMoisture": 76
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Disease management recommended"
+    },
+
+    {
+      "id": "DX-2026-011",
+      "date": "2026-08-19",
+      "time": "11:10",
+      "fieldId": "field-b",
+      "fieldName": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 92.5,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 27,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 29,
+        "humidity": 68,
+        "rainProbability": 24,
+        "soilMoisture": 51
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-012",
+      "date": "2026-08-18",
+      "time": "15:25",
+      "fieldId": "field-c",
+      "fieldName": "Field C",
+      "crop": "chilli",
+      "cropName": "Chilli",
+      "growthStage": "Fruiting",
+      "image": null,
+      "diagnosis": {
+        "disease": "Anthracnose",
+        "diseaseCode": "anthracnose",
+        "confidence": 90.9,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 61,
+        "affectedArea": "Fruit",
+        "affectedAreaPercent": 8
+      },
+      "environment": {
+        "temperature": 29,
+        "humidity": 83,
+        "rainProbability": 67,
+        "soilMoisture": 71
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Inspection and management recommended"
+    },
+
+    {
+      "id": "DX-2026-013",
+      "date": "2026-08-17",
+      "time": "08:20",
+      "fieldId": "field-a",
+      "fieldName": "Field A",
+      "crop": "rice",
+      "cropName": "Rice",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 97.0,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 16,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 27,
+        "humidity": 70,
+        "rainProbability": 26,
+        "soilMoisture": 57
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-014",
+      "date": "2026-08-16",
+      "time": "16:40",
+      "fieldId": "field-b",
+      "fieldName": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Leaf Spot",
+        "diseaseCode": "leaf-spot",
+        "confidence": 89.8,
+        "severity": "Low",
+        "risk": "Moderate",
+        "riskScore": 56,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 7
+      },
+      "environment": {
+        "temperature": 31,
+        "humidity": 79,
+        "rainProbability": 51,
+        "soilMoisture": 55
+      },
+      "status": "Monitoring",
+      "recommendationStatus": "Continue monitoring"
+    },
+
+    {
+      "id": "DX-2026-015",
+      "date": "2026-08-15",
+      "time": "09:05",
+      "fieldId": "field-d",
+      "fieldName": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "growthStage": "Flowering",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 96.4,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 19,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 27,
+        "humidity": 71,
+        "rainProbability": 22,
+        "soilMoisture": 69
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-016",
+      "date": "2026-08-14",
+      "time": "13:15",
+      "fieldId": "field-c",
+      "fieldName": "Field C",
+      "crop": "chilli",
+      "cropName": "Chilli",
+      "growthStage": "Fruiting",
+      "image": null,
+      "diagnosis": {
+        "disease": "Leaf Curl",
+        "diseaseCode": "leaf-curl",
+        "confidence": 91.2,
+        "severity": "Moderate",
+        "risk": "Moderate",
+        "riskScore": 52,
+        "affectedArea": "Young leaves",
+        "affectedAreaPercent": 9
+      },
+      "environment": {
+        "temperature": 30,
+        "humidity": 78,
+        "rainProbability": 44,
+        "soilMoisture": 66
+      },
+      "status": "Monitoring",
+      "recommendationStatus": "Continue monitoring"
+    },
+
+    {
+      "id": "DX-2026-017",
+      "date": "2026-08-13",
+      "time": "10:45",
+      "fieldId": "field-a",
+      "fieldName": "Field A",
+      "crop": "rice",
+      "cropName": "Rice",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Rice Blast",
+        "diseaseCode": "rice-blast",
+        "confidence": 93.1,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 64,
+        "affectedArea": "Leaf",
+        "affectedAreaPercent": 12
+      },
+      "environment": {
+        "temperature": 29,
+        "humidity": 85,
+        "rainProbability": 69,
+        "soilMoisture": 67
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Disease management recommended"
+    },
+
+    {
+      "id": "DX-2026-018",
+      "date": "2026-08-12",
+      "time": "08:35",
+      "fieldId": "field-b",
+      "fieldName": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 94.2,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 25,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 28,
+        "humidity": 66,
+        "rainProbability": 20,
+        "soilMoisture": 53
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-019",
+      "date": "2026-08-11",
+      "time": "17:05",
+      "fieldId": "field-d",
+      "fieldName": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "growthStage": "Flowering",
+      "image": null,
+      "diagnosis": {
+        "disease": "Septoria Leaf Spot",
+        "diseaseCode": "septoria-leaf-spot",
+        "confidence": 88.9,
+        "severity": "Low",
+        "risk": "Moderate",
+        "riskScore": 48,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 5
+      },
+      "environment": {
+        "temperature": 28,
+        "humidity": 77,
+        "rainProbability": 47,
+        "soilMoisture": 73
+      },
+      "status": "Monitoring",
+      "recommendationStatus": "Continue monitoring"
+    },
+
+    {
+      "id": "DX-2026-020",
+      "date": "2026-08-10",
+      "time": "09:50",
+      "fieldId": "field-c",
+      "fieldName": "Field C",
+      "crop": "chilli",
+      "cropName": "Chilli",
+      "growthStage": "Fruiting",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 95.8,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 22,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 27,
+        "humidity": 70,
+        "rainProbability": 25,
+        "soilMoisture": 64
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-021",
+      "date": "2026-08-09",
+      "time": "14:30",
+      "fieldId": "field-a",
+      "fieldName": "Field A",
+      "crop": "rice",
+      "cropName": "Rice",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Brown Spot",
+        "diseaseCode": "brown-spot",
+        "confidence": 87.6,
+        "severity": "Low",
+        "risk": "Moderate",
+        "riskScore": 45,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 6
+      },
+      "environment": {
+        "temperature": 30,
+        "humidity": 79,
+        "rainProbability": 53,
+        "soilMoisture": 63
+      },
+      "status": "Monitoring",
+      "recommendationStatus": "Continue monitoring"
+    },
+
+    {
+      "id": "DX-2026-022",
+      "date": "2026-08-08",
+      "time": "11:25",
+      "fieldId": "field-b",
+      "fieldName": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Bacterial Blight",
+        "diseaseCode": "bacterial-blight",
+        "confidence": 92.4,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 65,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 13
+      },
+      "environment": {
+        "temperature": 31,
+        "humidity": 83,
+        "rainProbability": 66,
+        "soilMoisture": 58
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Disease management recommended"
+    },
+
+    {
+      "id": "DX-2026-023",
+      "date": "2026-08-07",
+      "time": "08:15",
+      "fieldId": "field-d",
+      "fieldName": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "growthStage": "Flowering",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 97.2,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 17,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 26,
+        "humidity": 68,
+        "rainProbability": 18,
+        "soilMoisture": 67
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-024",
+      "date": "2026-08-06",
+      "time": "16:10",
+      "fieldId": "field-c",
+      "fieldName": "Field C",
+      "crop": "chilli",
+      "cropName": "Chilli",
+      "growthStage": "Fruiting",
+      "image": null,
+      "diagnosis": {
+        "disease": "Anthracnose",
+        "diseaseCode": "anthracnose",
+        "confidence": 91.7,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 60,
+        "affectedArea": "Fruit",
+        "affectedAreaPercent": 10
+      },
+      "environment": {
+        "temperature": 29,
+        "humidity": 84,
+        "rainProbability": 62,
+        "soilMoisture": 70
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Disease management recommended"
+    },
+
+    {
+      "id": "DX-2026-025",
+      "date": "2026-08-05",
+      "time": "10:05",
+      "fieldId": "field-a",
+      "fieldName": "Field A",
+      "crop": "rice",
+      "cropName": "Rice",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 96.7,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 20,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 28,
+        "humidity": 71,
+        "rainProbability": 29,
+        "soilMoisture": 60
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    },
+
+    {
+      "id": "DX-2026-026",
+      "date": "2026-08-04",
+      "time": "13:45",
+      "fieldId": "field-b",
+      "fieldName": "Field B",
+      "crop": "cotton",
+      "cropName": "Cotton",
+      "growthStage": "Vegetative",
+      "image": null,
+      "diagnosis": {
+        "disease": "Leaf Spot",
+        "diseaseCode": "leaf-spot",
+        "confidence": 90.6,
+        "severity": "Moderate",
+        "risk": "High",
+        "riskScore": 62,
+        "affectedArea": "Leaves",
+        "affectedAreaPercent": 10
+      },
+      "environment": {
+        "temperature": 30,
+        "humidity": 81,
+        "rainProbability": 59,
+        "soilMoisture": 56
+      },
+      "status": "Action Required",
+      "recommendationStatus": "Inspection recommended"
+    },
+
+    {
+      "id": "DX-2026-027",
+      "date": "2026-08-03",
+      "time": "09:20",
+      "fieldId": "field-d",
+      "fieldName": "Field D",
+      "crop": "tomato",
+      "cropName": "Tomato",
+      "growthStage": "Flowering",
+      "image": null,
+      "diagnosis": {
+        "disease": "Healthy",
+        "diseaseCode": "healthy",
+        "confidence": 95.5,
+        "severity": "None",
+        "risk": "Low",
+        "riskScore": 23,
+        "affectedArea": "None",
+        "affectedAreaPercent": 0
+      },
+      "environment": {
+        "temperature": 27,
+        "humidity": 72,
+        "rainProbability": 27,
+        "soilMoisture": 70
+      },
+      "status": "Healthy",
+      "recommendationStatus": "Routine monitoring"
+    }
+  ]
+}
+```
