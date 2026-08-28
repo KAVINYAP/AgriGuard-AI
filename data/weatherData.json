@@ -1,0 +1,186 @@
+{
+  "location": {
+    "name": "Andhra Pradesh",
+    "country": "India",
+    "latitude": 15.9129,
+    "longitude": 79.7400
+  },
+
+  "current": {
+    "temperature": 29,
+    "feelsLike": 31,
+    "humidity": 78,
+    "rainProbability": 42,
+    "rainfall": 3,
+    "windSpeed": 14,
+    "windDirection": "SW",
+    "pressure": 1008,
+    "visibility": 8,
+    "uvIndex": 7,
+    "condition": "Partly Cloudy",
+    "description": "Warm and humid conditions with a moderate chance of rainfall.",
+    "updatedAt": "2026-08-28T12:00:00"
+  },
+
+  "forecast": [
+    {
+      "day": "Today",
+      "date": "2026-08-28",
+      "condition": "Partly Cloudy",
+      "icon": "partly-cloudy",
+      "temperature": {
+        "min": 25,
+        "max": 31
+      },
+      "humidity": 78,
+      "rainProbability": 42,
+      "rainfall": 3,
+      "windSpeed": 14
+    },
+    {
+      "day": "Saturday",
+      "date": "2026-08-29",
+      "condition": "Scattered Rain",
+      "icon": "rain",
+      "temperature": {
+        "min": 24,
+        "max": 30
+      },
+      "humidity": 84,
+      "rainProbability": 68,
+      "rainfall": 9,
+      "windSpeed": 16
+    },
+    {
+      "day": "Sunday",
+      "date": "2026-08-30",
+      "condition": "Rain",
+      "icon": "rain",
+      "temperature": {
+        "min": 24,
+        "max": 29
+      },
+      "humidity": 87,
+      "rainProbability": 74,
+      "rainfall": 14,
+      "windSpeed": 18
+    },
+    {
+      "day": "Monday",
+      "date": "2026-08-31",
+      "condition": "Mostly Cloudy",
+      "icon": "cloudy",
+      "temperature": {
+        "min": 24,
+        "max": 30
+      },
+      "humidity": 81,
+      "rainProbability": 55,
+      "rainfall": 6,
+      "windSpeed": 15
+    },
+    {
+      "day": "Tuesday",
+      "date": "2026-09-01",
+      "condition": "Partly Cloudy",
+      "icon": "partly-cloudy",
+      "temperature": {
+        "min": 25,
+        "max": 32
+      },
+      "humidity": 76,
+      "rainProbability": 38,
+      "rainfall": 2,
+      "windSpeed": 12
+    }
+  ],
+
+  "hourly": {
+    "labels": [
+      "6 AM",
+      "9 AM",
+      "12 PM",
+      "3 PM",
+      "6 PM",
+      "9 PM"
+    ],
+
+    "temperature": [
+      23,
+      26,
+      29,
+      32,
+      29,
+      26
+    ],
+
+    "humidity": [
+      82,
+      78,
+      72,
+      64,
+      68,
+      76
+    ],
+
+    "rainProbability": [
+      25,
+      32,
+      42,
+      55,
+      48,
+      38
+    ],
+
+    "rainfall": [
+      0,
+      0,
+      1,
+      2,
+      0,
+      0
+    ]
+  },
+
+  "agriculturalIndicators": {
+    "diseaseFavorableHumidity": true,
+    "highRainfallRisk": false,
+    "leafWetnessRisk": "Moderate",
+    "fungalDiseaseRisk": "Moderate",
+    "irrigationRecommendation": "Monitor soil moisture before irrigation.",
+    "fieldWorkRecommendation": "Avoid unnecessary field operations during rainfall.",
+    "sprayingCondition": "Prefer dry and low-wind periods for approved applications."
+  },
+
+  "diseaseRiskFactors": {
+    "humidity": {
+      "value": 78,
+      "riskContribution": "Moderate"
+    },
+    "rainProbability": {
+      "value": 42,
+      "riskContribution": "Moderate"
+    },
+    "rainfall": {
+      "value": 3,
+      "riskContribution": "Low"
+    },
+    "temperature": {
+      "value": 29,
+      "riskContribution": "Moderate"
+    },
+    "overallWeatherRisk": 56
+  },
+
+  "metadata": {
+    "source": "AgriGuard AI demo dataset",
+    "units": {
+      "temperature": "°C",
+      "humidity": "%",
+      "rainfall": "mm",
+      "windSpeed": "km/h",
+      "pressure": "hPa"
+    },
+    "isDemoData": true
+  }
+}
