@@ -1,0 +1,363 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-08-28",
+  "crops": [
+    {
+      "id": "rice",
+      "name": "Rice",
+      "scientificName": "Oryza sativa",
+      "category": "Cereal",
+      "commonDiseases": [
+        "rice-blast",
+        "bacterial-leaf-blight",
+        "brown-spot",
+        "sheath-blight"
+      ],
+      "growthStages": [
+        "Seedling",
+        "Vegetative",
+        "Flowering",
+        "Fruiting",
+        "Maturity"
+      ],
+      "optimalConditions": {
+        "temperature": {
+          "min": 20,
+          "max": 35,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 60,
+          "max": 85,
+          "unit": "%"
+        },
+        "soilMoisture": {
+          "min": 60,
+          "max": 85,
+          "unit": "%"
+        }
+      },
+      "riskFactors": [
+        "High humidity",
+        "Prolonged leaf wetness",
+        "Excessive rainfall",
+        "Poor field drainage",
+        "Dense planting",
+        "Nitrogen imbalance"
+      ],
+      "monitoringParameters": [
+        "Leaf condition",
+        "Temperature",
+        "Humidity",
+        "Rainfall",
+        "Soil moisture",
+        "Nitrogen",
+        "Phosphorus",
+        "Potassium",
+        "NDVI"
+      ]
+    },
+    {
+      "id": "cotton",
+      "name": "Cotton",
+      "scientificName": "Gossypium spp.",
+      "category": "Fiber Crop",
+      "commonDiseases": [
+        "cotton-leaf-curl",
+        "bacterial-blight",
+        "alternaria-leaf-spot",
+        "fusarium-wilt"
+      ],
+      "growthStages": [
+        "Seedling",
+        "Vegetative",
+        "Flowering",
+        "Fruiting",
+        "Maturity"
+      ],
+      "optimalConditions": {
+        "temperature": {
+          "min": 21,
+          "max": 35,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 45,
+          "max": 75,
+          "unit": "%"
+        },
+        "soilMoisture": {
+          "min": 45,
+          "max": 70,
+          "unit": "%"
+        }
+      },
+      "riskFactors": [
+        "Excessive humidity",
+        "Extended leaf wetness",
+        "Poor drainage",
+        "Water stress",
+        "Nutrient imbalance",
+        "Dense canopy"
+      ],
+      "monitoringParameters": [
+        "Leaf condition",
+        "Temperature",
+        "Humidity",
+        "Rainfall",
+        "Soil moisture",
+        "Nitrogen",
+        "Phosphorus",
+        "Potassium",
+        "NDVI"
+      ]
+    },
+    {
+      "id": "chilli",
+      "name": "Chilli",
+      "scientificName": "Capsicum annuum",
+      "category": "Vegetable",
+      "commonDiseases": [
+        "anthracnose",
+        "bacterial-leaf-spot",
+        "powdery-mildew",
+        "phytophthora-blight"
+      ],
+      "growthStages": [
+        "Seedling",
+        "Vegetative",
+        "Flowering",
+        "Fruiting",
+        "Maturity"
+      ],
+      "optimalConditions": {
+        "temperature": {
+          "min": 18,
+          "max": 32,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 50,
+          "max": 75,
+          "unit": "%"
+        },
+        "soilMoisture": {
+          "min": 50,
+          "max": 70,
+          "unit": "%"
+        }
+      },
+      "riskFactors": [
+        "High humidity",
+        "Frequent rainfall",
+        "Leaf wetness",
+        "Poor drainage",
+        "Over-irrigation",
+        "Crowded planting"
+      ],
+      "monitoringParameters": [
+        "Leaf condition",
+        "Fruit condition",
+        "Temperature",
+        "Humidity",
+        "Rainfall",
+        "Soil moisture",
+        "Nitrogen",
+        "Potassium",
+        "NDVI"
+      ]
+    },
+    {
+      "id": "tomato",
+      "name": "Tomato",
+      "scientificName": "Solanum lycopersicum",
+      "category": "Vegetable",
+      "commonDiseases": [
+        "early-blight",
+        "late-blight",
+        "bacterial-spot",
+        "powdery-mildew"
+      ],
+      "growthStages": [
+        "Seedling",
+        "Vegetative",
+        "Flowering",
+        "Fruiting",
+        "Maturity"
+      ],
+      "optimalConditions": {
+        "temperature": {
+          "min": 18,
+          "max": 30,
+          "unit": "C"
+        },
+        "humidity": {
+          "min": 50,
+          "max": 70,
+          "unit": "%"
+        },
+        "soilMoisture": {
+          "min": 55,
+          "max": 75,
+          "unit": "%"
+        }
+      },
+      "riskFactors": [
+        "High humidity",
+        "Frequent rainfall",
+        "Extended leaf wetness",
+        "Poor air circulation",
+        "Poor drainage",
+        "Over-irrigation"
+      ],
+      "monitoringParameters": [
+        "Leaf condition",
+        "Fruit condition",
+        "Temperature",
+        "Humidity",
+        "Rainfall",
+        "Soil moisture",
+        "Nitrogen",
+        "Phosphorus",
+        "Potassium",
+        "NDVI"
+      ]
+    }
+  ],
+
+  "growthStages": {
+    "seedling": {
+      "label": "Seedling",
+      "description": "Early establishment stage after germination.",
+      "monitoringPriority": "High",
+      "keyParameters": [
+        "Soil moisture",
+        "Temperature",
+        "Early leaf symptoms"
+      ]
+    },
+    "vegetative": {
+      "label": "Vegetative",
+      "description": "Active leaf and plant growth stage.",
+      "monitoringPriority": "High",
+      "keyParameters": [
+        "Leaf health",
+        "Nitrogen",
+        "Moisture",
+        "Temperature",
+        "Disease symptoms"
+      ]
+    },
+    "flowering": {
+      "label": "Flowering",
+      "description": "Flower development and reproductive transition stage.",
+      "monitoringPriority": "Very High",
+      "keyParameters": [
+        "Humidity",
+        "Rainfall",
+        "Leaf health",
+        "Disease risk",
+        "Nutrient balance"
+      ]
+    },
+    "fruiting": {
+      "label": "Fruiting",
+      "description": "Fruit or grain development stage.",
+      "monitoringPriority": "Very High",
+      "keyParameters": [
+        "Water availability",
+        "Disease symptoms",
+        "Nutrient balance",
+        "Temperature",
+        "Crop health"
+      ]
+    },
+    "maturity": {
+      "label": "Maturity",
+      "description": "Final development and harvest preparation stage.",
+      "monitoringPriority": "High",
+      "keyParameters": [
+        "Crop health",
+        "Disease progression",
+        "Moisture",
+        "Weather",
+        "Harvest readiness"
+      ]
+    }
+  },
+
+  "healthThresholds": {
+    "excellent": {
+      "min": 85,
+      "max": 100
+    },
+    "good": {
+      "min": 70,
+      "max": 84
+    },
+    "moderate": {
+      "min": 50,
+      "max": 69
+    },
+    "poor": {
+      "min": 30,
+      "max": 49
+    },
+    "critical": {
+      "min": 0,
+      "max": 29
+    }
+  },
+
+  "riskThresholds": {
+    "low": {
+      "min": 0,
+      "max": 29
+    },
+    "moderate": {
+      "min": 30,
+      "max": 59
+    },
+    "high": {
+      "min": 60,
+      "max": 79
+    },
+    "critical": {
+      "min": 80,
+      "max": 100
+    }
+  },
+
+  "soilHealthParameters": [
+    {
+      "id": "nitrogen",
+      "name": "Nitrogen",
+      "unit": "%",
+      "importance": "Plant growth and leaf development"
+    },
+    {
+      "id": "phosphorus",
+      "name": "Phosphorus",
+      "unit": "%",
+      "importance": "Root development and reproductive growth"
+    },
+    {
+      "id": "potassium",
+      "name": "Potassium",
+      "unit": "%",
+      "importance": "Stress tolerance and overall plant health"
+    },
+    {
+      "id": "moisture",
+      "name": "Soil Moisture",
+      "unit": "%",
+      "importance": "Water availability and root-zone condition"
+    },
+    {
+      "id": "organicMatter",
+      "name": "Organic Matter",
+      "unit": "%",
+      "importance": "Soil structure and nutrient availability"
+    }
+  ]
+}
